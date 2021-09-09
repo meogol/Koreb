@@ -9,7 +9,6 @@ class GraphItem:
         self.request = request
         self.ip = ip
         self.next_items = []
-        self.last_item = last_item
         self.percent = 0
         self.level = 0
 
