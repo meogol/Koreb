@@ -54,19 +54,18 @@ plots = {'192.168.1.1': [first_ip],
 def get_ip_and_command():
     ip_to_send = random.choice(ip)
     if ip_to_send == '192.168.1.1':
-        command_to_send = random.choice(first_ip)
+        command_to_send = fifth_ip
     else:
         if ip_to_send == '192.168.1.0':
-            command_to_send = random.choice(second_ip)
+            command_to_send = second_ip
         else:
             if ip_to_send == '192.168.0.1':
-                command_to_send = random.choice(third_ip)
+                command_to_send = third_ip
             else:
                 if ip_to_send == '192.168.0.0':
-                    command_to_send = random.choice(forth_ip)
+                    command_to_send = forth_ip
                 else:
                     if ip_to_send == '192.168.0.2':
-                        command_to_send = random.choice(fifth_ip)
+                        command_to_send = fifth_ip
 
     return ip_to_send, command_to_send
-
