@@ -48,6 +48,8 @@ plots = {'192.168.1.1': [first_ip],
          '192.168.0.0': [forth_ip],
          '192.168.0.2': [fifth_ip]
          }
+
+
 # function that will send to neuron network ip of final user and command to it
 def get_ip_and_command():
     ip_to_send = random.choice(ip)
@@ -69,4 +71,3 @@ def get_ip_and_command():
     string_to_send = f'{ip_to_send};{command_to_send}'
     return string_to_send
 
-print(get_ip_and_command())
