@@ -68,6 +68,5 @@ def get_ip_and_command():
                     if ip_to_send == '192.168.0.2':
                         command_to_send = random.choice(fifth_ip)
 
-    string_to_send = f'{ip_to_send};{command_to_send}'
-    return string_to_send
+    return ip_to_send, command_to_send
 
