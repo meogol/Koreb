@@ -1,6 +1,6 @@
 import random
 
-from traficGeneratorCore import GeneratorCore
+from TrafficGenerator.traficGeneratorCore import GeneratorCore
 
 
 class TrafficGenerator():
@@ -36,6 +36,8 @@ class TrafficGenerator():
                             command_to_send = random.choice(self.buffer_for_random_command)
 
         return ip_to_send, command_to_send
+
+
 if __name__ == '__main__':
     traf_gen = TrafficGenerator()
     gen_core = GeneratorCore()
