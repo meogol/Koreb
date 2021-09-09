@@ -23,7 +23,8 @@ class Graph:
         if self.this_command.ip != ip:
             return
 
-        self.this_command = self.this_command.add_item(ip, request, self.this_command)
+        command = self.this_command.add_item(request, ip, self.this_command)
+        self.this_command = command
 
     def search_command(self, list_command, ip):
         """
