@@ -1,6 +1,6 @@
 import random
 
-from TrafficGenerator.traficGeneratorCore import GeneratorCore
+from traffic_generator.traficGeneratorCore import GeneratorCore
 
 
 class TrafficGenerator():

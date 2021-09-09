@@ -1,4 +1,4 @@
-from TrafficGenerator.trafficGenerator import TrafficGenerator
+from traffic_generator.trafficGenerator import TrafficGenerator
 from graphCore.graph import Graph
 
 
