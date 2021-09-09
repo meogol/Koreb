@@ -1,4 +1,3 @@
-from TrafficGenerator.TrafficGenerator import get_ip_and_command
 from graphCore.graphItem import GraphItem
 
 

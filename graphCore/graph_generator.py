@@ -1,18 +1,22 @@
-from TrafficGenerator.TrafficGenerator import get_ip_and_command
+from TrafficGenerator.trafficGenerator import TrafficGenerator
+from TrafficGenerator.traficGeneratorCore import GeneratorCore
 from graphCore.graph import Graph
 
 
 class GraphGenerator:
     def __init__(self):
         self.graph = Graph()
+        self.traf_gen = TrafficGenerator()
+
 
     def create_command(self):
         """
         заполняет граф элементами из сгенерированного набора
         :return:
         """
-        ip, command = get_ip_and_command()
         command_list = []
+
+        ip, command = self.traf_gen.get_ip_and_command()
 
         level = 0
         for item in command:
@@ -30,6 +34,8 @@ class GraphGenerator:
             level += 1
 
 
+
 if __name__ == '__main__':
     graph = GraphGenerator()
     graph.create_command()
+    a=a

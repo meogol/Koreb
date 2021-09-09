@@ -28,7 +28,7 @@ class GeneratorCore:
                 self.buffer_list_of_commands.append(random.choice(self.command_list))
 
         for k in self.plots.keys():
-            for i in range(10000):
+            for i in range(1000):
                 rerandom_buffer_list(self)
                 self.doubler_buffer_list_of_commands = self.buffer_list_of_commands.copy()
                 self.plots[k].append(self.doubler_buffer_list_of_commands)
