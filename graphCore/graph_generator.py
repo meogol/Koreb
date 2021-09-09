@@ -1,5 +1,4 @@
 from TrafficGenerator.trafficGenerator import TrafficGenerator
-from TrafficGenerator.traficGeneratorCore import GeneratorCore
 from graphCore.graph import Graph
 
 
@@ -7,7 +6,6 @@ class GraphGenerator:
     def __init__(self):
         self.graph = Graph()
         self.traf_gen = TrafficGenerator()
-
 
     def create_command(self):
         """
@@ -31,15 +29,11 @@ class GraphGenerator:
                 if self.graph.this_command.level != level - 1:
                     self.graph.search_command(command, ip)
 
-
-
                 self.graph.graph_add_command(ip, item)
                 level += 1
-
 
 
 if __name__ == '__main__':
     graph = GraphGenerator()
     graph.create_command()
-    a=1
-
+    a = 1
