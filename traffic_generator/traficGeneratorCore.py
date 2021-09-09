@@ -13,12 +13,14 @@ class GeneratorCore:
         self.buffer_list_of_commands = list()
         self.doubler_buffer_list_of_commands = list()
         self.command_list = ['up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right']
-        self.ip = ['192.168.1.1', '192.168.1.0', '192.168.0.1', '192.168.0.0', '192.168.0.2']
+        self.ip = ['192.168.1.1'
+            # , '192.168.1.0', '192.168.0.1', '192.168.0.0', '192.168.0.2'
+                   ]
         self.plots = {'192.168.1.1': [],
-                 '192.168.1.0': [],
-                 '192.168.0.1': [],
-                 '192.168.0.0': [],
-                 '192.168.0.2': []
+        #          '192.168.1.0': [],
+        #          '192.168.0.1': [],
+        #          '192.168.0.0': [],
+        #          '192.168.0.2': []
                  }
 
 
@@ -34,5 +36,5 @@ class GeneratorCore:
             for i in range(1000):
                 rerandom_buffer_list(self)
                 self.doubler_buffer_list_of_commands = self.buffer_list_of_commands.copy()
-                self.plots[k].append(self.doubler_buffer_list_of_commands)
+                self.plots['192.168.1.1'].append(self.doubler_buffer_list_of_commands)
                 self.buffer_list_of_commands.clear()
