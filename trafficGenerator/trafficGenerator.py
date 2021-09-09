@@ -1,12 +1,13 @@
 import random
 
-from TrafficGenerator.traficGeneratorCore import GeneratorCore
+from traficGeneratorCore import GeneratorCore
 
 
 class TrafficGenerator():
     def __init__(self):
         self.gen_core = GeneratorCore()
         self.gen_core.randomize_inner_lists()
+        self.buffer_for_random_command = list()
 
 
     def get_ip_and_command(self):
@@ -15,22 +16,27 @@ class TrafficGenerator():
         """
         ip_to_send = random.choice(self.gen_core.ip)
         if ip_to_send == '192.168.1.1':
-            command_to_send = self.gen_core.plots['192.168.1.1']
+            self.buffer_for_random_command = self.gen_core.plots['192.168.1.1']
+            command_to_send = random.choice(self.buffer_for_random_command)
         else:
             if ip_to_send == '192.168.1.0':
-                command_to_send = self.gen_core.plots['192.168.1.0']
+                self.buffer_for_random_command = self.gen_core.plots['192.168.1.0']
+                command_to_send = random.choice(self.buffer_for_random_command)
             else:
                 if ip_to_send == '192.168.0.1':
-                    command_to_send = self.gen_core.plots['192.168.0.1']
+                    self.buffer_for_random_command = self.gen_core.plots['192.168.0.1']
+                    command_to_send = random.choice(self.buffer_for_random_command)
                 else:
                     if ip_to_send == '192.168.0.0':
-                        command_to_send = self.gen_core.plots['192.168.0.0']
+                        self.buffer_for_random_command = self.gen_core.plots['192.168.0.0']
+                        command_to_send = random.choice(self.buffer_for_random_command)
                     else:
                         if ip_to_send == '192.168.0.2':
-                            command_to_send = self.gen_core.plots['192.168.0.2']
+                            self.buffer_for_random_command = self.gen_core.plots['192.168.0.2']
+                            command_to_send = random.choice(self.buffer_for_random_command)
 
         return ip_to_send, command_to_send
-
+        a=a
 if __name__ == '__main__':
     traf_gen = TrafficGenerator()
     gen_core = GeneratorCore()
