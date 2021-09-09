@@ -1,22 +1,12 @@
-
 class GraphItem:
-    def __init__(self, request, ip):
+
+    def __init__(self, request, ip, last_item=None, level=0):
         """
-        базовый конструктор для создания первого элемента графа
+        с двумя параметрами вызывается только для создания графа
         :param request:
         :param ip:
-        """
-        self.request = request
-        self.ip = ip
-        self.next_items = []
-        self.percent = 0
-        self.level = 0
-
-    def __init__(self, request, ip, last_item, level):
-        """
-        вызывается только из класса графа
-        request- string
-        ip- string
+        :param last_item: указатель на прошлый элемент
+        :param level: уровень вложенности элемента
         """
         self.request = request
         self.ip = ip
@@ -30,6 +20,8 @@ class GraphItem:
         :param request: запрос
         :param ip:
         :param last_item: прошлый родительский элемент узла
-        :return:
+        :return: добавленный элемент
         """
-        self.next_items.append(GraphItem(request, ip, last_item, self.level+1))
+        item = GraphItem(request, ip, last_item, self.level + 1)
+        self.next_items.append(item)
+        return item
