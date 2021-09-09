@@ -12,7 +12,7 @@ class TrafficGenerator():
 
     def get_ip_and_command(self):
         """
-        :return: returns cortaige type of (ip,lists of commands)
+        :return: returns random cortaige type of (ip,list of commands)
         """
         ip_to_send = random.choice(self.gen_core.ip)
         if ip_to_send == '192.168.1.1':
@@ -36,7 +36,6 @@ class TrafficGenerator():
                             command_to_send = random.choice(self.buffer_for_random_command)
 
         return ip_to_send, command_to_send
-        a=a
 if __name__ == '__main__':
     traf_gen = TrafficGenerator()
     gen_core = GeneratorCore()
