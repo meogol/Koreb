@@ -1,9 +1,10 @@
 
 class GraphItem:
-    def __init__(self, request, ip, last_item):
+    def __init__(self, request, ip):
         """
-        request- string
-        ip- string
+        базовый конструктор для создания первого элемента графа
+        :param request:
+        :param ip:
         """
         self.request = request
         self.ip = ip
@@ -30,6 +31,6 @@ class GraphItem:
         :param request: запрос
         :param ip:
         :param last_item: прошлый родительский элемент узла
-        :return: 
+        :return:
         """
         self.next_items.append(GraphItem(request, ip, last_item, self.level+1))

@@ -6,4 +6,3 @@ class GraphGenerator:
         self.graph = None
 
 
-    def
