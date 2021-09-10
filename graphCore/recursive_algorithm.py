@@ -1,5 +1,3 @@
-from Koreb.graphCore.graphItem import GraphItem
-
 class GoAroundGraph:
     def __init__(self):
         self.data = list()
