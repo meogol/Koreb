@@ -28,9 +28,6 @@ class Graph:
                 return
 
     def graph_add_command(self, ip, request):
-        if self.this_command.ip != ip:
-            return
-
         res = self.get_item_by_command(request, self.this_command)
         if res is None:
             command = self.this_command.add_item(request, ip, self.this_command)
