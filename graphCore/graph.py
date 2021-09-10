@@ -1,4 +1,4 @@
-from graphCore.graphItem import GraphItem
+from Koreb.graphCore.graphItem import GraphItem
 
 
 class Graph:
