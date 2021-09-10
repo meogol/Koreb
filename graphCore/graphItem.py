@@ -27,6 +27,6 @@ class GraphItem:
         return item
 
     def __eq__(self, other):
-        return self.level == (other.level and
-                              self.request == other.request and
-                              self.ip == other.ip)
+        return (self.level == other.level and
+                self.request == other.request and
+                self.ip == other.ip)
