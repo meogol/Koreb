@@ -16,6 +16,13 @@ class GraphGenerator:
         :param command: единичная команда
         :return:
         """
+        if level == 0:
+            self.graph.graph_init(ip, command)
+            self.command_list.append(command)
+            return
+
+        self.graph.graph_add_command(ip, command)
+        self.command_list.append(command)
 
     def run_graph(self):
         level = 0
@@ -24,6 +31,8 @@ class GraphGenerator:
             self.create_command(ip, item, level)
             self.training_ai(item)
             level += 1
+
+        self.command_list.clear()
 
     def training_ai(self, command):
         """
