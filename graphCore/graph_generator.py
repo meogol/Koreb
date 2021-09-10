@@ -1,39 +1,41 @@
-from Koreb.graphCore.graph import Graph
-from Koreb.traffic_generator.trafficGenerator import TrafficGenerator
+from graphCore.graph import Graph
+from traffic_generator.trafficGenerator import TrafficGenerator
 
 
 class GraphGenerator:
     def __init__(self):
         self.graph = Graph()
         self.traf_gen = TrafficGenerator()
+        self.command_list = []
+        self.level = 0
 
-    def create_command(self):
+    def create_command(self, ip, command, level):
         """
-        заполняет граф элементами из сгенерированного набора
+        :param level:
+        :param ip:
+        :param command: единичная команда
         :return:
         """
-        command_list = []
 
+    def run_graph(self):
+        level = 0
         ip, command = self.traf_gen.get_ip_and_command()
+        for item in command:
+            self.create_command(ip, item, level)
+            self.training_ai(item)
+            level += 1
 
-        for a in range(100):
-            level = 0
-            for item in command:
-                if level == 0:
-                    command_list.append(item)
-                    self.graph.graph_init(ip, item)
-                    level += 1
-                    continue
-
-                command_list.append(item)
-                if self.graph.this_command.level != level - 1:
-                    self.graph.search_command(command, ip)
-
-                self.graph.graph_add_command(ip, item)
-                level += 1
+    def training_ai(self, command):
+        """
+        тут слой работы с НС
+        :param command:
+        :return:
+        """
+        pass
 
 
 if __name__ == '__main__':
     graph = GraphGenerator()
-    graph.create_command()
+    for a in range(10):
+        graph.run_graph()
     a = 1

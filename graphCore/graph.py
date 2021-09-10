@@ -1,4 +1,4 @@
-from Koreb.graphCore.graphItem import GraphItem
+from graphCore.graphItem import GraphItem
 
 
 class Graph:
@@ -16,28 +16,57 @@ class Graph:
         if len(self.graph) <= 0:
             self.this_command = GraphItem(request, ip)
             self.graph.append(self.this_command)
-        else:
             return
+
+        for item in self.graph:
+            if item.request == request:
+                self.this_command = item
+                return
+            else:
+                self.this_command = GraphItem(request, ip)
+                self.graph.append(self.this_command)
+                return
 
     def graph_add_command(self, ip, request):
         if self.this_command.ip != ip:
             return
 
-        command = self.this_command.add_item(request, ip, self.this_command)
-        self.this_command = command
+        res = self.get_item_by_command(request, self.this_command)
+        if res is None:
+            command = self.this_command.add_item(request, ip, self.this_command)
+            self.this_command = command
+        else:
+            self.this_command = res
 
-    def search_command(self, list_command, ip):
+    def get_item_by_command(self, command, graph_item):
         """
-        находит узел по последовательности команд
-        :param ip:
-        :param list_command: последовательность команд
-        :return: this_command становится искомым узлом
+        возвращает элемент следующего уровня, соответствующий команде
+        :param command: 
+        :param graph_item: 
+        :return: 
         """
+        for item in graph_item.next_items:
+            if item.request == command:
+                return item
+        return None
 
-        for command in list_command:
-            for this_graph_line_item in self.graph:
-                if command == this_graph_line_item.request\
-                        and this_graph_line_item.ip == ip:
-                    this_graph_line = this_graph_line_item
+    def get_item_by_command_line(self, command_line):
+        """
+        выполняет поиск команды по порядку вызовов. This_command принимает значение последней комманды в порядке вызов
+        :param command_line:
+        :return: найденный элемммент графа
+        """
+        graph_item = None
 
-        self.this_command = this_graph_line
+        for item in self.graph:
+            graph_item = item
+
+            for command in command_line:
+                graph_item = self.get_item_by_command(command, graph_item)
+                if graph_item is None:
+                    graph_item = None
+                    continue
+
+            self.this_command = graph_item
+
+        return graph_item
