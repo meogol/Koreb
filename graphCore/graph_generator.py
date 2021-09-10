@@ -1,5 +1,7 @@
-from graphCore.graph import Graph
-from traffic_generator.trafficGenerator import TrafficGenerator
+
+from Koreb.graphCore.recursive_algorithm import GoAroundGraph
+from Koreb.graphCore.graph import Graph
+from Koreb.traffic_generator.trafficGenerator import TrafficGenerator
 
 
 class GraphGenerator:
@@ -47,4 +49,9 @@ if __name__ == '__main__':
     graph = GraphGenerator()
     for a in range(10000):
         graph.run_graph()
+    rec = GoAroundGraph()
+    for item in graph.graph.graph:
+        rec.recoursive_algorithm(item, 1)
+
+    print(rec.data)
     a = 1
