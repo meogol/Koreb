@@ -22,10 +22,9 @@ class Graph:
             if item.request == request:
                 self.this_command = item
                 return
-            else:
-                self.this_command = GraphItem(request, ip)
-                self.graph.append(self.this_command)
-                return
+
+        self.this_command = GraphItem(request, ip)
+        self.graph.append(self.this_command)
 
     def graph_add_command(self, ip, request):
         res = self.get_item_by_command(request, self.this_command)

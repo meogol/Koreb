@@ -47,7 +47,7 @@ class GraphGenerator:
 
 if __name__ == '__main__':
     graph = GraphGenerator()
-    for a in range(10):
+    for a in range(10000):
         graph.run_graph()
     rec = GoAroundGraph()
     for item in graph.graph.graph:
