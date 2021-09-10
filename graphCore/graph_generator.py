@@ -1,5 +1,5 @@
-from traffic_generator.trafficGenerator import TrafficGenerator
-from graphCore.graph import Graph
+from Koreb.graphCore.graph import Graph
+from Koreb.traffic_generator.trafficGenerator import TrafficGenerator
 
 
 class GraphGenerator:
