@@ -13,7 +13,6 @@ class GoAroundGraph:
             self.data.append(item_gr.request)
 
         for item in item_gr.next_items:
-
             self.recoursive_algorithm(item, needed_level)
 
         return self.data
