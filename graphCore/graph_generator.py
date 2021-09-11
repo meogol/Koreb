@@ -56,4 +56,6 @@ if __name__ == '__main__':
     give_me_branches = GiveBranchsBack()
     for item in graph.graph.graph_array:
         print(give_me_branches.give_branchs_back(item))
+        print("\n\n")
+        give_me_branches.buffer.clear()
     a = 1
