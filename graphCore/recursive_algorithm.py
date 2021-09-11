@@ -3,6 +3,12 @@ class GoAroundGraph:
         self.data = list()
 
     def recoursive_algorithm(self, item_gr, needed_level):
+        """
+        рекурсивный обход графа и формирование коллекции по уровню вложенности
+        :param item_gr:
+        :param needed_level:
+        :return:
+        """
         if needed_level == item_gr.level:
             self.data.append(item_gr.request)
 

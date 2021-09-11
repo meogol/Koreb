@@ -1,9 +1,13 @@
-from Koreb.graphCore.graphItem import GraphItem
+from graphCore.graphItem import GraphItem
 
 
 class Graph:
     def __init__(self):
-        self.graph = []
+        """
+        graph - массив ветввей графа
+        this_command - текущая активная команда
+        """
+        self.graph_array = []
         self.this_command = None
 
     def graph_init(self, ip, request):
@@ -13,20 +17,26 @@ class Graph:
         :param request:
         :return:
         """
-        if len(self.graph) <= 0:
+        if len(self.graph_array) <= 0:
             self.this_command = GraphItem(request, ip)
-            self.graph.append(self.this_command)
+            self.graph_array.append(self.this_command)
             return
 
-        for item in self.graph:
+        for item in self.graph_array:
             if item.request == request:
                 self.this_command = item
                 return
 
         self.this_command = GraphItem(request, ip)
-        self.graph.append(self.this_command)
+        self.graph_array.append(self.this_command)
 
     def graph_add_command(self, ip, request):
+        """
+        добавляет команду в граф, если такая команда уже есть в графе, перемещает this_command
+        :param ip:
+        :param request:
+        :return:
+        """
         res = self.get_item_by_command(request, self.this_command)
         if res is None:
             command = self.this_command.add_item(request, ip, self.this_command)
@@ -54,7 +64,7 @@ class Graph:
         """
         graph_item = None
 
-        for item in self.graph:
+        for item in self.graph_array:
             graph_item = item
 
             for command in command_line:
