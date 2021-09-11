@@ -1,7 +1,7 @@
 
-from Koreb.graphCore.recursive_algorithm import GoAroundGraph
-from Koreb.graphCore.graph import Graph
-from Koreb.traffic_generator.trafficGenerator import TrafficGenerator
+from graphCore.recursive_algorithm import GoAroundGraph
+from graphCore.graph import Graph
+from traffic_generator.trafficGenerator import TrafficGenerator
 
 
 class GraphGenerator:
@@ -13,6 +13,7 @@ class GraphGenerator:
 
     def create_command(self, ip, command, level):
         """
+        верхний уровень функции добавления команды в граф. Автоматически заполяет command_list
         :param level:
         :param ip:
         :param command: единичная команда
@@ -27,6 +28,10 @@ class GraphGenerator:
         self.command_list.append(command)
 
     def run_graph(self):
+        """
+        точка входа для работы с графом. Тут же запускается НС
+        :return:
+        """
         level = 0
         ip, command = self.traf_gen.get_ip_and_command()
         for item in command:
@@ -49,9 +54,5 @@ if __name__ == '__main__':
     graph = GraphGenerator()
     for a in range(10000):
         graph.run_graph()
-    rec = GoAroundGraph()
-    for item in graph.graph.graph:
-        rec.recoursive_algorithm(item, 1)
 
-    print(rec.data)
     a = 1

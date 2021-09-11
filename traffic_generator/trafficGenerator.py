@@ -1,6 +1,6 @@
 import random
 
-from Koreb.traffic_generator.traficGeneratorCore import GeneratorCore
+from traffic_generator.traficGeneratorCore import GeneratorCore
 
 
 class TrafficGenerator():
@@ -12,6 +12,7 @@ class TrafficGenerator():
 
     def get_ip_and_command(self):
         """
+        возвращает случайный кортеж вида (ip, [массив команд]) из заранее сгенерированного dict
         :return: returns random cortaige type of (ip,list of commands)
         """
         ip_to_send = random.choice(self.gen_core.ip)
