@@ -17,6 +17,7 @@ class GraphItem:
 
     def add_item(self, request, ip, last_item):
         """
+        бавзовый функционал для добавлнения команд в граф. На прямую вызывать не следует
         :param request: запрос
         :param ip:
         :param last_item: прошлый родительский элемент узла
