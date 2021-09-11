@@ -1,8 +1,7 @@
-
+from graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
 from graphCore.recursive_algorithm import GoAroundGraph
 from graphCore.graph import Graph
 from traffic_generator.trafficGenerator import TrafficGenerator
-
 
 class GraphGenerator:
     def __init__(self):
@@ -54,5 +53,7 @@ if __name__ == '__main__':
     graph = GraphGenerator()
     for a in range(10000):
         graph.run_graph()
-
+    give_me_branches = GiveBranchsBack()
+    for item in graph.graph.graph_array:
+        print(give_me_branches.give_branchs_back(item))
     a = 1
