@@ -1,18 +1,12 @@
-from tensorflow import keras
-from tensorflow.keras import layers
-import tensorflow as tf
+from keras import Sequential
+from keras.layers import GRU, Dense, Embedding, Flatten, Reshape, LSTM
 
-inputs = keras.Input(shape=(585, 800, 3), name="img")
+model = Sequential()
+model.add(Embedding(9, 128, input_length=100))
+model.add(LSTM(128, activation='tanh', return_sequences=True))
+model.add(LSTM(512, activation='tanh'))
+model.add(Dense(1000, activation='softmax'))
 
-x = layers.Conv2D(64, 3, activation="relu", padding="same")(inputs)
-x = layers.MaxPooling2D(3)(x)
+model.summary()
 
-x = layers.Conv2D(32, 3, activation="relu", padding="same")(x)
-x = layers.MaxPooling2D(3)(x)
-
-x = layers.Conv2D(16, 3, activation="relu")(x)
-x = layers.GlobalAveragePooling2D()(x)
-
-outputs = layers.Dense(16, activation='softmax')(x)
-
-model = keras.Model(inputs, outputs, name="test")
+model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
