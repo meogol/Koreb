@@ -51,7 +51,7 @@ class GraphGenerator:
 
 if __name__ == '__main__':
     graph = GraphGenerator()
-    for a in range(10000):
+    for a in range(100000):
         graph.run_graph()
     give_me_branches = GiveBranchsBack()
     for item in graph.graph.graph_array:
