@@ -29,7 +29,7 @@ class GeneratorCore:
         function makes 1000 lists of commands with random length 10 - 100
         """
         def rerandom_buffer_list(self):
-            for item in range(random.randint(10, 100)):
+            for item in range(100):
                 self.buffer_list_of_commands.append(random.choice(self.command_list))
 
         for k in self.plots.keys():
