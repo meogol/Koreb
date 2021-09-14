@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 class GraphGenerator:
     def __init__(self):
+        self.wright_buf = WrightBuffer()
         self.graph = Graph()
         self.traf_gen = TrafficGenerator()
         self.command_list = []
