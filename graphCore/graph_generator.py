@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 
 class GraphGenerator:
     def __init__(self):
-        plt.ion()
         self.graph = Graph()
         self.traf_gen = TrafficGenerator()
         self.command_list = []
@@ -47,17 +46,12 @@ class GraphGenerator:
             self.create_command(ip, item, level)
             self.training_ai(item)
             level += 1
-            self.wright_buf.wright_in_buf(item)
 
-        self.command_list.clear()
-        self.buf.append(self.wright_buf.give_buf_back())
-        self.wright_buf.clear_buf()
-
-        for item in self.buf:
+        for item in self.command_list:
             self.wright_buf.call_interp(item)
 
-        plt.ioff()
-        plt.show()
+        self.command_list.clear()
+
     def training_ai(self, command):
         """
         тут слой работы с НС
@@ -68,8 +62,11 @@ class GraphGenerator:
 
 
 if __name__ == '__main__':
+    plt.ion()
+
     graph = GraphGenerator()
     for a in range(10000):
         graph.run_graph()
 
-    a = 1
+    plt.ioff()
+    plt.show()

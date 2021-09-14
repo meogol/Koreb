@@ -1,23 +1,21 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+import time
+import pylab
 
 class RunVisualisation:
 
     def __init__(self):
-        self.fig, self.axes = plt.subplots(nrows=2, ncols=1)
-
-        self.axes[0].set(xlim=[-100, 100],
-                         ylim=[-100, 100])
-        self.axes[1].set(xlim=[-100, 100],
-                         ylim=[-100, 100])
-
+        pass
     def run_visualisation(self, x, y):
         plt.clf()
-        self.axes[0].scatter([x], [y], 'r')
-        self.axes[1].scatter([0], [0], 'r')
-        plt.draw()
+        plt.scatter(x, y)
+        pylab.xlim(-10,10)
+        pylab.ylim(-10,10)
+        plt.grid(True)
+        time.sleep(0.02)
         plt.gcf().canvas.flush_events()
+
 
     def main_func(self, x, y):
         self.run_visualisation(x, y)
