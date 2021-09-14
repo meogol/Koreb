@@ -14,8 +14,6 @@ class GraphGenerator:
         self.command_list = []
         self.level = 0
         self.run_visual = VisualCommandAnalyzer()
-        self.wright_buf = WrightBuffer()
-        self.buf = list()
 
     def create_command(self, ip, command, level):
         """
@@ -47,7 +45,7 @@ class GraphGenerator:
             self.training_ai(item)
             level += 1
             self.wright_buf.call_interp(item)
-        
+
         self.command_list.clear()
 
     def training_ai(self, command):

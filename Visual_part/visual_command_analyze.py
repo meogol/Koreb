@@ -6,7 +6,7 @@ class VisualCommandAnalyzer:
 
     def run_analyze(self, command):
         if isinstance(command, list) == True:
-            pass #сюда вставить метод для НС
+            self.interp.run_interpritation_neuro(command)
         else:
             self.interp.run_interpritation(command)
 
