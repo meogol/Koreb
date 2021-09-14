@@ -46,10 +46,8 @@ class GraphGenerator:
             self.create_command(ip, item, level)
             self.training_ai(item)
             level += 1
-
-        for item in self.command_list:
             self.wright_buf.call_interp(item)
-
+        
         self.command_list.clear()
 
     def training_ai(self, command):
