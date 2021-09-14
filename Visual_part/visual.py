@@ -10,8 +10,8 @@ class RunVisualisation:
     def run_visualisation(self, x, y):
         plt.clf()
         plt.scatter(x, y)
-        pylab.xlim(-10,10)
-        pylab.ylim(-10,10)
+        pylab.xlim(-50,50)
+        pylab.ylim(-50,50)
         plt.grid(True)
         time.sleep(0.02)
         plt.gcf().canvas.flush_events()
