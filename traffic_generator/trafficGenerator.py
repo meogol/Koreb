@@ -45,4 +45,4 @@ if __name__ == '__main__':
 
     gen_core.randomize_inner_lists()
     print(traf_gen.get_ip_and_command())
-
+    a=1
