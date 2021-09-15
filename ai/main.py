@@ -82,14 +82,14 @@ def getScore(individual):
         if lines[number] == command:
             totalReward += 100
 
-            print(totalReward + "\t" + value)
+            print(str(totalReward) + "\t" + str(value))
             return totalReward,
         else:
             totalReward -= 1
 
     graph_gen.command_list.clear()
 
-    print(totalReward + "\t" + value)
+    print(str(totalReward) + "\t" + str(value))
 
     return totalReward,
 
