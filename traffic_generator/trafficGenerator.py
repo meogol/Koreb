@@ -8,6 +8,7 @@ class TrafficGenerator():
         self.gen_core = GeneratorCore()
         self.gen_core.randomize_inner_lists()
         self.buffer_for_random_command = list()
+        self.buffer_for_transit = list()
 
 
     def get_ip_and_command(self):
@@ -18,7 +19,47 @@ class TrafficGenerator():
         ip_to_send = random.choice(self.gen_core.ip)
         if ip_to_send == '192.168.1.1':
             self.buffer_for_random_command = self.gen_core.plots['192.168.1.1']
-            command_to_send = random.choice(self.buffer_for_random_command)
+            number_of_plots = len(self.buffer_for_random_command)
+            ter1 = 0
+            ter2 = 0
+            ter3 = 0
+            ter4 = 0
+            ter5 = 0
+            for i in range(number_of_plots - 1):
+                self.buffer_for_transit = self.buffer_for_random_command
+
+            for i in range(number_of_plots-1):
+                random_item = random.randint(0, number_of_plots*100)
+
+                if (random_item < number_of_plots*10):                            # в 10% случаев выбор из 25% вариантов
+                    counter = random.randint(0, round(number_of_plots*0.25))
+                    self.buffer_for_transit[i] = self.buffer_for_random_command[counter]
+                    ter1 += 1
+
+
+                elif (random_item < number_of_plots*25):                          # в 15% случаев выбор из 17% вариантов
+                    counter = random.randint(round(number_of_plots*0.26), round(number_of_plots*0.42))
+                    self.buffer_for_transit[i] = self.buffer_for_random_command[counter]
+                    ter2 += 1
+
+                elif (random_item < number_of_plots*75):                          # в 50% случаев выбор из 7% вариантов
+                    counter = random.randint(round(number_of_plots*0.43), round(number_of_plots*0.49))
+                    self.buffer_for_transit[i] = self.buffer_for_random_command[counter]
+                    ter3 += 1
+
+                elif (random_item < number_of_plots*90):                          # в 15% случаев выбор из 20% вариантов
+                    counter = random.randint(round(number_of_plots*0.50), round(number_of_plots*0.69))
+                    self.buffer_for_transit[i] = self.buffer_for_random_command[counter]
+                    ter4 += 1
+
+                else:                                                             # в 10% случаев выбор из 30% вариантов
+                    counter = random.randint(round(number_of_plots*0.70), number_of_plots-1)
+                    self.buffer_for_transit[i] = self.buffer_for_random_command[counter]
+                    ter5 += 1
+
+
+            print(ter1, ter2, ter3, ter4, ter5)
+            command_to_send = self.buffer_for_transit
         # else:
         #     if ip_to_send == '192.168.1.0':
         #         self.buffer_for_random_command = self.gen_core.plots['192.168.1.0']
@@ -44,5 +85,5 @@ if __name__ == '__main__':
     gen_core = GeneratorCore()
 
     gen_core.randomize_inner_lists()
-    print(traf_gen.get_ip_and_command())
+    traf_gen.get_ip_and_command()
     a=1
