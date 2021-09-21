@@ -3,6 +3,7 @@ from graphCore.recursive_algorithm import GoAroundGraph
 from graphCore.graph import Graph
 from traffic_generator.trafficGenerator import TrafficGenerator
 
+
 class GraphGenerator:
     def __init__(self):
         self.graph = Graph()
