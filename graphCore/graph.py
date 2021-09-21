@@ -75,4 +75,7 @@ class Graph:
 
             self.this_command = graph_item
 
+            if graph_item is not None:
+                return graph_item
+
         return graph_item

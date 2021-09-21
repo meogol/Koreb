@@ -7,6 +7,7 @@ from Visual_part.wright_buffer import WrightBuffer
 import matplotlib.pyplot as plt
 
 
+
 class GraphGenerator:
     def __init__(self):
         self.graph = Graph()
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     plt.ion()
 
     graph = GraphGenerator()
-    for a in range(10000):
+    for a in range(100000):
         graph.run_graph()
 
     plt.ioff()
