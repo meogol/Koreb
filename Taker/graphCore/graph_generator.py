@@ -1,6 +1,8 @@
+
 from Taker.graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
 from Taker.graphCore.graph import Graph
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
+
 
 
 class GraphGenerator:
@@ -9,6 +11,9 @@ class GraphGenerator:
         self.traf_gen = TrafficGenerator()
         self.command_list = []
         self.level = 0
+        self.run_visual = VisualCommandAnalyzer()
+        self.wright_buf = WrightBuffer()
+        self.buf = list()
 
     def create_command(self, ip, command, level):
         """
@@ -33,11 +38,14 @@ class GraphGenerator:
         """
         level = 0
         ip, command = self.traf_gen.get_ip_and_command()
+
+
         for item in command:
             self.create_command(ip, item, level)
             self.training_ai(item)
             level += 1
-
+            self.wright_buf.call_interp(item)
+        
         self.command_list.clear()
 
     def training_ai(self, command):
@@ -50,12 +58,11 @@ class GraphGenerator:
 
 
 if __name__ == '__main__':
+    plt.ion()
+
     graph = GraphGenerator()
     for a in range(100000):
         graph.run_graph()
-    give_me_branches = GiveBranchsBack()
-    for item in graph.graph.graph_array:
-        print(give_me_branches.give_branchs_back(item))
-        print("\n\n")
-        give_me_branches.buffer.clear()
-    a = 1
+
+    plt.ioff()
+    plt.show()
