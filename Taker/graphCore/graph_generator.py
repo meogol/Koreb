@@ -1,10 +1,7 @@
-from graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
-from graphCore.recursive_algorithm import GoAroundGraph
-from graphCore.graph import Graph
-from traffic_generator.trafficGenerator import TrafficGenerator
-from Visual_part.visual_command_analyze import VisualCommandAnalyzer
-from Visual_part.wright_buffer import WrightBuffer
-import matplotlib.pyplot as plt
+
+from Taker.graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
+from Taker.graphCore.graph import Graph
+from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 
 
 

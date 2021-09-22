@@ -1,26 +1,19 @@
-import copy
-import time
-
-import numpy
-from deap import base, algorithms
+from deap import base
 from deap import creator
 from deap import tools
 from keras.utils.np_utils import to_categorical
 from keras_preprocessing.sequence import pad_sequences
 from keras_preprocessing.text import Tokenizer
-from tensorflow.keras import layers
-from tensorflow import keras
 
 import algelitism
 import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-import tensorflow as tf
 import ns
-from graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
-from graphCore.graph_generator import GraphGenerator
-from traffic_generator.trafficGenerator import TrafficGenerator
+from Taker.graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
+from Taker.graphCore.graph_generator import GraphGenerator
+from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 
 network = ns.model
 tg = traf_gen = TrafficGenerator()
