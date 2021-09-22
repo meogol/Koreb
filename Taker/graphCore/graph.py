@@ -1,4 +1,4 @@
-from graphCore.graphItem import GraphItem
+from Taker.graphCore.graphItem import GraphItem
 
 
 class Graph:

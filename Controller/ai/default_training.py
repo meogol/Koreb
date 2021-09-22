@@ -1,13 +1,12 @@
 import numpy as np
-from keras.utils.np_utils import to_categorical
 from keras_preprocessing.sequence import pad_sequences
 from keras_preprocessing.text import Tokenizer
 
-from graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
-from graphCore.graph_generator import GraphGenerator
-from traffic_generator.trafficGenerator import TrafficGenerator
+from Taker.graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
+from Taker.graphCore.graph_generator import GraphGenerator
+from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 from keras import Sequential
-from keras.layers import GRU, Dense, Embedding, Flatten, Reshape, LSTM
+from keras.layers import Dense, Embedding, LSTM
 
 traf_gen = TrafficGenerator()
 graph = GraphGenerator()
