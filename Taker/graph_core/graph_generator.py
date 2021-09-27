@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< main
 class GraphGenerator:
     def __init__(self):
@@ -15,6 +16,8 @@ class GraphGenerator:
     def remove_item(self, command):
         pass
 =======
+=======
+>>>>>>> graph_plug
 import networkx
 from matplotlib import pyplot as plt
 
@@ -66,4 +69,7 @@ if __name__ == '__main__':
     # }
     # nx.draw(graph, with_labels=True,  font_weight='bold', **options)
     # plt.savefig("path.png")
+<<<<<<< HEAD
 >>>>>>> first upd
+=======
+>>>>>>> graph_plug
