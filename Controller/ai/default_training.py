@@ -102,3 +102,5 @@ history = model.fit(x, y, batch_size=200, epochs=10, validation_split=0.2)
 model.evaluate(x_test, y_test)
 print(history)
 print(model.evaluate(x, y))
+
+model.save("first_model")
