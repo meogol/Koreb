@@ -4,7 +4,6 @@ from deap import tools
 from keras.utils.np_utils import to_categorical
 from keras_preprocessing.sequence import pad_sequences
 from keras_preprocessing.text import Tokenizer
-
 import algelitism
 import random
 import matplotlib.pyplot as plt

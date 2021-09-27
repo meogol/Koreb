@@ -1,8 +1,8 @@
-
 from Taker.graphCore.get_branch_back_recoursive_algorithm import GiveBranchsBack
 from Taker.graphCore.graph import Graph
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
-
+from Visual_part.visual_command_analyze import VisualCommandAnalyzer
+from Visual_part.wright_buffer import WrightBuffer
 
 
 class GraphGenerator:
@@ -39,13 +39,12 @@ class GraphGenerator:
         level = 0
         ip, command = self.traf_gen.get_ip_and_command()
 
-
         for item in command:
             self.create_command(ip, item, level)
             self.training_ai(item)
             level += 1
-            self.wright_buf.call_interp(item)
-        
+            # self.wright_buf.call_interp(item)
+
         self.command_list.clear()
 
     def training_ai(self, command):
