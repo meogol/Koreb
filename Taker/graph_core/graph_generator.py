@@ -9,11 +9,11 @@ class GraphGenerator:
         self.graph = dict()  # это граф. Правда. id-key value-command
         pass
 
-    def add_items(self, id_list, command_list):
-        for i in range(len(id_list)):
-            self.graph[id_list[i]] = command_list[i]
+    def add_items(self, id, command):
+        if self.graph.get(id) is None:
+            self.graph[id] = command
 
-    def search_item(self, id):
+    def get_item(self, id):
         res = self.graph.get(id)
         if res is None:
             return res
