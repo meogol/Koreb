@@ -8,7 +8,7 @@ class Controller:
         self.graph_generator = GraphGenerator()
         pass
 
-    def analyse_command(self, command):
+    def analyse_command(self, ip, command):
         res = str
         for item in command:
             if item.isnumeric():
@@ -16,10 +16,6 @@ class Controller:
             else:
                 res += item
 
-        return res
-
-    def update_graph(self, id_list, command_list):
-        for i in range(len(id_list)):
-            self.graph_generator.add_items(id_list[i], command_list[i])
-
-        pass
+    def update_graph(self, command_dict):
+        for key in command_dict.keys():
+            self.graph_generator.add_items(key, command_dict.get(key))
