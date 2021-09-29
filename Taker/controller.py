@@ -9,12 +9,16 @@ class Controller:
         pass
 
     def analyse_command(self, ip, command):
-        res = str
+        res = list()
         for item in command:
-            if item.isnumeric():
-                res += self.graph_generator.get_item(item)
+            if item.isdigit():
+                data = self.graph_generator.get_item(item)
+                if data is not None:
+                    res.extend(data)
             else:
-                res += item
+                res.append(item)
+
+        return res
 
     def update_graph(self, command_dict):
         for key in command_dict.keys():

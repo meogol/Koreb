@@ -28,13 +28,11 @@ def post_pkg():
     """
     принимает передатый пакет(лист)
     """
-    ip = str(request.form["ip"])  # string
-    pkg = str(request.form)  # list
+    res_dict = request.form.to_dict(flat=False)
+    ip = res_dict["ip"]  # str
+    pkg = res_dict["pkg"]  # list
 
-    controller.analyse_command(ip, pkg)
-
-    print(ip)
-    print(pkg)
+    a = controller.analyse_command(ip, pkg)
 
     return "1"
 
