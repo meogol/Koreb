@@ -16,9 +16,9 @@ class GraphGenerator:
     def get_item(self, id):
         res = self.graph.get(id)
         if res is None:
-            return res
+            return None
         else:
-            return ""
+            return res
 
 
 if __name__ == '__main__':
