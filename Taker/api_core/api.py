@@ -1,4 +1,5 @@
 import requests
+import werkzeug.datastructures
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -9,9 +10,16 @@ CORS(app)
 @app.route("/post_command/", methods=['POST'])
 def post_command():
 
-    command_dict = request.args.get("command_dict")
+    command_dict = request.args
+    command_dict2 = request.form
+    #new_dict = dict(command_dict2)
+
+    
+
+    # request.form["command_dict"]
 
     print()
+
     print(command_dict)
 
     return 1
@@ -20,8 +28,8 @@ def post_command():
 @app.route("/post_pkg/", methods=['POST'])
 def post_pkg():
 
-    ip = request.args.get("ip")    #string
-    pkg = request.args.get("pkg")    #string
+    ip = str(request.form["ip"])    #string
+    pkg = str(request.form["pkg"])    #string
 
     print()
     print(ip)
