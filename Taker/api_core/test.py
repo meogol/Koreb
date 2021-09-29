@@ -18,7 +18,6 @@ def test_request():
     cortegeCount = 0
     i = 0
     while i < len(comToSend):
-        command = ""
         cortegeLen = random.randrange(0, CORTEGE_MAX_LEN, 1)
         fill = random.randrange(0, 2, 1)
         i += cortegeLen
