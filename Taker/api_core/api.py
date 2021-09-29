@@ -29,7 +29,7 @@ def post_pkg():
     принимает передатый пакет(лист)
     """
     ip = str(request.form["ip"])  # string
-    pkg = str(request.form["pkg"])  # string
+    pkg = str(request.form["pkg"])  # list
 
     controller.analyse_command(ip, pkg)
 
