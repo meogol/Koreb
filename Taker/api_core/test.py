@@ -33,7 +33,7 @@ def test_request():
                     newComToSend.append(comToSend[i-cortegeLen : i])
             else:
                 newComToSend.append(comToSend[i-cortegeLen : len(comToSend)])
-                
+
     return commands, newComToSend
 
 if __name__ == '__main__':
