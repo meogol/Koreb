@@ -27,12 +27,12 @@ def test_request():
             if i < len(comToSend):
                 if fill == 1:
                     commands[cortegeCount] = comToSend[i-cortegeLen : i]
-                    newComToSend.append(str(cortegeCount))
+                    newComToSend.extend(str(cortegeCount))
                     cortegeCount += 1
                 else:
-                    newComToSend.append(comToSend[i-cortegeLen : i])
+                    newComToSend.extend(comToSend[i-cortegeLen : i])
             else:
-                newComToSend.append(comToSend[i-cortegeLen : len(comToSend)])
+                newComToSend.extend(comToSend[i-cortegeLen : len(comToSend)])
 
     return commands, newComToSend
 
