@@ -1,4 +1,4 @@
-import requests
+
 import werkzeug.datastructures
 from flask import Flask, request
 from flask_cors import CORS
@@ -10,17 +10,12 @@ CORS(app)
 @app.route("/post_command/", methods=['POST'])
 def post_command():
 
-    command_dict = request.args
-    command_dict2 = request.form
-    #new_dict = dict(command_dict2)
-
-    
-
-    # request.form["command_dict"]
+    command_dict = request.form
+    new_dict = command_dict.to_dict()
 
     print()
 
-    print(command_dict)
+    print(new_dict)
 
     return 1
 
