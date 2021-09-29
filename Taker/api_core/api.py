@@ -11,7 +11,7 @@ CORS(app)
 def post_command():
 
     command_dict = request.form
-    new_dict = command_dict.to_dict()
+    new_dict = command_dict.to_dict(flat=False)
 
     print()
 
