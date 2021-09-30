@@ -1,5 +1,3 @@
-import networkx
-
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 from Taker.graph_core.graph_item import GraphItem
 
