@@ -16,11 +16,7 @@ def post_command():
     """
     command_dict = request.form
     new_dict = command_dict.to_dict(flat=False)
-<<<<<<< HEAD
-=======
 
-    print()
->>>>>>> UpdateTraficGenerator
 
     controller.update_graph(new_dict)
     print(new_dict)
