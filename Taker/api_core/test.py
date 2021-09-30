@@ -3,36 +3,30 @@ import random
 from flask import Flask, request
 from flask_cors import CORS
 
+from Controller.cache.cache_item import CacheItem
+from Controller.cache.commandCache import CommandCache
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 
 IP_COUNT = 10
 CORTEGE_MAX_LEN = 3
 CORTEGE_MIN_LEN = 2
 
-def test_neuro(new_cache_count, traffic):
-    new_cache = dict()
-    newTraffic = list()
+def test_neuro(new_cache_count, traffic, command_cache):
     i = 0
     cache_count = 0
     while i < len(traffic) and cache_count != new_cache_count:
         cortegeLen = random.randrange(CORTEGE_MIN_LEN, CORTEGE_MAX_LEN + 1, 1)
-        fill = random.randrange(0, 3, 1)
+        fill = random.randrange(0, 1, 1)
         i += cortegeLen
 
         if cortegeLen != 0:
             if i < len(traffic):
                 if fill == 0:
-                    new_cache[cache_count] = traffic[i - cortegeLen: i]
-                    newTraffic.append(str(cache_count))
+                    command_cache.append_to_cache(traffic[i - cortegeLen: i])
                     cache_count += 1
-                else:
-                    newTraffic.extend(traffic[i - cortegeLen: i])
-            else:
-                newTraffic.extend(traffic[i - cortegeLen: len(traffic)])
-    return new_cache
 
 def test_request(control):
-    commands = dict()
+    commands = list()
     traficGen = TrafficGenerator()
     ip, comToSend = traficGen.get_ip_and_command()
     newComToSend = list()
