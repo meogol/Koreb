@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/Koreb.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Koreb.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Taker/api_core/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Taker/api_core/api.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
