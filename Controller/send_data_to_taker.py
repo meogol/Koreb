@@ -1,23 +1,29 @@
-import asyncio
 import time
 import requests
+from typing import List
+
+from Controller.cache.cache_item import CacheItem
 
 
 class SendDataToTaker:
-    def send_pakage(self, item):
+    @staticmethod
+    def send_pakage(pkg):
         ip = "15"
 
-        requests.post("http://127.0.0.1:5000/post_pkg/", data={'ip': ip, 'pkg': item})
+        requests.post("http://127.0.0.1:5000/post_pkg/", data={'ip': ip, 'pkg': pkg})
 
-        delay = 20 * len(item)
+        delay = 20 * len(pkg)
         if delay > 2000:
             delay = 2000
 
-        time.sleep(delay/1000)
+        time.sleep(delay / 1000)
         return 1
 
+    @staticmethod
+    def send_com_list_to_taker(cache_items_list: List[CacheItem]):
+        data = dict()
 
-    def send_com_list_to_taker(self, item):
+        for item in cache_items_list:
+            data[item.id] = item.commands
 
-
-        pass
+        requests.post("http://127.0.0.1:5000/post_command/", data)
