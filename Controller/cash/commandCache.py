@@ -1,4 +1,6 @@
-from Controller.cash.cacheItem import CacheItem
+from typing import List
+
+from Controller.cash.cache_item import CacheItem
 
 
 class CommandCache:
@@ -17,12 +19,13 @@ class CommandCache:
         """
         возвращает элемент по последовательности команд
         @type commands: list
-        @return: возвращает элемент из кэша
+        @return: возвращает элемент из кэша или None
         """
-        item = list(filter(lambda x: x.commands == commands, self.cache_predicted))
+        item: List[CacheItem] = list(filter(lambda x: x.commands == commands, self.cache_predicted))
         if len(item) == 0:
             return None
 
+        item[0].is_used = True
         return item[0]
 
     def get_item_by_id(self, id):
