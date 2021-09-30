@@ -4,6 +4,7 @@ class CacheItem():
         self.value = v
         self.id = i
         self.cacheItem = c
+        self.isUsed = False
 
     def __eq__(self, other):
         return (self.cacheItem == other.cacheItem)
