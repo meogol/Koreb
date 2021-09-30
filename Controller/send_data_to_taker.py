@@ -17,6 +17,7 @@ class SendDataToTaker:
         return 1
 
 
-    def send_com_list_to_taker(self):
+    def send_com_list_to_taker(self, item):
+
 
         pass
