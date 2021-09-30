@@ -1,11 +1,16 @@
 from typing import List
 
-from Controller.cash.cache_item import CacheItem
+from Controller.cache.cache_item import CacheItem
 
 
 class CacheObjectLifeCycleControl:
     def __init__(self):
         pass
+
+    @staticmethod
+    def check_life_cycle(item_list):
+        CacheObjectLifeCycleControl.chek_value(item_list)
+        CacheObjectLifeCycleControl.chek_value(item_list)
 
     @staticmethod
     def chek_value(item_list):
@@ -26,8 +31,8 @@ class CacheObjectLifeCycleControl:
         for item in not_used_list:
             item.is_used = False
 
-            if item.value - 5 > 0:
-                item.value -= 5
+            if item.value - 2 > 0:
+                item.value -= 2
 
             if item.value < 20:
                 item.is_kill = True

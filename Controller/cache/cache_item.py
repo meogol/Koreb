@@ -7,6 +7,8 @@ class CacheItem:
         self.is_kill = False
 
     def __eq__(self, other):
+        if self.commands == other.commands:
+            self.is_used = True
         return self.commands == other.commands
 
     def __hash__(self):
