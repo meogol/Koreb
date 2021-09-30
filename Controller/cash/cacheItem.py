@@ -1,22 +1,20 @@
-
-class CacheItem():
-    def __init__(self, v, i, c):
-        self.value = v
-        self.id = i
-        self.cacheItem = c
-        self.isUsed = False
+class CacheItem:
+    def __init__(self, id, commands, value=100):
+        self.value = value
+        self.id = id
+        self.commands = commands
+        self.is_used = False
 
     def __eq__(self, other):
-        return (self.cacheItem == other.cacheItem)
-
+        return self.commands == other.commands
 
     def __hash__(self):
-        return hash(self.value) ^ hash(self.id) ^ hash(self.cacheItem)
+        return hash(self.id) ^ hash(self.commands)
 
     def __str__(self):
         return 'CacheItem(value:' + str(self.value) \
-               + ' id:' + str(self.id) + 'cacheItem' + str(self.cacheItem) + ')'
+               + ' id:' + str(self.id) + ' commands' + str(self.commands) + ')'
 
     def __repr__(self):
         return '{value:' + str(self.value) \
-               + ' id:' + str(self.id) + 'cacheItem' + str(self.cacheItem) + '}'
+               + ' id:' + str(self.id) + ' commands' + str(self.commands) + '}'
