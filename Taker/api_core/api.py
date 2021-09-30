@@ -15,7 +15,7 @@ def post_command():
     Принимает дикт фгрегационных команд и их ключей
     """
     command_dict = request.form
-    new_dict = command_dict.to_dict(flat=False)
+    new_dict = command_dict.to_dict(flat=False)  # list
 
     controller.update_graph(new_dict)
     print(new_dict)
