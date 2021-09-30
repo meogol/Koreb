@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="056022ff-ea1a-4421-8acf-464447edddc4" name="Default Changelist" comment="">
+<<<<<<< refs/remotes/origin/main
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Koreb.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Koreb.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
@@ -12,6 +13,9 @@
       <change beforePath="$PROJECT_DIR$/Taker/api_core/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Taker/api_core/api.py" afterDir="false" />
 >>>>>>> Auto stash before merge of "UpdateTraficGenerator" and "origin/UpdateTraficGenerator"
 =======
+>>>>>>> s
+=======
+      <change beforePath="$PROJECT_DIR$/Taker/api_core/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Taker/api_core/api.py" afterDir="false" />
 >>>>>>> s
     </list>
     <option name="SHOW_DIALOG" value="false" />
