@@ -1,6 +1,6 @@
 class Controller:
 
-    def analyze_packege(self):
+    def analyze_package(self):
         pass
 
     def run_neuro(self):
