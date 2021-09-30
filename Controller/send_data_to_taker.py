@@ -7,8 +7,7 @@ from Controller.cache.cache_item import CacheItem
 
 class SendDataToTaker:
     @staticmethod
-    def send_pakage(pkg):
-        ip = "15"
+    def send_pakage(pkg, ip="15"):
 
         requests.post("http://127.0.0.1:5000/post_pkg/", data={'ip': ip, 'pkg': pkg})
 
