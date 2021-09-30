@@ -1,5 +1,5 @@
 class CacheItem:
-    def __init__(self, id, commands, value=70):
+    def __init__(self, id, commands, value=50):
         self.value = value
         self.id = id
         self.commands = commands

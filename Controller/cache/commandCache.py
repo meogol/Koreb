@@ -1,3 +1,5 @@
+import time
+from threading import Thread
 from typing import List
 
 from Controller.cache.cache_item import CacheItem
@@ -9,13 +11,12 @@ class CommandCache:
         self.cache_active = list()
         self.cache_predicted = list()
         self.id = 0
+        th = Thread(target=self.check_lifeline)
+        th.start()
 
     def append_to_cache(self, commands):
         item = CacheItem(self.id, commands)
-        if item not in self.cache_predicted:
-            CommandCache.get_item_by_commands(commands, self.cache_predicted).is_used = True
-
-        elif item not in self.cache_active:
+        if item not in self.cache_predicted and item not in self.cache_active:
             self.cache_predicted.append(item)
             self.id += 1
 
@@ -34,13 +35,15 @@ class CommandCache:
         item[0].is_used = True
         return item[0]
 
-    def get_item_by_id(self, id):
+    @staticmethod
+    def get_item_by_id(id, cache):
         """
         возвращает элемент по id
+        @param cache:
         @param id: номер элемента
         @return: возвращает элемент из кэша
         """
-        item = list(filter(lambda x: x.id == id, self.cache_predicted))
+        item = list(filter(lambda x: x.id == id, cache))
         if len(item) == 0:
             return None
 
@@ -54,8 +57,11 @@ class CommandCache:
         self.cache_active.extend(add_commands_list)
 
     def check_lifeline(self):
-        CacheObjectLifeCycleControl.check_life_cycle(self.cache_active)
-        CacheObjectLifeCycleControl.check_life_cycle(self.cache_predicted)
+        while True:
+            time.sleep(5)
+            CacheObjectLifeCycleControl.check_life_cycle(self.cache_active)
+            CacheObjectLifeCycleControl.check_life_cycle(self.cache_predicted)
+            self.update_active()
 
 
 if __name__ == '__main__':
@@ -66,7 +72,3 @@ if __name__ == '__main__':
     rect.append_to_cache([2, 1, 4])
     rect.append_to_cache([3, 3, 4])
     rect.append_to_cache([2, 5, 4])
-
-    a = rect.get_item_by_commands([1, 5, 18])
-    b = rect.get_item_by_id(111)
-    b = b
