@@ -10,7 +10,7 @@ class CacheObjectLifeCycleControl:
     @staticmethod
     def check_life_cycle(item_list):
         CacheObjectLifeCycleControl.chek_value(item_list)
-        CacheObjectLifeCycleControl.chek_value(item_list)
+        CacheObjectLifeCycleControl.kill_element(item_list)
 
     @staticmethod
     def chek_value(item_list):
@@ -31,8 +31,8 @@ class CacheObjectLifeCycleControl:
         for item in not_used_list:
             item.is_used = False
 
-            if item.value - 2 > 0:
-                item.value -= 2
+            if item.value - 1 > 0:
+                item.value -= 1
 
             if item.value < 20:
                 item.is_kill = True

@@ -31,7 +31,7 @@ def post_pkg():
     ip = res_dict["ip"]  # str
     pkg = res_dict["pkg"]  # list
 
-    a = controller.analyse_command(ip, pkg)
+    controller.analyse_command(ip, pkg)
 
     return "1"
 
