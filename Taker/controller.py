@@ -9,7 +9,10 @@ class Controller:
         pass
 
     def analyse_command(self, ip, command):
-        pass
+        res = self.serialize_command(command)
+        print()
+        print(str(len(command)) + "\t" + str(len(res)))
+        print(str(res))
 
     def serialize_command(self, command):
         res = list()
@@ -20,6 +23,8 @@ class Controller:
                     res.extend(data)
             else:
                 res.append(item)
+
+        return res
 
     def update_graph(self, command_dict):
         for key in command_dict.keys():
