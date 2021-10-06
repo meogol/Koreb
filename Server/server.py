@@ -27,6 +27,8 @@ class Server():
         """
         self.sniffer.send_command_to_controller(item)
 
+    def run(self):
+        Server.scan_pcapng_file()
 
 if __name__ == '__main__':
     src = Server()
