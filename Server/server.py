@@ -16,7 +16,6 @@ class Server():
         Writes to bytedata all packages from pcap file in bytecode
         """
         bytedata = []
-        bytedata.clear()
         bytedata = rdpcap("info.pcapng", count=10)  # 81188
 
         for item in bytedata:
