@@ -21,12 +21,12 @@ class Server():
 
         for item in bytedata:
             src.send_bytedata_to_sniffer(item)
+
     def send_bytedata_to_sniffer(self, item):
         """
         Sends bytecode of one package to sniffer
         """
-        while True:
-            self.sniffer.send_command_to_controller(item)
+        self.sniffer.send_command_to_controller(item)
 
 
 if __name__ == '__main__':
