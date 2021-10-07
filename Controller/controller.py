@@ -1,10 +1,12 @@
+import random
+
 from Controller.send_data_to_taker import SendDataToTaker
 from Taker.api_core.test import test_request, test_neuro
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 from Controller.cache.commandCache import CommandCache
 import copy
 
-GOOD_LENTH = 70
+GOOD_LENGTH = 30
 
 
 class Controller:
@@ -16,7 +18,7 @@ class Controller:
     def analyze_package(self, traffic):
         """Ужимает приходящий трафик. Анализирует, достаточно ли ужалось - в случае чего вызывает нейронку"""
         com = self.compressed(traffic)
-        if len(com) > GOOD_LENTH:
+        if len(com) > GOOD_LENGTH:
             self.run_neuro(5, traffic)
 
         self.upgrade_taker()
@@ -25,15 +27,13 @@ class Controller:
     def compressed(self, traffic):
         """Возвращает пережатый list"""
         com = copy.deepcopy(traffic)
+        # randomedcom = com[random.randint(1, len(com)) : random.randint(2, len(com))]
         for cache_item in self.command_cache.cache_predicted:
             for com_item in range(len(com)):
-                if cache_item.commands == com[com_item:com_item + len(cache_item.commands)]:
-                    start = com_item + 1
-                    end = com_item + len(cache_item.commands)
+                if com.find(cache_item.commands) != -1:
                     cache_replace = cache_item.id
-                    com[start - 1] = cache_replace
-                    del com[start:end]
-
+                    replaceable= com[com.find():com.rfind()]
+                    com = com.replace(replaceable, cache_replace)
         return com
 
     def run_neuro(self, new_cache_count, traffic):
