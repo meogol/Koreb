@@ -14,7 +14,6 @@ class StartProgram():
     def lets_go(self):
         self.server.run()
 
-
 if __name__ == '__main__':
     start = StartProgram()
     start.lets_go()
