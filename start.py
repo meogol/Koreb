@@ -9,12 +9,12 @@ class StartProgram():
     def __init__(self):
         self.api = api
         self.server = Server()
-        th = Thread(target=api.run)
+        th = Thread(target=self.server.run)
         th.start()
 
     def lets_go(self):
-        sleep(3)
-        self.server.run()
+        self.api.run()
+
 
 if __name__ == '__main__':
     start = StartProgram()
