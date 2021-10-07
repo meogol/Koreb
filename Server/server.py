@@ -1,8 +1,4 @@
-import logging
 from scapy.all import *
-from scapy.layers.dns import DNS
-from scapy.layers.inet import UDP
-from scapy.layers.inet import *
 from Controller.sniffer import Sniffer
 
 
@@ -16,16 +12,19 @@ class Server():
         Writes to bytedata all packages from pcap file in bytecode
         """
         bytedata = []
-        bytedata = rdpcap("info.pcapng", count=10)  # 81188
+        bytedata = rdpcap("../Server/info.pcapng")  
 
         for item in bytedata:
-            src.send_bytedata_to_sniffer(item)
+            self.send_bytedata_to_sniffer(item)
 
     def send_bytedata_to_sniffer(self, item):
         """
         Sends bytecode of one package to sniffer
         """
         self.sniffer.send_command_to_controller(item)
+
+    def run(self):
+        self.scan_pcapng_file()
 
 
 if __name__ == '__main__':
