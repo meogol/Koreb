@@ -1,4 +1,5 @@
 from threading import Thread
+from time import sleep
 
 from Taker.api_core import api as api
 from Server.server import Server
@@ -12,6 +13,7 @@ class StartProgram():
         th.start()
 
     def lets_go(self):
+        sleep(3)
         self.server.run()
 
 if __name__ == '__main__':
