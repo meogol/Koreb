@@ -30,11 +30,10 @@ class Controller:
         com = copy.deepcopy(traffic)
         # randomedcom = com[random.randint(1, len(com)) : random.randint(2, len(com))]
         for cache_item in self.command_cache.cache_predicted:
-            for com_item in range(len(com)):
-                if com.find(cache_item.commands) != -1:
-                    cache_replace = cache_item.id
-                    replaceable= com[com.find():com.rfind()]
-                    com = com.replace(replaceable, cache_replace)
+            if com.find(cache_item.commands) != -1:
+                cache_replace = cache_item.id
+                replaceable = com[com.find():com.rfind()]
+                com = com.replace(replaceable, cache_replace)
         return com
 
     def run_neuro(self, new_cache_count, traffic):
