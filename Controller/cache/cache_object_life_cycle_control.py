@@ -48,6 +48,3 @@ class CacheObjectLifeCycleControl:
 
         for item in killed_list:
             item_list.remove(item)
-
-
-
