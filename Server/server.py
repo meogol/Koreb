@@ -12,7 +12,7 @@ class Server():
         Writes to bytedata all packages from pcap file in bytecode
         """
         bytedata = []
-        bytedata = rdpcap("../Server/info.pcapng", count=10)  # 81188
+        bytedata = rdpcap("../Server/info.pcapng")  
 
         for item in bytedata:
             self.send_bytedata_to_sniffer(item)
