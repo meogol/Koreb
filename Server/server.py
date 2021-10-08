@@ -9,17 +9,17 @@ class Server():
 
     def scan_pcapng_file(self):
         """
-        Writes to bytedata all packages from pcap file in bytecode
+        Writes to bytedata all packages from pcap file (type - packetlist)
         """
         bytedata = []
-        bytedata = rdpcap("../Server/info.pcapng", count=10)
+        bytedata = rdpcap("../Server/info.pcapng")
 
         for item in bytedata:
             self.send_bytedata_to_sniffer(item)
 
     def send_bytedata_to_sniffer(self, item):
         """
-        Sends bytecode of one package to sniffer
+        Sends bytedata of one package to sniffer
         """
         self.sniffer.send_command_to_controller(item)
 
