@@ -1,11 +1,14 @@
 import requests
 import random
+
+import scapy.plist
 from flask import Flask, request
 from flask_cors import CORS
 
 from Controller.cache.cache_item import CacheItem
 from Controller.cache.commandCache import CommandCache
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
+from scapy.all import *
 
 IP_COUNT = 10
 CORTEGE_MAX_LEN = 3
@@ -15,6 +18,7 @@ CORTEGE_MIN_LEN = 2
 def test_neuro(new_cache_count, traffic, command_cache):
     i = 0
     cache_count = 0
+
     while i < len(traffic) and cache_count != new_cache_count:
         cortegeLen = random.randrange(CORTEGE_MIN_LEN, CORTEGE_MAX_LEN + 1, 1)
         fill = random.randrange(0, 1, 1)
@@ -26,6 +30,7 @@ def test_neuro(new_cache_count, traffic, command_cache):
                     command_cache.append_to_cache(traffic[i - cortegeLen: i])
                     cache_count += 1
 
+    k = 1000
 
 def test_request(control):
     commands = list()

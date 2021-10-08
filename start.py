@@ -12,6 +12,11 @@ class StartProgram():
         th.start()
 
     def lets_go(self):
+        """
+
+        Entry to programm
+
+        """
         self.server.run()
 
 if __name__ == '__main__':
