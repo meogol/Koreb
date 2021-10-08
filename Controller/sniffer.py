@@ -13,7 +13,7 @@ class Sniffer:
     def get_ip_command(self):
         return self.traffgen.get_ip_and_command()
     """
-    Sends bytecode of one package to controller
+    Sends bytedata of one package to controller
     """
     def send_command_to_controller(self, com):
         self.control.analyze_package(com)

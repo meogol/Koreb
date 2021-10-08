@@ -5,6 +5,7 @@ from Taker.api_core.test import test_request, test_neuro
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 from Controller.cache.commandCache import CommandCache
 import copy
+from scapy.all import *
 
 GOOD_LENGTH = 30
 
@@ -17,6 +18,7 @@ class Controller:
 
     def analyze_package(self, traffic):
         """Ужимает приходящий трафик. Анализирует, достаточно ли ужалось - в случае чего вызывает нейронку"""
+        traffic = str(raw(traffic)) #converts traffic (type of packet) to type string
         com = self.compressed(traffic)
         if len(com) > GOOD_LENGTH:
             self.run_neuro(5, traffic)
@@ -26,7 +28,6 @@ class Controller:
 
     def compressed(self, traffic):
         com = copy.deepcopy(traffic)
-        # randomedcom = com[random.randint(1, len(com)) : random.randint(2, len(com))]
         for cache_item in self.command_cache.cache_predicted:
             if com.find(cache_item.commands) != -1:
                 cache_replace = cache_item.id
