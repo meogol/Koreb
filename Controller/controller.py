@@ -28,7 +28,6 @@ class Controller:
 
     def compressed(self, traffic):
         com = copy.deepcopy(traffic)
-        # randomedcom = com[random.randint(1, len(com)) : random.randint(2, len(com))]
         for cache_item in self.command_cache.cache_predicted:
             if com.find(cache_item.commands) != -1:
                 cache_replace = cache_item.id
