@@ -45,9 +45,6 @@ class Controller:
     def upgrade_taker(self):
         self.sender.send_com_list_to_taker(self.command_cache.cache_predicted)
 
-    def update_cache(self):
-        pass
-
 
 if __name__ == '__main__':
     trafficGen = TrafficGenerator()

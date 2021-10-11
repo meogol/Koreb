@@ -1,10 +1,10 @@
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
-from Taker.graph_core.graph_item import GraphItem
+from Taker.cahce_core.cache_item import GraphItem
 
 
-class GraphGenerator:
+class CacheGenerator:
     def __init__(self):
-        self.graph = dict()  # это граф. Правда. id-key value-command
+        self.graph = dict()  # id-key value-command
         pass
 
     def add_items(self, id, command):

@@ -49,9 +49,6 @@ class CommandCache:
 
         return item[0]
 
-    def compare_lists(self):
-        pass
-
     def update_active(self):
         add_commands_list: List[CacheItem] = list(filter(lambda x: x.value > 70, self.cache_predicted))
         self.cache_active.extend(add_commands_list)

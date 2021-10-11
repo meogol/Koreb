@@ -1,11 +1,11 @@
 import numbers
 
-from Taker.graph_core.graph_generator import GraphGenerator
+from Taker.cahce_core.cache_generator import CacheGenerator
 
 
 class Controller:
     def __init__(self):
-        self.graph_generator = GraphGenerator()
+        self.cache_generator = CacheGenerator()
         pass
 
     def analyse_command(self, ip, command):
@@ -18,7 +18,7 @@ class Controller:
         res = list()
         for item in command:
             if item.isdigit():
-                data = self.graph_generator.get_item(item)
+                data = self.cache_generator.get_item(item)
                 if data is not None:
                     res.extend(data)
             else:
@@ -28,4 +28,4 @@ class Controller:
 
     def update_graph(self, command_dict):
         for key in command_dict.keys():
-            self.graph_generator.add_items(key, command_dict.get(key))
+            self.cache_generator.add_items(key, command_dict.get(key))

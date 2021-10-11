@@ -1,4 +1,4 @@
-class GraphItem:
+class CacheItem:
     def __init__(self, request, level):
         self.request = request
         self.level = level
