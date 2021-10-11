@@ -1,5 +1,3 @@
-from Controller.traffic_generator.trafficGenerator import TrafficGenerator
-from Taker.cahce_core.cache_item import GraphItem
 
 
 class CacheGenerator:
