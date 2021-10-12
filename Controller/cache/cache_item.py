@@ -1,9 +1,9 @@
-from Controller.cache.id import convert_to_19
+from Controller.cache.id import convert_to_36
 
 class CacheItem:
     def __init__(self, id, commands, value=50):
         self.value = value
-        self.id = convert_to_19(id)
+        self.id = '!' + convert_to_36(id) + '!'
         self.commands = commands
         self.is_used = False
         self.is_kill = False
