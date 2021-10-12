@@ -20,5 +20,4 @@ if __name__ == '__main__':
 
     trafficGen = TrafficGenerator()
     ip, traffic = trafficGen.get_ip_and_command()
-    send_server_pakage(traffic)
     send_taker_pakage(traffic)

@@ -10,8 +10,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-DELAY = 0.01
-
 isWork = False
 server_pkg = []
 taker_pkg = []
