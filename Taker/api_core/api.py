@@ -24,7 +24,7 @@ def post_command():
 @app.route("/post_pkg/", methods=['POST'])
 def post_pkg():
     """
-    принимает передатый пакет(лист)
+    принимает пережатый пакет(лист)
     """
     res_dict = request.form.to_dict(flat=False)
     ip = res_dict["ip"]  # str
