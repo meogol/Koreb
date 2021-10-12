@@ -1,9 +1,7 @@
 from scapy.all import *
 from Controller.sniffer import Sniffer
 
-
 class Server():
-
     def __init__(self):
         self.sniffer = Sniffer()
 
