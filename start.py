@@ -13,8 +13,8 @@ class StartProgram():
         th.start()
         lh = Thread(target=server_api_run)
         lh.start()
-        # nh = Thread(target=respond_run)
-        # nh.start()
+        nh = Thread(target=respond_run)
+        nh.start()
 
     def lets_go(self):
         """

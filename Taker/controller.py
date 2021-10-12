@@ -10,8 +10,6 @@ from Controller.get_respond_from_taker import respond
 
 DELAY = 0.01
 
-DELAY = 0.01
-
 class Controller:
     def __init__(self):
         self.cache_generator = CacheGenerator()
@@ -31,25 +29,29 @@ class Controller:
         res = self.serialize_command(command)
         print()
         print(str(len(command[0])) + "\t" + str(len(res)))
+        print(command[0])
         print(str(res))
 
-
-
         kil = 1000
+
     def serialize_command(self, command):
         res = command[0]
         data = ""
         data1 = ""
-        for i in res:
-            if i.isdigit():
-                data = self.cache_generator.get_item(i)
+
+        i = 0
+        while i < len(res):
+            if res[i] == '!' and res[i+2] == '!':
+                id = res[i:i+3]
+                data = self.cache_generator.get_item(id)
                 if data is not None:
                     data1 = data1 + data[0]
+                    i += 2
                 else:
-                    data1 += i
+                    data1 += res[i]
             else:
-                data1 = data1 + str(i)
-
+                data1 = data1 + res[i]
+            i += 1
         return data1
 
     def update_graph(self, command_dict):
@@ -61,9 +63,16 @@ if __name__ == '__main__':
     controller = Controller()
     toSend = True
 
+    a = list()
+    a.append("ПРИВЕТ! !1!")
+    print(controller.serialize_command(a))
+
+'''
     while toSend:
         trafficGen = TrafficGenerator()
         ip, traffic = trafficGen.get_ip_and_command()
         toSend = controller.send_taker_pakage(traffic)
+'''
+
 
 

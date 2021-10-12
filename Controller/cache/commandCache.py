@@ -4,7 +4,7 @@ from typing import List
 
 from Controller.cache.cache_item import CacheItem
 from Controller.cache.cache_object_life_cycle_control import CacheObjectLifeCycleControl
-
+from Controller.cache.id import convert_to_36
 
 class CommandCache:
     def __init__(self):
@@ -15,7 +15,7 @@ class CommandCache:
         th.start()
 
     def append_to_cache(self, commands):
-        item = CacheItem(self.id, commands)
+        item = CacheItem('!' + convert_to_36(self.id) + '!', commands)
         if item not in self.cache_predicted and item not in self.cache_active:
             self.cache_predicted.append(item)
             self.id += 1
