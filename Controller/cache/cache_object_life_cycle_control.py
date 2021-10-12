@@ -15,7 +15,7 @@ class CacheObjectLifeCycleControl:
     @staticmethod
     def chek_value(item_list):
         """
-        В зависимосте от поля is_used повышает или понижает value элемента
+        В зависимости от поля is_used повышает или понижает value элемента
         @param item_list:
         @return:
         """
