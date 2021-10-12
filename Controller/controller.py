@@ -19,6 +19,8 @@ class Controller:
     def analyze_package(self, traffic):
         """Ужимает приходящий трафик. Анализирует, достаточно ли ужалось - в случае чего вызывает нейронку"""
         traffic = str(raw(traffic)) #converts traffic (type of packet) to type string
+        print(" Длина изначальная" + str(len(traffic)) )
+        print("Изначальная строка " + traffic)
         com = self.compressed(traffic)
         if len(com) > GOOD_LENGTH:
             self.run_neuro(5, traffic)
@@ -31,8 +33,9 @@ class Controller:
         for cache_item in self.command_cache.cache_predicted:
             if com.find(cache_item.commands) != -1:
                 cache_replace = cache_item.id
-                replaceable = com[com.find():com.rfind()]
-                com = com.replace(replaceable, cache_replace)
+                k = len(cache_item.commands)
+                replaceable = com[com.find(cache_item.commands):com.find(cache_item.commands) + k]
+                com = com.replace(replaceable, str(cache_replace))
         return com
 
     def run_neuro(self, new_cache_count, traffic):
@@ -41,7 +44,6 @@ class Controller:
 
     def send_data(self, command):
         self.sender.send_pakage(command)
-
     def upgrade_taker(self):
         self.sender.send_com_list_to_taker(self.command_cache.cache_predicted)
 
