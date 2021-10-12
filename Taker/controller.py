@@ -10,8 +10,6 @@ from Controller.get_respond_from_taker import respond
 
 DELAY = 0.01
 
-DELAY = 0.01
-
 class Controller:
     def __init__(self):
         self.cache_generator = CacheGenerator()
@@ -34,9 +32,8 @@ class Controller:
         print(command[0])
         print(str(res))
 
-
-
         kil = 1000
+
     def serialize_command(self, command):
         res = command[0]
         data = ""

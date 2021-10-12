@@ -6,7 +6,7 @@ def convert_to_36(num):
     if num != 0:
         while num >= 36**degree:
             degree += 1
-    else:
+    elif num == 0:
         degree = 1
 
     while degree > 0:
@@ -16,78 +16,75 @@ def convert_to_36(num):
 
         if div == 0:
             new_36_id += "0"
-        if div == 1:
+        elif div == 1:
             new_36_id += "1"
-        if div == 2:
+        elif div == 2:
             new_36_id += "2"
-        if div == 3:
+        elif div == 3:
             new_36_id += "3"
-        if div == 4:
+        elif div == 4:
             new_36_id += "4"
-        if div == 5:
+        elif div == 5:
             new_36_id += "5"
-        if div == 6:
+        elif div == 6:
             new_36_id += "6"
-        if div == 7:
+        elif div == 7:
             new_36_id += "7"
-        if div == 8:
+        elif div == 8:
             new_36_id += "8"
-        if div == 9:
+        elif div == 9:
             new_36_id += "9"
-        if div == 10:
+        elif div == 10:
             new_36_id += "a"
-        if div == 11:
+        elif div == 11:
             new_36_id += "b"
-        if div == 12:
+        elif div == 12:
             new_36_id += "c"
-        if div == 13:
+        elif div == 13:
             new_36_id += "d"
-        if div == 14:
+        elif div == 14:
             new_36_id += "e"
-        if div == 15:
+        elif div == 15:
             new_36_id += "f"
-        if div == 16:
+        elif div == 16:
             new_36_id += "g"
-        if div == 17:
+        elif div == 17:
             new_36_id += "h"
-        if div == 18:
+        elif div == 18:
             new_36_id += "i"
-        if div == 19:
+        elif div == 19:
             new_36_id += "j"
-        if div == 20:
+        elif div == 20:
             new_36_id += "k"
-        if div == 21:
+        elif div == 21:
             new_36_id += "l"
-        if div == 22:
+        elif div == 22:
             new_36_id += "m"
-        if div == 23:
+        elif div == 23:
             new_36_id += "n"
-        if div == 24:
+        elif div == 24:
             new_36_id += "o"
-        if div == 25:
+        elif div == 25:
             new_36_id += "p"
-        if div == 26:
+        elif div == 26:
             new_36_id += "q"
-        if div == 27:
+        elif div == 27:
             new_36_id += "r"
-        if div == 28:
+        elif div == 28:
             new_36_id += "s"
-        if div == 29:
+        elif div == 29:
             new_36_id += "t"
-        if div == 30:
+        elif div == 30:
             new_36_id += "u"
-        if div == 31:
+        elif div == 31:
             new_36_id += "v"
-        if div == 32:
+        elif div == 32:
             new_36_id += "w"
-        if div == 33:
+        elif div == 33:
             new_36_id += "x"
-        if div == 34:
+        elif div == 34:
             new_36_id += "y"
-        if div == 35:
+        elif div == 35:
             new_36_id += "z"
 
     return new_36_id
-
-if __name__ == '__main__':
-    print(convert_to_36(0))

@@ -33,7 +33,7 @@ class CommandCache:
             return None
 
         item[0].is_used = True
-        return item[0].replace('!', '')
+        return item[0]
 
     @staticmethod
     def get_item_by_id(id, cache):
