@@ -5,8 +5,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/logging/", methods=['POST'])
-def logging():
+@app.route("/show_logs/", methods=['POST'])
+def show_logs():
     """
     Get an error and displaying it into logs
     """
