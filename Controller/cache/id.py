@@ -3,8 +3,11 @@ def convert_to_36(num):
     new_36_id = ""
     degree = 0
 
-    while num >= 36**degree:
-        degree += 1
+    if num != 0:
+        while num >= 36**degree:
+            degree += 1
+    else:
+        degree = 1
 
     while degree > 0:
         degree -= 1
@@ -87,4 +90,4 @@ def convert_to_36(num):
     return new_36_id
 
 if __name__ == '__main__':
-    print(convert_to_36(129))
+    print(convert_to_36(0))

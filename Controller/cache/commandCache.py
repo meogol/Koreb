@@ -15,7 +15,7 @@ class CommandCache:
         th.start()
 
     def append_to_cache(self, commands):
-        item = CacheItem(convert_to_36(self.id), commands)
+        item = CacheItem('!' + convert_to_36(self.id) + '!', commands)
         if item not in self.cache_predicted and item not in self.cache_active:
             self.cache_predicted.append(item)
             self.id += 1
@@ -33,7 +33,7 @@ class CommandCache:
             return None
 
         item[0].is_used = True
-        return item[0]
+        return item[0].replace('!', '')
 
     @staticmethod
     def get_item_by_id(id, cache):
