@@ -105,7 +105,7 @@ def training_ai():
         first = 0
         last = -1
         for item in index_non_zero:
-            if last + 1 == item:
+            if last + 1 == item :
                 last = item
                 continue
 
