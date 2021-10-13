@@ -1,81 +1,164 @@
+import copy
+
+from deap import base
+from deap import creator
+from deap import tools
 from keras.applications.densenet import layers
+from keras.utils.np_utils import to_categorical
+from keras_preprocessing.sequence import pad_sequences
+from keras_preprocessing.text import Tokenizer
+import random
+import matplotlib.pyplot as plt
+import numpy as np
 from tensorflow import keras
-import tensorflow as tf
 
+from Controller.ai import algelitism
 
+text = ""
+with open('byteData.txt', 'r') as fp:
+    text = fp.readlines()
+fp.close()
 
-(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+inputs = keras.Input(shape=4000, name='digits')
+x = layers.Dense(20, activation='relu', name='dense_1')(inputs)
+outputs = layers.Dense(4000, activation='relu', name='predictions')(x)
 
-# Предобработаем данные (это массивы Numpy)
-x_train = x_train.reshape(60000, 784).astype('float32') / 255
-x_test = x_test.reshape(10000, 784).astype('float32') / 255
-
-y_train = y_train.astype('float32')
-y_test = y_test.astype('float32')
-
-# Зарезервируем 10,000 примеров для валидации
-x_val = x_train[-10000:]
-y_val = y_train[-10000:]
-x_train = x_train[:-10000]
-y_train = y_train[:-10000]
-
-# Получим модель
-inputs = keras.Input(shape=(784,), name='digits')
-x = layers.Dense(64, activation='relu', name='dense_1')(inputs)
-x = layers.Dense(64, activation='relu', name='dense_2')(x)
-outputs = layers.Dense(10, activation='softmax', name='predictions')(x)
 model = keras.Model(inputs=inputs, outputs=outputs)
+# Укажем конфигурацию обучения (оптимизатор, функция потерь, метрики)
+model.compile(optimizer=keras.optimizers.RMSprop(),  # Optimizer
+              loss='sparse_categorical_crossentropy',
+              metrics=['sparse_categorical_accuracy'])
+model.summary()
 
-# Создадим экземпляр оптимизатора для обучения модели.
-optimizer = keras.optimizers.SGD(learning_rate=1e-3)
-# Создадим экземпляр функции потерь.
-loss_fn = keras.losses.SparseCategoricalCrossentropy()
+network = model
+tokenizer = Tokenizer(num_words=9, char_level=True)
+tokenizer.fit_on_texts(text)
+RANDOM_SEED = 42
 
-# Подготовим метрику.
-train_acc_metric = keras.metrics.SparseCategoricalAccuracy()
-val_acc_metric = keras.metrics.SparseCategoricalAccuracy()
+LENGTH_CHROM = 164020  # длина хромосомы, подлежащей оптимизации
+LOW = -1.0
+UP = 1.0
+ETA = 20
 
-# Подготовим тренировочный датасет.
-batch_size = 64
-train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-train_dataset = train_dataset.shuffle(buffer_size=1024).batch(batch_size)
+# константы генетического алгоритма
+POPULATION_SIZE = 20  # количество индивидуумов в популяции
+P_CROSSOVER = 0.9  # вероятность скрещивания
+P_MUTATION = 0.1  # вероятность мутации индивидуума
+MAX_GENERATIONS = 5000  # максимальное количество поколений
+HALL_OF_FAME_SIZE = 2
 
-# Подготовим валидационный датасет.
-val_dataset = tf.data.Dataset.from_tensor_slices((x_val, y_val))
-val_dataset = val_dataset.batch(64)
+hof = tools.HallOfFame(HALL_OF_FAME_SIZE)
 
-# Итерируем по эпохам.
-epochs = 3
-for epoch in range(epochs):
-    print('Начало эпохи %d' % (epoch,))
+creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+creator.create("Individual", list, fitness=creator.FitnessMax)
 
-    # Итерируем по пакетам в датасете.
-    for step, (x_batch_train, y_batch_train) in enumerate(train_dataset):
-        with tf.GradientTape() as tape:
-            logits = model(x_batch_train)
-            loss_value = loss_fn(y_batch_train, logits)
-        grads = tape.gradient(loss_value, model.trainable_weights)
-        optimizer.apply_gradients(zip(grads, model.trainable_weights))
+toolbox = base.Toolbox()
+toolbox.register("randomWeight", random.uniform, -1.0, 1.0)
+toolbox.register("individualCreator", tools.initRepeat, creator.Individual, toolbox.randomWeight, LENGTH_CHROM)
+toolbox.register("populationCreator", tools.initRepeat, list, toolbox.individualCreator)
 
-        # Обновляем метрику на обучении.
-        train_acc_metric(y_batch_train, logits)
+population = toolbox.populationCreator(n=POPULATION_SIZE)
 
-        # Пишем лог каждые 200 пакетов.
-        if step % 200 == 0:
-            print('Потери на обучении (за один пакет) на шаге %s: %s' % (step, float(loss_value)))
-            print('Уже просмотрено: %s примеров' % ((step + 1) * 64))
 
-    # Покажем метрики в конце каждой эпохи.
-    train_acc = train_acc_metric.result()
-    print('Accuracy на обучении за эпоху: %s' % (float(train_acc),))
-    # Сбросим тренировочные метрики в конце каждой эпохи
-    train_acc_metric.reset_states()
+def getScore(individual):
+    set_weights(individual)
 
-    # Запустим валидационный цикл в конце эпохи.
-    for x_batch_val, y_batch_val in val_dataset:
-        val_logits = model(x_batch_val)
-        # Обновим валидационные метрики
-        val_acc_metric(y_batch_val, val_logits)
-    val_acc = val_acc_metric.result()
-    val_acc_metric.reset_states()
-    print('Accuracy на валидации: %s' % (float(val_acc),))
+    totalReward = training_ai()
+
+    print(totalReward)
+
+    return totalReward,
+
+
+def set_weights(individual):
+    s = []
+
+    a = network.get_weights()
+
+    s.append(np.array(individual[:80000]).reshape(4000, 20))
+    s.append(np.array(individual[80000:80020]).reshape(20, ))
+    s.append(np.array(individual[80020:160020]).reshape(20, 4000))
+    s.append(np.array(individual[160020:164020]).reshape(4000, ))
+
+    network.set_weights(s)
+
+
+def training_ai():
+    global text
+    totalReward = 0
+    index = 0
+    for line in text:
+        data = tokenizer.texts_to_sequences([line])
+
+        data_pad = pad_sequences(data, maxlen=4000)
+
+        res_pred = network.predict(data_pad)
+
+        index_non_zero = np.unique(np.where(res_pred != 0))
+
+        if len(res_pred) > len(line):
+            totalReward -= 1000
+            continue
+
+        res = list()
+        first = 0
+        last = -1
+        for item in index_non_zero:
+            if last + 1 == item:
+                last = item
+                continue
+
+            if last + 1 - first < 3:
+                totalReward -= 10
+                continue
+
+            res.append(line[first:last + 1])
+            first = item
+            last = item
+
+        for i in range(10):
+            com = copy.deepcopy(text[index-i])
+            i_com = 0
+            for cache_item in res:
+                if com.find(cache_item) != -1:
+                    cache_replace = i_com
+                    k = len(cache_item)
+                    replaceable = com[com.find(cache_item):com.find(cache_item) + k]
+                    com = com.replace(replaceable, str(cache_replace))
+
+            res_reward = len(text[index-i]) - len(com)
+            totalReward+=res_reward
+
+        index += 1
+
+    return totalReward
+
+
+toolbox.register("evaluate", getScore)
+toolbox.register("select", tools.selTournament, tournsize=2)
+toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=LOW, up=UP, eta=ETA)
+toolbox.register("mutate", tools.mutPolynomialBounded, low=LOW, up=UP, eta=ETA, indpb=1.0 / LENGTH_CHROM)
+
+stats = tools.Statistics(lambda ind: ind.fitness.values)
+stats.register("max", np.max)
+stats.register("avg", np.mean)
+
+population, logbook = algelitism.eaSimpleElitism(population, toolbox,
+                                                 cxpb=P_CROSSOVER,
+                                                 mutpb=P_MUTATION,
+                                                 ngen=MAX_GENERATIONS,
+                                                 halloffame=hof,
+                                                 stats=stats,
+                                                 verbose=True)
+
+maxFitnessValues, meanFitnessValues = logbook.select("max", "avg")
+
+best = hof.items[0]
+print(best)
+
+plt.plot(maxFitnessValues, color='red')
+plt.plot(meanFitnessValues, color='green')
+plt.xlabel('Поколение')
+plt.ylabel('Макс/средняя приспособленность')
+plt.title('Зависимость максимальной и средней приспособленности от поколения')
+plt.show()
