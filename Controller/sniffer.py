@@ -2,6 +2,7 @@ from Controller.controller import Controller
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 from flask import Flask, request
 from flask_cors import CORS
+from scapy.all import *
 
 
 class Sniffer:
@@ -16,7 +17,8 @@ class Sniffer:
     Sends bytedata of one package to controller
     """
     def send_command_to_controller(self, com):
-        self.control.analyze_package(com)
+        traffic = str(raw(com))  # converts traffic (type of packet) to type string
+        self.control.analyze_package(traffic)
 
 if __name__ == '__main__':
     control = Controller()

@@ -1,9 +1,12 @@
 import random
 
+import requests
+
 from Controller.send_data_to_taker import SendDataToTaker
 from Taker.api_core.test import test_request, test_neuro
 from Controller.traffic_generator.trafficGenerator import TrafficGenerator
 from Controller.cache.commandCache import CommandCache
+from Controller import get_respond_from_taker as responder
 import copy
 from scapy.all import *
 
@@ -18,9 +21,10 @@ class Controller:
 
     def analyze_package(self, traffic):
         """Ужимает приходящий трафик. Анализирует, достаточно ли ужалось - в случае чего вызывает нейронку"""
-        traffic = str(raw(traffic)) #converts traffic (type of packet) to type string
-        print(" Длина изначальная" + str(len(traffic)) )
-        print("Изначальная строка " + traffic)
+        if_404 = traffic
+        requests.post('http://127.0.0.1:4998/respond/', data={'status':'404', 'command': if_404})
+        print("Длина изначальная " + str(len(traffic)) )
+        print("Изначальная строка \n" + traffic)
         com = self.compressed(traffic)
         if len(com) > GOOD_LENGTH:
             self.run_neuro(5, traffic)
