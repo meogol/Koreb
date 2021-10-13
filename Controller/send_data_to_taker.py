@@ -10,7 +10,6 @@ class SendDataToTaker:
     def send_pakage(pkg, ip="15"):
         weight = "100"
         requests.post("http://127.0.0.1:5000/post_pkg/", data={'ip': ip, 'pkg': pkg})
-        requests.post('http://127.0.0.1:4999/logs/', data={'status': weight})
         delay = 20 * len(pkg)
         if delay > 2000:
             delay = 2000

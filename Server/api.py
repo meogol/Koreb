@@ -33,6 +33,9 @@ def logs():
     return '1'
 
 def run():
+    '''
+    Running 'app' server on 127.0.0.1:4999
+    '''
     http_server = WSGIServer(('127.0.0.1', 4999), app)
     http_server.serve_forever()
     app.run()

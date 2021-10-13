@@ -15,8 +15,7 @@ class StartProgram():
         self.server_api_runner = server_api
 
 
-        # nh = Thread(target=respond_run)
-        # nh.start()
+
 
     def lets_go(self):
         """
@@ -25,10 +24,16 @@ class StartProgram():
         lh = Thread(target=server_api.run)
         lh.start()
 
-        sleep(2)
+        sleep(1)
+
+        nh = Thread(target=respond_run)
+        nh.start()
+
+        sleep(1)
 
         th = Thread(target=api.run)
         th.start()
+
         self.server.run()
 
 if __name__ == '__main__':
