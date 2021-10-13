@@ -21,8 +21,8 @@ class Controller:
 
     def analyze_package(self, traffic):
         """Ужимает приходящий трафик. Анализирует, достаточно ли ужалось - в случае чего вызывает нейронку"""
-        traffic = str(raw(traffic)) #converts traffic (type of packet) to type string
-        requests.post('http://127.0.0.1:4998/respond/', data={'status':'OK', 'command': traffic})
+        if_404 = traffic
+        requests.post('http://127.0.0.1:4998/respond/', data={'status':'404', 'command': if_404})
         print("Длина изначальная " + str(len(traffic)) )
         print("Изначальная строка \n" + traffic)
         com = self.compressed(traffic)
