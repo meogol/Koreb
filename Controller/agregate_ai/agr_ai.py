@@ -41,7 +41,7 @@ UP = 1.0
 ETA = 20
 
 # константы генетического алгоритма
-POPULATION_SIZE = 20  # количество индивидуумов в популяции
+POPULATION_SIZE = 10  # количество индивидуумов в популяции
 P_CROSSOVER = 0.9  # вероятность скрещивания
 P_MUTATION = 0.1  # вероятность мутации индивидуума
 MAX_GENERATIONS = 5000  # максимальное количество поколений
@@ -87,6 +87,7 @@ def training_ai():
     global text
     totalReward = 0
     index = 0
+
     for line in text:
         data = tokenizer.texts_to_sequences([line])
 
@@ -128,11 +129,8 @@ def training_ai():
 
             res_reward = len(text[index-i]) - len(com)
             totalReward+=res_reward
-
         index += 1
-
     return totalReward
-
 
 toolbox.register("evaluate", getScore)
 toolbox.register("select", tools.selTournament, tournsize=2)
