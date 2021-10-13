@@ -1,38 +1,43 @@
 from flask import Flask, request
 from flask_cors import CORS
+from gevent.pywsgi import  WSGIServer
+
 
 app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/show_logs/", methods=['POST'])
-def show_logs():
+@app.route("/logs/", methods=['POST'])
+def logs():
     """
     Get an error and displaying it into logs
     """
-    message = request.form
-    status = message
+    res_dict = request.form.to_dict(flat=False)
+    status = res_dict['status'] #str
 
-    if status == '100':  # process corrupted error
+    if status[0] == '100':  # process corrupted error
         app.logger.error("The error 100 occurred: "
                          "process corrupted")
-        print("The error 100 occurred: "
-                         "process corrupted")
-    elif status == '404':  # command lost error
+    elif status[0] == '404':  # command lost error
         app.logger.error("The error 404 occurred:"
                          "commands lost ")
-    elif status == '200':  # Client is working
+    elif status[0] == '200':  # Client is working
         app.logger.error("The error 200 occurred: "
                          "Client is working right now")
-    elif status == '303':  # Client doesn't responding
+    elif status[0] == '303':  # Client doesn't responding
         app.logger.error("The error 303 occurred:"
                          "Client doesn't responding")
     else:
-        return 200
+        return '1'
 
-    return 200
+    return '1'
 
 def run():
+    '''
+    Running 'app' server on 127.0.0.1:4999
+    '''
+    http_server = WSGIServer(('127.0.0.1', 4999), app)
+    http_server.serve_forever()
     app.run()
 
 if __name__ == '__main__':
