@@ -2,7 +2,9 @@ from flask import Flask, request
 from flask_cors import CORS
 import requests
 from gevent.pywsgi import  WSGIServer
+from Controller.controller import Controller
 
+if_404 = Controller()
 app = Flask(__name__)
 CORS(app)
 
@@ -13,9 +15,35 @@ def respond():
     Get an respond from taker
     """
     res_dict = request.form.to_dict(flat=False)
-    status = res_dict['status']  # str
+    command = res_dict['command']  # str
+    status = res_dict['status']   # str
 
-    requests.post('http://127.0.0.1:4999/logs/', data={'status': status[0]})
+    latest_got_command = command[0]
+
+    if status[0] == 'OK':
+        pass
+    else:
+        if status[0] == '100':    # process corrupted error
+            app.logger.error("The error 100 occurred: process corrupted\n"
+                            "Reporting to server")
+            requests.post('http://127.0.0.1:4999/logs/', data={'status': status[0]})
+
+        elif status[0] == '404':  # command lost error
+            app.logger.error("The error 404 occurred: commands lost\n"
+                            "Resending command")
+            if_404.analyze_package(latest_got_command)
+
+        elif status[0] == '202':  # Client is working
+            app.logger.error("The error 202 occurred: Client is working right now")
+
+        elif status[0] == '303':  # Client doesn't responding
+            app.logger.error("The error 303 occurred: Client doesn't responding\n"
+                            "Reporting to server")
+            requests.post('http://127.0.0.1:4999/logs/', data={'status': status[0]})
+        else:
+            return '1'
+
+
     return 1
 
 def run():
