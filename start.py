@@ -1,10 +1,10 @@
 from threading import Thread
-from Taker.api_core import server_api as api
-from Server.server import Server
-from Controller.get_respond_from_taker import run as respond_run
-from Server import api as server_api
+from iter_one.Taker.api_core import server_api as api
+from iter_one.Server.server import Server
+from iter_one.Controller.get_respond_from_taker import run as respond_run
+from iter_one.Server import api as server_api
 from time import sleep
-from Controller.controller import Controller
+from iter_one.Controller.controller import Controller
 
 
 class StartProgram():
