@@ -9,8 +9,6 @@ class Server():
         """
         Writes to bytedata all packages from pcap file (type - packetlist)
         """
-        bytedata = []
-        bytedata = rdpcap("info.pcapng", count=3)
 
         file = open("info.txt", 'w')
         bytedata = rdpcap("info.pcapng", count=100)
