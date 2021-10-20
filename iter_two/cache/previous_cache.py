@@ -1,11 +1,8 @@
 
 class PreviousCache:
 
-    def __init__(self, dict):
-        self.previous_dict = dict.copy
-
-    def __init__(self):
-        self.previous_dict = {'IP':None, 'DATA':None}
+    def __init__(self, dict = {'IP':None, 'DATA':None}):
+        self.previous_dict = dict.copy()
 
     def __str__(self):
         return str(self.previous_dict.items())
