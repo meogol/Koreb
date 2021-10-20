@@ -15,10 +15,7 @@ class PreviousCache:
 
 
     def get_previous_cache(self, ip):
-        if self.previous_dict.get(ip) is not None:
-            return self.previous_dict[ip]
-        else:
-            return None
+        return self.previous_dict.get(ip)
 
 
 
