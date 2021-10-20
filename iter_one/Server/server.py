@@ -12,8 +12,26 @@ class Server():
         bytedata = []
         bytedata = rdpcap("info.pcapng", count=3)
 
-        for item in bytedata:
-            self.send_bytedata_to_sniffer(item)
+        file = open("info.txt", 'w')
+        bytedata = rdpcap("info.pcapng", count=100)
+
+        for i, res in enumerate(bytedata.res):
+
+            from_ip = bytedata[i].sprintf("%IP.src%")
+            if from_ip == "??":
+                from_ip = bytedata[i].sprintf("%IPv6.src%")
+                if from_ip == "??":
+                    from_ip = bytedata[i].src
+
+            to_ip = bytedata[i].sprintf("%IP.dst%")
+            if to_ip == "??":
+                to_ip = bytedata[i].sprintf("%IPv6.dst%")
+                if to_ip == "??":
+                    to_ip = bytedata[i].dst
+
+            data = bytedata[i].payload.payload.payload
+
+            file.write(str(to_ip) + '\t' + str(data) + '\n')
 
 
     def send_bytedata_to_sniffer(self, item):
