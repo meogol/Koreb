@@ -8,9 +8,9 @@ class Agregation_cache:
         self.cache.insert(0, commands)
         del self.cache[10]
 
-    """получение элемента кэша"""
     def receiving_cache(self, number):
-        return self.cache[number-1]
+        """получение элемента кэша"""
+        return self.cache[number]
 
 if __name__ == '__main__':
     add = Agregation_cache()
