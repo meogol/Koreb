@@ -6,4 +6,4 @@ class Taker:
         self.server = Server()
 
     def start(self):
-        self.server.init_listener()
+        self.server.init_listener_thread()
