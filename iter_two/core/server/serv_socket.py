@@ -21,7 +21,7 @@ class Socket:
             print('Waiting for data ({0} seconds)...'.format(self.__timeout))
             self.socket.settimeout(self.__timeout)
             try:
-                d = self.socket.recvfrom(1024)
+                d = self.socket.recvfrom(1024000)
             except socket.timeout:
                 print('Time is out. {0} seconds have passed'.format(self.__timeout))
                 continue
@@ -31,10 +31,10 @@ class Socket:
         self.socket.close()
 
     def send_package(self, package="fhj "):
-        msg = package
+        msg = str(package)
         self.socket.sendto(msg.encode('utf-8'), (self.__host, self.__port))
 
-        d = self.socket.recvfrom(1024)
+        d = self.socket.recvfrom(102400)
         reply = d[0]
         self.__addr = d[1]
         print('Server reply: ' + reply.decode('utf-8'))

@@ -10,3 +10,6 @@ class Server:
     def init_listener_thread(self):
         t = threading.Thread(target=self.socket.run_listener_server)
         t.start()
+
+    def send_package(self, package):
+        self.socket.send_package(package)

@@ -1,15 +1,16 @@
 from scapy.utils import rdpcap
 
-from iter_two.controller.aggregator import Aggregator
+from iter_two.controller.controller import Controller
 
 
 class Sniffer:
     def __init__(self):
-        self.aggregator = Aggregator()
+        self.controller = Controller()
 
     def traff_file_read(self):
-        bytedata = []
-        bytedata = rdpcap("info.pcapng", count=3)
+        while True:
+            bytedata = rdpcap("iter_two/controller/info.pcapng", count=1000)
 
-        for item in bytedata:
-            self.aggregator.start_aggregation("1", item)
+            for item in bytedata:
+                self.controller.analyse_command(item)
+

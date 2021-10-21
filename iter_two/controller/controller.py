@@ -1,10 +1,9 @@
-from iter_two.controller.sniffer import Sniffer
+from iter_two.core.server.server import Server
 
 
 class Controller:
     def __init__(self):
-        self.sniffer = Sniffer()
+        self.server = Server()
 
-    def start(self):
-        while(True):
-            res = self.sniffer.traff_file_read()
+    def analyse_command(self, package):
+        self.server.send_package(package)
