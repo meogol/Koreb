@@ -1,18 +1,20 @@
 import threading
 
 from iter_two.controller.sniffer import Sniffer
+from iter_two.core.server.server import Server
 from iter_two.taker.taker import Taker
 
 
 class StartProgram():
     def __init__(self):
         self.sniffer = Sniffer()
-        self.taker = Taker()
+        self.server = Server()
 
     def start(self):
+        self.server.init_listener_thread()
+
         th1 = threading.Thread(target=self.sniffer.traff_file_read)
         th1.start()
-        self.taker.start()
 
 
 if __name__ == '__main__':

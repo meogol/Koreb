@@ -17,5 +17,7 @@ class Sniffer:
                 wight = sys.getsizeof(data_bytes)
                 print(wight)
                 list_bytes = list(data_bytes)
+
+                print(list_bytes)
                 self.controller.analyse_command(list_bytes)
 
