@@ -2,8 +2,9 @@ import asyncio
 import threading
 from time import sleep
 
-from iter_two.core.server.creator_package import CreatorPackage
 import socket
+
+from iter_two.taker.taker import Taker
 
 
 class Socket:
@@ -14,11 +15,12 @@ class Socket:
         self.__timeout = 60
         self.__addr = (self.__host, self.__port)
 
+        self.taker = Taker()
+
     def run_listener_server(self):
         self.socket.bind(self.__addr)
 
         while True:
-            print('Waiting for data ({0} seconds)...'.format(self.__timeout))
             self.socket.settimeout(self.__timeout)
             try:
                 d = self.socket.recvfrom(1024000)
@@ -45,8 +47,8 @@ class Socket:
     def data_listener(self, d):
         received = d[0]
         self.__addr = d[1]
-        print('Received data: ', received)
-        print('From: ', self.__addr)
+
+        self.taker.start(received, self.__addr)
 
         msg = "200"
         self.socket.sendto(msg.encode('utf-8'), self.__addr)
