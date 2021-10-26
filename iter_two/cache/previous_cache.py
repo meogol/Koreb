@@ -8,10 +8,7 @@ class PreviousCache:
         return str(self.previous_dict.items())
 
     def update_previous_cache(self, ip, data):
-        if self.previous_dict.get(ip) is not None:
-            self.previous_dict[ip] = data
-        else:
-            self.previous_dict.update({ip : data})
+        self.previous_dict.update({ip : data})
 
 
     def get_previous_cache(self, ip):
