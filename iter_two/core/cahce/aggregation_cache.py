@@ -1,5 +1,5 @@
 
-class Agregation_cache:
+class AggregationCache:
     def __init__(self):
         self.cache = [0]*10
 
@@ -13,7 +13,7 @@ class Agregation_cache:
         return self.cache[number]
 
 if __name__ == '__main__':
-    add = Agregation_cache()
+    add = AggregationCache()
     add.add_cache([12, 3, 40])
     add.add_cache([37, 80, 214])
     add.add_cache([5, 90, 43])
