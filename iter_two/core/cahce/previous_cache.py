@@ -1,4 +1,3 @@
-
 class PreviousCache:
 
     def __init__(self):
@@ -8,12 +7,10 @@ class PreviousCache:
         return str(self.previous_dict.items())
 
     def update_previous_cache(self, ip, data):
-        self.previous_dict.update({ip : data})
-
+        self.previous_dict.update({ip: data})
 
     def get_previous_cache(self, ip):
         return self.previous_dict.get(ip)
-
 
 
 if __name__ == '__main__':
