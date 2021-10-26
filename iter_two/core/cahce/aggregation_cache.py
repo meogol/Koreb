@@ -1,8 +1,6 @@
-
 class AggregationCache:
     def __init__(self):
-        self.cache = [0]*10
-
+        self.cache = [0] * 10
 
     def add_cache(self, commands):
         self.cache.insert(0, commands)
@@ -11,6 +9,7 @@ class AggregationCache:
     def receiving_cache(self, number):
         """получение элемента кэша"""
         return self.cache[number]
+
 
 if __name__ == '__main__':
     add = AggregationCache()

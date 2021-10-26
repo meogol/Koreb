@@ -1,10 +1,13 @@
 import random
 import sys
 
+from iter_two.core.cahce.cache import CacheManager
+
 
 class Taker:
     def __init__(self):
         self.last_packages = None
+        self.cache_manager = CacheManager()
 
     def start(self, package, addr):
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
@@ -37,7 +40,7 @@ class Taker:
         pkg_i = None
         for index in filtered:
             pkg_i = index
-            i = package[last_index:index-1]
+            i = package[last_index:index - 1]
 
             new_pkg.extend(i)
             if last_index + len(i) < (-package[index]):
@@ -47,7 +50,7 @@ class Taker:
             last_index = (-package[index])
 
         if pkg_i is not None and pkg_i < len(package):
-            new_pkg.extend(package[pkg_i+1:len(package)])
+            new_pkg.extend(package[pkg_i + 1:len(package)])
         elif pkg_i is None:
             new_pkg.extend(package)
 
