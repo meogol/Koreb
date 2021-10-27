@@ -89,6 +89,9 @@ class Sniffer:
             if to_file:
                 file.write(str(from_ip) + '\t' + str(to_ip) + '\t' + str(data) + '\n')
 
+        if to_file:
+            file.close()
+            
         return [from_ip, data, snif.res[0]]
 
 
