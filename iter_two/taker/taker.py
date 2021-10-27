@@ -60,4 +60,5 @@ class Taker:
 
         return new_pkg
 
-
+    def taker_aggregation_cache_fill(self, ip, package):
+        self.cache_manager.add_agr_cache(ip, package)
