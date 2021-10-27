@@ -34,7 +34,7 @@ class Sniffer:
             return sniff(filter = packet_type + ' port ' + port, iface = net_face, count = count)
 
 
-    def to_sniff(self, net_face, packet_type = "TCP", ip = "", port = "", count = 1,
+    def to_sniff(self, net_face = "Беспроводная сеть", packet_type = "TCP", ip = "", port = "", count = 1,
                  by_sender = False, by_taker = False, to_file = False):
         """
         *Readme*
@@ -42,12 +42,26 @@ class Sniffer:
         Метод возвращает IP отправителя, Data и весь пакет целиком.
         В файл "info.txt" записываются IP отправителя, IP получателя и Data.
 
-        (by_sender = True, by_taker = True) - Отслеживает все передачи, связанные с IP
-        (by_sender = True, by_taker = False) - Ослеживает отправителя по IP
-        (by_sender = False, by_taker = True) - Отслеживает получателя по IP
-        (by_sender = False, by_taker = False) - Нельзя! return "400 Bad Request"
+        В метод передаётся:
 
-        ip и port не могут быть пустыми одновременно!
+            net_face - интерфейс сети (???), например передаём "Беспроводная сеть"
+            packet_type - тип пакета (TCP, UDP и т.д.)
+            ip - отслеживаемый IP-адрес
+            port - отслеживаемый port (вместо ip)
+
+            * ip и port не могут быть пустыми одновременно! *
+
+            count - количесвто пакетов, которое необходимо перехватить
+
+            * Метод возвращает данные о последнем пакете => для получения корректных значений
+            (т.е. не для записи в файл) стоит count = 1 *
+
+            (by_sender = True, by_taker = True) - Отслеживает все передачи, связанные с IP
+            (by_sender = True, by_taker = False) - Ослеживает отправителя по IP
+            (by_sender = False, by_taker = True) - Отслеживает получателя по IP
+            (by_sender = False, by_taker = False) - Нельзя! return "400 Bad Request"
+
+            to_file = True, если необходима запись в файл (например, для отладки)
 
         """
 
