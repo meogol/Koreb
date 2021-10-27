@@ -17,6 +17,7 @@ class Taker:
         """
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
         list_bytes = list(map(int, list_bytes))
+        self.taker_aggregation_cache_fill(addr[0], package)
 
         if self.cache_manager.get_last_pkg_cache(addr[0]) is None:
             self.cache_manager.add_last_pkg_cache(addr[0], list_bytes)

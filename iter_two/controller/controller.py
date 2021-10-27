@@ -12,6 +12,7 @@ class Controller:
     def analyse_command(self, package):
         res = self.aggregator.contrast_last_package(package)
         self.server.send_package(package)
+        self.controller_aggregation_cache_fill(1, package)
 
     def controller_aggregation_cache_fill(self, ip, package):
         self.cache_manager.add_agr_cache(ip, package)
