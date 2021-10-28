@@ -24,8 +24,8 @@ class CacheManager:
 
     def number_of_agr_cached_items(self, ip):
         counter = 0
-        for item in self.aggregation_cache.get(ip):
-            if item != 0:
+        for item in range(10):
+            if self.aggregation_cache.get(ip).receiving_cache(item) != 0:
                 counter += 1
         return counter
 
@@ -37,10 +37,3 @@ class CacheManager:
 
     def get_last_pkg_cache(self, ip):
         return self.last_package_cache.get_previous_cache(ip)
-
-
-if __name__ == '__main__':
-    aboba = CacheManager()
-    print(aboba.agr_cache_ip_check(12))
-    aboba.add_agr_cache(13, [12, 34, 55])
-    print(aboba.number_of_agr_cached_items(13))

@@ -27,9 +27,9 @@ class AgrPatternSearch:
 
         if cache_manager.agr_cache_ip_check(ip):
             for item in range(0, cache_manager.number_of_agr_cached_items(ip) - 1):
-                for sub_len in range(2, int(len(cache_manager.aggregation_cache.get(ip)[item]) / 2)):
-                    for i in range(0, len(cache_manager.aggregation_cache.get(ip)[item]) - sub_len):
-                        sub = cache_manager.aggregation_cache.get(ip)[item][i:i + sub_len]
+                for sub_len in range(2, int(len(cache_manager.aggregation_cache.get(ip).receiving_cache(item)) / 2)):
+                    for i in range(0, len(cache_manager.aggregation_cache.get(ip).receiving_cache(item)) - sub_len):
+                        sub = cache_manager.aggregation_cache.get(ip).receiving_cache(item)[i:i + sub_len]
                         if self.sub_finder(package, sub):
                             if sub not in patterns:
                                 patterns.append(sub)
@@ -59,7 +59,15 @@ class AgrPatternSearch:
             print('no aggregation cache for this IP yet')
 
 
-# if __name__ == '__main__':
-#     asd = AgrPatternSearch()
-#     qwe = CacheManager()
-#     asd.agr_cache_patterns([12, 35, 66, 93, 57, 567, 354, 4891, 653124], 45, qwe)
+if __name__ == '__main__':
+    asd = AgrPatternSearch()
+    qwe = CacheManager()
+    asd.agr_cache_patterns([12, 35, 66, 93, 57, 567, 354, 4891, 653124], 45, qwe)
+
+    qwe.add_agr_cache(12, [123, 82, 63, 41, 47, 95, 25, 35, 71, 85, 3, 97, 73, 64, 71, 24, 51, 741])
+    qwe.add_agr_cache(12, [123, 82, 23, 41, 47, 95, 25, 74, 71, 85, 3, 97, 85, 64, 57, 24, 96, 741])
+    qwe.add_agr_cache(12, [123, 25, 43, 2, 47, 95, 75, 35, 71, 85, 11, 97, 73, 41, 71, 12, 51, 739])
+    qwe.add_agr_cache(12, [148, 82, 63, 41, 43, 95, 25, 35, 71, 85, 3, 97, 73, 64, 71, 24, 51, 741])
+
+    q = asd.agr_cache_patterns([123, 53, 63, 41, 47, 95, 25, 24, 71, 85, 3, 97, 73, 64, 36, 24, 51, 741], 12, qwe)
+    print(q)
