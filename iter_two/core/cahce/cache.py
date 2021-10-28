@@ -20,7 +20,7 @@ class CacheManager:
         self.last_package_cache.update_previous_cache(ip, package)
 
     def get_arg_cache(self, ip):
-        self.aggregation_cache.get(ip)
+        return self.aggregation_cache.get(ip)
 
     def get_last_pkg_cache(self, ip):
-        self.last_package_cache.get_previous_cache(ip)
+        return self.last_package_cache.get_previous_cache(ip)
