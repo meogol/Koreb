@@ -19,3 +19,4 @@ class Controller:
         res = self.aggregator.contrast_last_package(package)
         self.cache_manager.add_agr_cache(1, package)
         self.server.send_package( destination_ip, package)
+
