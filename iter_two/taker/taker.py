@@ -38,7 +38,12 @@ class Taker:
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
 
-        filtered = [idx for idx, p in enumerate(package) if p < 0]
+        filtered = list()
+        for x in package:
+            if x > 0:
+                filtered.append(x)
+            else:
+                filtered.extend([-1]*x)
 
         last_index = 0
         new_pkg = list()
@@ -61,3 +66,23 @@ class Taker:
 
         return new_pkg
 
+
+if __name__ == '__main__':
+    taker = Taker()
+
+    items = list()
+    add = 0
+    for i in range(100):
+        if i+add >= 100:
+            break
+
+        n = random.randint(0, 100)
+        if 10 < n < 30:
+            r = random.randint(3, 8)
+            add += r
+
+            items.append(-r)
+        else:
+            items.append(i+add)
+
+    taker.recovery_pkg(items, [a for a in range(100)])
