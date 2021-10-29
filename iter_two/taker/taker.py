@@ -46,6 +46,7 @@ class Taker:
                 filtered.append(x)
             else:
                 filtered.extend([-1]*-x)
+<<<<<<< HEAD
 
         this_pkg = np.array(filtered)
         last_pkg = np.array(last_pkg)
@@ -61,6 +62,23 @@ class Taker:
 
         this_pkg[index_non_zero] = last_pkg[index_non_zero]
 
+=======
+
+        this_pkg = np.array(filtered)
+        last_pkg = np.array(last_pkg)
+
+        last = []
+        if len(this_pkg) > len(last_pkg):
+            prom_pkg = last_pkg*this_pkg[:len(last_pkg)]
+            last = this_pkg[len(last_pkg):]
+        else:
+            prom_pkg = last_pkg[:len(this_pkg)] * this_pkg
+
+        index_non_zero = np.unique(np.where(prom_pkg < 0)[0])
+
+        this_pkg[index_non_zero] = last_pkg[index_non_zero]
+
+>>>>>>> CU-1pbwagz_--_ALEXEY-SLEPNEV-upd-recovery_pkg
         new_pkg = np.concatenate((this_pkg, last))
 
         return new_pkg
