@@ -16,6 +16,19 @@ class CacheManager:
         agr_cache = self.aggregation_cache.setdefault(ip, AggregationCache())
         agr_cache.add_cache(package)
 
+    def agr_cache_ip_check(self, ip):
+        if self.aggregation_cache.get(ip) is None:
+            return False
+        else:
+            return True
+
+    def number_of_agr_cached_items(self, ip):
+        counter = 0
+        for item in range(10):
+            if self.aggregation_cache.get(ip).receiving_cache(item) != 0:
+                counter += 1
+        return counter
+
     def add_last_pkg_cache(self, ip, package):
         self.last_package_cache.update_previous_cache(ip, package)
 
