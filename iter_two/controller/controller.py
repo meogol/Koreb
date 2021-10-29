@@ -10,6 +10,12 @@ class Controller:
         self.cache_manager = CacheManager()
 
     def analyse_command(self, package, destination_ip):
+        """
+
+        @param package: пакет в виде набора байт
+        @param destination_ip: ip получателя пакета
+        @return:
+        """
         res = self.aggregator.contrast_last_package(package)
         self.cache_manager.add_agr_cache(1, package)
         self.server.send_package( destination_ip, package)

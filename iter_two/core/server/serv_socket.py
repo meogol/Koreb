@@ -35,6 +35,7 @@ class Socket:
     def send_package(self, destination_ip, package):
         """
         @param: destination_ip: ip получателя пакета
+        @param: package: пакет в виде набора байт
         """
         msg = str(package)
         msg = msg.replace("[", "[" + destination_ip + ", ", 1)
