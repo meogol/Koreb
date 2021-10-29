@@ -17,7 +17,7 @@ class Taker:
         """
 
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
-        destination_ip = list_bytes[0]  #ip получателя пакета
+        destination_ip = list_bytes[0]  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
         self.cache_manager.add_agr_cache(addr[0], package)
 
@@ -45,15 +45,14 @@ class Taker:
             if x >= 0:
                 filtered.append(x)
             else:
-                filtered.extend([-1]*-x)
-<<<<<<< HEAD
+                filtered.extend([-1] * -x)
 
         this_pkg = np.array(filtered)
         last_pkg = np.array(last_pkg)
 
         last = []
         if len(this_pkg) > len(last_pkg):
-            prom_pkg = last_pkg*this_pkg[:len(last_pkg)]
+            prom_pkg = last_pkg * this_pkg[:len(last_pkg)]
             last = this_pkg[len(last_pkg):]
         else:
             prom_pkg = last_pkg[:len(this_pkg)] * this_pkg
@@ -62,23 +61,6 @@ class Taker:
 
         this_pkg[index_non_zero] = last_pkg[index_non_zero]
 
-=======
-
-        this_pkg = np.array(filtered)
-        last_pkg = np.array(last_pkg)
-
-        last = []
-        if len(this_pkg) > len(last_pkg):
-            prom_pkg = last_pkg*this_pkg[:len(last_pkg)]
-            last = this_pkg[len(last_pkg):]
-        else:
-            prom_pkg = last_pkg[:len(this_pkg)] * this_pkg
-
-        index_non_zero = np.unique(np.where(prom_pkg < 0)[0])
-
-        this_pkg[index_non_zero] = last_pkg[index_non_zero]
-
->>>>>>> CU-1pbwagz_--_ALEXEY-SLEPNEV-upd-recovery_pkg
         new_pkg = np.concatenate((this_pkg, last))
 
         return new_pkg
@@ -90,7 +72,7 @@ if __name__ == '__main__':
     items = list()
     add = 0
     for i in range(100):
-        if i+add >= 95:
+        if i + add >= 95:
             break
 
         n = random.randint(0, 100)
@@ -98,8 +80,8 @@ if __name__ == '__main__':
             r = random.randint(3, 8)
             add += r
 
-            items.append(-r-1)
+            items.append(-r - 1)
         else:
-            items.append(i+add)
+            items.append(i + add)
 
     taker.recovery_pkg(items, [a for a in range(100)])
