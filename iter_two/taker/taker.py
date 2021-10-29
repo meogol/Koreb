@@ -1,6 +1,6 @@
 import random
 import sys
-
+import numpy as np
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -40,29 +40,26 @@ class Taker:
 
         filtered = list()
         for x in package:
-            if x > 0:
+            if x >= 0:
                 filtered.append(x)
             else:
-                filtered.extend([-1]*x)
+                filtered.extend([-1]*-x)
 
-        last_index = 0
-        new_pkg = list()
-        pkg_i = None
-        for index in filtered:
-            pkg_i = index
-            i = package[last_index:index - 1]
+        this_pkg = np.array(filtered)
+        last_pkg = np.array(last_pkg)
 
-            new_pkg.extend(i)
-            if last_index + len(i) < (-package[index]):
-                p = last_pkg[last_index + len(i):-package[index]]
-                new_pkg.extend(p)
+        last = []
+        if len(this_pkg) > len(last_pkg):
+            prom_pkg = last_pkg*this_pkg[:len(last_pkg)]
+            last = this_pkg[len(last_pkg):]
+        else:
+            prom_pkg = last_pkg[:len(this_pkg)] * this_pkg
 
-            last_index = (-package[index])
+        index_non_zero = np.unique(np.where(prom_pkg < 0)[0])
 
-        if pkg_i is not None and pkg_i < len(package):
-            new_pkg.extend(package[pkg_i + 1:len(package)])
-        elif pkg_i is None:
-            new_pkg.extend(package)
+        this_pkg[index_non_zero] = last_pkg[index_non_zero]
+
+        new_pkg = np.concatenate((this_pkg, last))
 
         return new_pkg
 
@@ -73,7 +70,7 @@ if __name__ == '__main__':
     items = list()
     add = 0
     for i in range(100):
-        if i+add >= 100:
+        if i+add >= 95:
             break
 
         n = random.randint(0, 100)
@@ -81,7 +78,7 @@ if __name__ == '__main__':
             r = random.randint(3, 8)
             add += r
 
-            items.append(-r)
+            items.append(-r-1)
         else:
             items.append(i+add)
 
