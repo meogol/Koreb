@@ -1,6 +1,6 @@
 import random
 import sys
-
+import numpy as np
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -17,7 +17,7 @@ class Taker:
         """
 
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
-        destination_ip = list_bytes[0]  #ip получателя пакета
+        destination_ip = list_bytes[0]  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
         self.cache_manager.add_agr_cache(addr[0], package)
 
@@ -40,26 +40,48 @@ class Taker:
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
 
-        filtered = [idx for idx, p in enumerate(package) if p < 0]
+        filtered = list()
+        for x in package:
+            if x >= 0:
+                filtered.append(x)
+            else:
+                filtered.extend([-1] * -x)
 
-        last_index = 0
-        new_pkg = list()
-        pkg_i = None
-        for index in filtered:
-            pkg_i = index
-            i = package[last_index:index - 1]
+        this_pkg = np.array(filtered)
+        last_pkg = np.array(last_pkg)
 
-            new_pkg.extend(i)
-            if last_index + len(i) < (-package[index]):
-                p = last_pkg[last_index + len(i):-package[index]]
-                new_pkg.extend(p)
+        last = []
+        if len(this_pkg) > len(last_pkg):
+            prom_pkg = last_pkg * this_pkg[:len(last_pkg)]
+            last = this_pkg[len(last_pkg):]
+        else:
+            prom_pkg = last_pkg[:len(this_pkg)] * this_pkg
 
-            last_index = (-package[index])
+        index_non_zero = np.unique(np.where(prom_pkg < 0)[0])
 
-        if pkg_i is not None and pkg_i < len(package):
-            new_pkg.extend(package[pkg_i + 1:len(package)])
-        elif pkg_i is None:
-            new_pkg.extend(package)
+        this_pkg[index_non_zero] = last_pkg[index_non_zero]
+
+        new_pkg = np.concatenate((this_pkg, last))
 
         return new_pkg
 
+
+if __name__ == '__main__':
+    taker = Taker()
+
+    items = list()
+    add = 0
+    for i in range(100):
+        if i + add >= 95:
+            break
+
+        n = random.randint(0, 100)
+        if 10 < n < 30:
+            r = random.randint(3, 8)
+            add += r
+
+            items.append(-r - 1)
+        else:
+            items.append(i + add)
+
+    taker.recovery_pkg(items, [a for a in range(100)])
