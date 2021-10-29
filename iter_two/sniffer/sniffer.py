@@ -1,9 +1,7 @@
 from scapy.all import *
 
-class Sniffer:
 
-    def __init__(self):
-        pass
+class Sniffer:
 
     def get_ip(self, snif, id, type):
 
@@ -21,21 +19,19 @@ class Sniffer:
             else:
                 return snif[id].dst
 
-
-    def get_sniff(self, net_face, packet_type = "TCP", ip = "", port = "", host= "host ", count = 1):
+    def get_sniff(self, net_face, packet_type="TCP", ip="", port="", host="host ", count=1):
 
         """
         Служебный метод для функции to_sniff()
         """
 
         if ip != "":
-            return sniff(filter = packet_type + ' and ' + host + ip, iface = net_face, count = count)
+            return sniff(filter=packet_type + ' and ' + host + ip, iface=net_face, count=count)
         elif port != "":
-            return sniff(filter = packet_type + ' port ' + port, iface = net_face, count = count)
+            return sniff(filter=packet_type + ' port ' + port, iface=net_face, count=count)
 
-
-    def to_sniff(self, net_face = "Беспроводная сеть", packet_type = "TCP", ip = "", port = "", count = 1,
-                 by_sender = False, by_taker = False, to_file = False):
+    def to_sniff(self, net_face="Беспроводная сеть", packet_type="TCP", ip="", port="", count=1,
+                 by_sender=False, by_taker=False, to_file=False):
         """
         *Readme*
 
@@ -91,15 +87,15 @@ class Sniffer:
 
         if to_file:
             file.close()
-            
+
         return [from_ip, data, snif.res[0]]
 
 
 if __name__ == '__main__':
     sniffer = Sniffer()
     face = 'Беспроводная сеть'
-    pkg = 'udp'
-    ip = '192.168.0.106'
+    pkg = 'tcp'
+    ip = '192.168.0.105'
     port = '51076'
     count = 10
     snifflist = sniffer.to_sniff(face, pkg, ip, port, count, True, True, True)

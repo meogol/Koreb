@@ -11,5 +11,11 @@ class Server:
         t = threading.Thread(target=self.socket.run_listener_server)
         t.start()
 
-    def send_package(self, package):
-        self.socket.send_package(package)
+    def send_package(self, destination_ip, package):
+        """
+
+        @param destination_ip: ip получателя пакета
+        @param package: пакет в виде набора байт
+        @return:
+        """
+        self.socket.send_package(destination_ip, package)

@@ -5,7 +5,7 @@ from iter_two.core.server.server import Server
 from iter_two.taker.taker import Taker
 
 
-class StartProgram():
+class StartProgram:
     def __init__(self):
         self.sniffer = Sniffer()
         self.server = Server()
@@ -15,6 +15,7 @@ class StartProgram():
 
         th1 = threading.Thread(target=self.sniffer.traff_file_read)
         th1.start()
+
 
 
 if __name__ == '__main__':

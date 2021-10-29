@@ -15,8 +15,10 @@ class Taker:
         @param addr: кортеж вида (ip, port)
         @return:
         """
+
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
-        list_bytes = list(map(int, list_bytes))
+        destination_ip = list_bytes[0]  #ip получателя пакета
+        list_bytes = list(map(int, list_bytes[1:]))
         self.cache_manager.add_agr_cache(addr[0], package)
 
         if self.cache_manager.get_last_pkg_cache(addr[0]) is None:
