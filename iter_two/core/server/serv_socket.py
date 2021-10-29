@@ -32,8 +32,13 @@ class Socket:
 
         self.socket.close()
 
-    def send_package(self, package="fhj "):
+    def send_package(self, destination_ip, package):
+        """
+        @param: destination_ip: ip получателя пакета
+        """
         msg = str(package)
+        msg = msg.replace("[", "[" + destination_ip + ", ", 1)
+
         self.socket.sendto(msg.encode('utf-8'), (self.__host, self.__port))
 
         d = self.socket.recvfrom(102400)
@@ -64,5 +69,5 @@ if __name__ == '__main__':
     sleep(1)
     while True:
         msg = input("your message:")
-        s2.send_package(msg)
+        s2.send_package(destination_ip=msg)
 

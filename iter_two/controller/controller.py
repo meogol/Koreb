@@ -9,7 +9,7 @@ class Controller:
         self.aggregator = Aggregator()
         self.cache_manager = CacheManager()
 
-    def analyse_command(self, package):
+    def analyse_command(self, package, destination_ip):
         res = self.aggregator.contrast_last_package(package)
         self.cache_manager.add_agr_cache(1, package)
-        self.server.send_package(package)
+        self.server.send_package( destination_ip, package)
