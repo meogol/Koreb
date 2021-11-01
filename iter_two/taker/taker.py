@@ -2,7 +2,7 @@ import random
 import sys
 import numpy as np
 from iter_two.core.cahce.cache import CacheManager
-
+from scapy.all import *
 
 class Taker:
     def __init__(self):
@@ -68,6 +68,8 @@ class Taker:
 
         return new_pkg
 
+    def to_send(self, package):
+        send(package)
 
 if __name__ == '__main__':
     taker = Taker()
