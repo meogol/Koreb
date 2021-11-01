@@ -1,6 +1,7 @@
 import random
 import sys
 import numpy as np
+from scapy.sendrecv import send
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -8,7 +9,7 @@ class Taker:
     def __init__(self):
         self.cache_manager = CacheManager()
 
-    def start(self, package, addr):
+    def start(self, package):
         """
         запускает анализ пакета в тейкере
         @param package: пакет в виде числового байткода
@@ -18,12 +19,13 @@ class Taker:
 
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
         destination_ip = list_bytes[0]  # ip получателя пакета
-        list_bytes = list(map(int, list_bytes[1:]))
+        list_bytes = list(map(bytes, map(int, list_bytes[1:])))
 
         print(list_bytes)
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
+            self.to_send(list_bytes)
             return
         else:
             last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
@@ -34,6 +36,8 @@ class Taker:
             print(len(res))
             print(res)
             print("________________")
+
+            self.to_send(res)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -68,9 +72,14 @@ class Taker:
 
         return new_pkg
 
+    def to_send(self, package):
+        send(package)
 
 if __name__ == '__main__':
     taker = Taker()
+
+    pkg = ['162.159.135.234', 75, 612, 501, 533, 233, 550, 355, 6, 170, 853, 554, 5, 195, 475, 34, 958, 351, 723, 789, 784, 423, 901, 320, 601, 502]
+    taker.start(pkg)
 
     items = list()
     add = 0
