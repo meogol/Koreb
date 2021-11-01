@@ -1,8 +1,7 @@
 import threading
 
-from iter_two.controller.sniffer import Sniffer
+from iter_two.core.snif.sniffer import Sniffer
 from iter_two.core.server.server import Server
-from iter_two.taker.taker import Taker
 
 
 class StartProgram:
