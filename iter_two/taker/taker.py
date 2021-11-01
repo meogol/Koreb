@@ -20,10 +20,20 @@ class Taker:
         destination_ip = list_bytes[0]  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
 
+
         print(list_bytes)
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
+
+
+        """???"""
+        self.to_send(list_bytes)
+        """???"""
+
+
+        if self.cache_manager.get_last_pkg_cache(addr[0]) is None:
+            self.cache_manager.add_last_pkg_cache(addr[0], list_bytes)
             return
         else:
             last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
