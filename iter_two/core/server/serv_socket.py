@@ -16,6 +16,13 @@ class Socket:
         self.__addr = (self.__host, self.__port)
 
         self.taker = Taker()
+        self.send_again_cache = list()
+
+    def cache_fill(self, package):
+        self.send_again_cache.append(package)
+
+    def cache_clearing(self, package):
+        self.send_again_cache.remove(package)
 
     def run_listener_server(self):
         self.socket.bind(self.__addr)
