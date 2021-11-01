@@ -88,7 +88,7 @@ class Sniffer:
         if to_file:
             file.close()
 
-        return [from_ip, data, snif.res[0]]
+        return [to_ip, data, snif.res[0]]
 
 
 if __name__ == '__main__':
@@ -97,6 +97,6 @@ if __name__ == '__main__':
     pkg = 'tcp'
     ip = '192.168.0.105'
     port = '51076'
-    count = 10
+    count = 100
     snifflist = sniffer.to_sniff(face, pkg, ip, port, count, True, True, True)
     print(snifflist)
