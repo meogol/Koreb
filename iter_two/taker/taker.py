@@ -1,7 +1,11 @@
 import random
 import sys
 import numpy as np
-from scapy.sendrecv import send
+from scapy.all import *
+from scapy.layers.inet import ICMP, TCP
+from scapy.layers.ipsec import IP
+from scapy.layers.l2 import Ether
+
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -17,15 +21,17 @@ class Taker:
         @return:
         """
 
-        list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
-        destination_ip = list_bytes[0]  # ip получателя пакета
-        list_bytes = list(map(bytes, map(int, list_bytes[1:])))
+        print(str(package))
+        list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').split(',')
+        destination_ip = list_bytes[0].replace("\'", "")  # ip получателя пакета
+        list_bytes = list(map(int, list_bytes[1:]))
 
         print(list_bytes)
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
-            self.to_send(list_bytes)
+            list_to_send = bytes(list_bytes)
+            self.to_send(destination_ip, list_to_send)
             return
         else:
             last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
@@ -37,7 +43,8 @@ class Taker:
             print(res)
             print("________________")
 
-            self.to_send(res)
+            list_to_send = bytes(res)
+            self.to_send(destination_ip, list_to_send)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -72,13 +79,16 @@ class Taker:
 
         return new_pkg
 
-    def to_send(self, package):
-        send(package)
+    def to_send(self, dst_ip, package):
+        pkt = IP(len=RawVal(package), dst=dst_ip)
+        bytes(pkt)
+        print(pkt)
+        send(pkt)
 
 if __name__ == '__main__':
     taker = Taker()
 
-    pkg = ['162.159.135.234', 75, 612, 501, 533, 233, 550, 355, 6, 170, 853, 554, 5, 195, 475, 34, 958, 351, 723, 789, 784, 423, 901, 320, 601, 502]
+    pkg = ['192.168.0.33', 75, 1, 250]
     taker.start(pkg)
 
     items = list()
