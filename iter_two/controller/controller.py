@@ -6,8 +6,8 @@ from iter_two.core.server.server import Server
 class Controller:
     def __init__(self):
         self.server = Server()
-        self.aggregator = Aggregator()
         self.cache_manager = CacheManager()
+        self.aggregator = Aggregator(self.cache_manager)
 
     def analyse_command(self, package, destination_ip):
         """
