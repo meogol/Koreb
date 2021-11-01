@@ -16,10 +16,12 @@ class Controller:
         @param destination_ip: ip получателя пакета
         @return:
         """
-        print("--------------------------")
-        print(len(package))
 
         res = package
+
+        print()
+        print("len_start"+str(len(package)))
+
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
             res = self.aggregator.contrast_last_package(package, destination_ip)
 

@@ -26,11 +26,8 @@ class Sniffer:
             destination_ip = snifflist[0]
 
             data_bytes = snifflist[2].__bytes__()
-            wight = sys.getsizeof(data_bytes)
-            print(wight)
             list_bytes = list(data_bytes)
 
-            print(list_bytes)
             self.controller.analyse_command(list_bytes, destination_ip)
 
     def get_ip(self, snif, id, type):
