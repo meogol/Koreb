@@ -38,6 +38,7 @@ class Socket:
         @param: package: пакет в виде набора байт
         """
         msg = str(package)
+        print("len_agr"+str(len(package)))
         msg = msg.replace("[", "[" + destination_ip + ", ", 1)
 
         self.socket.sendto(msg.encode('utf-8'), (self.__host, self.__port))

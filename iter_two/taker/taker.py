@@ -20,20 +20,16 @@ class Taker:
         destination_ip = list_bytes[0]  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
 
-        print(list_bytes)
-
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
-            self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
+            self.cache_manager.add_all_cache(destination_ip, list_bytes)
             return
-        else:
-            last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
-            res = self.recovery_pkg(list_bytes, last_pkg)
 
-            self.cache_manager.add_agr_cache(destination_ip, res)
+        last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
+        res = self.recovery_pkg(list_bytes, last_pkg)
+        print("len_res" + str(len(res)))
+        print()
 
-            print(len(res))
-            print(res)
-            print("________________")
+        self.cache_manager.add_all_cache(destination_ip, res)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -55,16 +51,16 @@ class Taker:
 
         last = []
         if len(this_pkg) > len(last_pkg):
-            prom_pkg = last_pkg * this_pkg[:len(last_pkg)]
+            prom_pkg = this_pkg[:len(last_pkg)]
             last = this_pkg[len(last_pkg):]
         else:
-            prom_pkg = last_pkg[:len(this_pkg)] * this_pkg
+            prom_pkg = this_pkg
 
-        index_non_zero = np.unique(np.where(prom_pkg < 0)[0])
+        index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
 
         this_pkg[index_non_zero] = last_pkg[index_non_zero]
 
-        new_pkg = np.concatenate((this_pkg, last))
+        new_pkg = this_pkg
 
         return new_pkg
 
