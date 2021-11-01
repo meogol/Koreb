@@ -11,9 +11,9 @@ class Aggregator:
 
         return ""
 
-    def contrast_last_package(self, package):
-        if self.cache_manager.get_last_pkg_cache(1) is not None:
-            lp = np.array(self.cache_manager.get_last_pkg_cache(1))
+    def contrast_last_package(self, package, destination_ip):
+        if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
+            lp = np.array(self.cache_manager.get_last_pkg_cache(destination_ip))
             p = np.array(package)
             lp_len = len(lp)
             p_len = len(package)

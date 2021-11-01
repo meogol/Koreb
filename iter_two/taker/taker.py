@@ -19,18 +19,21 @@ class Taker:
         list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
         destination_ip = list_bytes[0]  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
-        self.cache_manager.add_agr_cache(addr[0], package)
 
-        if self.cache_manager.get_last_pkg_cache(addr[0]) is None:
-            self.cache_manager.add_last_pkg_cache(addr[0], list_bytes)
+        print(list_bytes)
+
+        if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
+            self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
             return
         else:
-            last_pkg = self.cache_manager.get_last_pkg_cache(addr[0])
+            last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
             res = self.recovery_pkg(list_bytes, last_pkg)
 
-            wight = sys.getsizeof(res)
-            print(wight)
+            self.cache_manager.add_agr_cache(destination_ip, res)
+
+            print(len(res))
             print(res)
+            print("________________")
 
     def recovery_pkg(self, package, last_pkg):
         """

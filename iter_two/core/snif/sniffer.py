@@ -1,18 +1,12 @@
-import sys
-
-from scapy.utils import rdpcap
-
 from iter_two.controller.controller import Controller
-
-from iter_two.sniffer.sniffer import Sniffer as sniffsniff
+from scapy.all import *
 
 
 class Sniffer:
     def __init__(self):
         self.controller = Controller()
-        self.snif = sniffsniff()
 
-    def traff_file_read(self, face='Беспроводная сеть', pkg='tcp', ip='192.168.0.105', port='51076', count=10):
+    def traff_file_read(self, face='Беспроводная сеть', pkg='tcp', ip='192.168.1.106', port='51076', count=10):
         """
         params
             face: Указываем интерфейс устройства, с которого будет снифиться трафик
@@ -38,7 +32,6 @@ class Sniffer:
 
             print(list_bytes)
             self.controller.analyse_command(list_bytes, destination_ip)
-
 
     def get_ip(self, snif, id, type):
 
