@@ -78,17 +78,20 @@ class Taker:
         return new_pkg
 
     def to_send(self, dst_ip, package):
-        pkt = IP(len=RawVal(package), dst=dst_ip)
-        bytes(pkt)
+        package = bytes(package)
+        pkt = IP(dst=dst_ip)/TCP(dport=7777)/Raw(package)
+        #bytes(pkt)
         print(pkt)
         send(pkt)
 
 if __name__ == '__main__':
     taker = Taker()
 
-    pkg = ['192.168.0.33', 75, 1, 250]
-    taker.start(pkg)
 
+    while True:
+        taker.start(pkg)
+
+    pkg = ['192.168.0.106', 75, 1, 250]
     items = list()
     add = 0
     for i in range(100):
