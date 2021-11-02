@@ -1,5 +1,5 @@
 import threading
-
+import ctypes, sys
 from iter_two.core.snif.sniffer import Sniffer
 from iter_two.core.server.server import Server
 
@@ -16,6 +16,17 @@ class StartProgram:
         th1.start()
 
 
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
 if __name__ == '__main__':
-    start = StartProgram()
-    start.start()
+    if is_admin():
+        start = StartProgram()
+        start.start()
+    else:
+        # Re-run the program with admin rights
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)

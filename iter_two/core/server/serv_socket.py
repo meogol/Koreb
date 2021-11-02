@@ -56,7 +56,7 @@ class Socket:
         reply = d[0]
         self.__addr = d[1]
         print('Server reply: ' + reply.decode('utf-8'))
-        self.cache_socket.remove(0)
+        self.cache_socket.remove(self.cache_socket[0])
 
     def close_socket(self):
         self.socket.close()
