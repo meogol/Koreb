@@ -16,7 +16,7 @@ class Socket:
         self.__addr = (self.__host, self.__port)
 
         self.taker = Taker()
-        self.cache_socket = dict()
+        self.cache_socket = list()
 
     def run_listener_server(self):
         self.socket.bind(self.__addr)
@@ -27,14 +27,14 @@ class Socket:
                 d = self.socket.recvfrom(1024000)
             except socket.timeout:
                 print('Time is out. {0} seconds have passed'.format(self.__timeout))
-                self.send_package(self.cache_socket,,True)
+                self.send_package()
                 continue
 
             self.data_listener(d)
 
         self.socket.close()
 
-    def send_package(self, destination_ip, package, resending=False):
+    def build_and_send_message(self, destination_ip, package):
         """
         @param: destination_ip: ip получателя пакета
         @param: package: пакет в виде набора байт
@@ -43,22 +43,19 @@ class Socket:
         msg = str(package)
         msg = msg.replace("[", "[" + destination_ip + ", ", 1)
 
-        if not resending:
-            self.cache_socket.setdefault(destination_ip, list())
-            self.cache_socket[destination_ip].append(package)
+        self.cache_socket.append(msg)
 
+        self.send_package()
 
-
-
-    def (self, msg):
-        self.socket.sendto(msg.encode('utf-8'), (self.__host, self.__port))
+    def send_package(self):
+        for item in self.cache_socket:
+            self.socket.sendto(item.encode('utf-8'), (self.__host, self.__port))
 
         d = self.socket.recvfrom(102400)
         reply = d[0]
         self.__addr = d[1]
         print('Server reply: ' + reply.decode('utf-8'))
-        self.cache_socket[destination_ip].remove(package)
-
+        self.cache_socket.remove(0)
 
     def close_socket(self):
         self.socket.close()
@@ -70,7 +67,7 @@ class Socket:
         self.taker.start(received, self.__addr)
 
         msg = "200"
-        # self.socket.sendto(msg.encode('utf-8'), self.__addr)
+        self.socket.sendto(msg.encode('utf-8'), self.__addr)
 
 
 if __name__ == '__main__':
@@ -83,5 +80,5 @@ if __name__ == '__main__':
     sleep(1)
     while True:
         msg = input("your message:")
-        s2.send_package(destination_ip=msg, package=1241)
+        s2.build_and_send_message(destination_ip=msg, package=1241)
 
