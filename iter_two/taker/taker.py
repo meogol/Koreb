@@ -22,12 +22,11 @@ class Taker:
         """
 
         print(str(package))
-        list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').split(',')
+        list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').replace('[', '').replace(']', '').split(',')
         destination_ip = list_bytes[0].replace("\'", "")  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
-
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
             list_to_send = bytes(list_bytes)
             self.to_send(destination_ip, list_to_send)
@@ -41,8 +40,8 @@ class Taker:
 
         self.cache_manager.add_all_cache(destination_ip, res)
 
-            list_to_send = bytes(res)
-            self.to_send(destination_ip, list_to_send)
+        list_to_send = bytes(res)
+        self.to_send(destination_ip, list_to_send)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -82,6 +81,7 @@ class Taker:
         bytes(pkt)
         print(pkt)
         send(pkt)
+
 
 if __name__ == '__main__':
     taker = Taker()

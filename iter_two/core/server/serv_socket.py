@@ -65,7 +65,7 @@ class Socket:
         received = d[0]
         self.__addr = d[1]
 
-        self.taker.start(received, self.__addr)
+        self.taker.start(received)
 
         msg = "200"
         self.socket.sendto(msg.encode('utf-8'), self.__addr)

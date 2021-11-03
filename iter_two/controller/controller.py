@@ -20,6 +20,8 @@ class Controller:
         res = package
 
         print()
+        print(res)
+        print(destination_ip)
         print("len_start"+str(len(package)))
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:

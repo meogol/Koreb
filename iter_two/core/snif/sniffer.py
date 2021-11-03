@@ -6,7 +6,7 @@ class Sniffer:
     def __init__(self):
         self.controller = Controller()
 
-    def traff_file_read(self, face='Беспроводная сеть', pkg='tcp', ip='192.168.0.102', port='51076', count=10):
+    def traff_file_read(self, face='Беспроводная сеть', pkg='tcp', ip='192.168.0.102', port='6868', count=1):
         """
         params
             face: Указываем интерфейс устройства, с которого будет снифиться трафик
@@ -21,7 +21,7 @@ class Sniffer:
                 data - полезная нагрузка пакета, snif.res[0] - сам пакет.
         """
         while True:
-            snifflist = self.to_sniff(face, pkg, ip, port, count, True, True, True)
+            snifflist = self.to_sniff(face, pkg, ip, port, count, False, True, True)
 
             destination_ip = snifflist[0]
 
