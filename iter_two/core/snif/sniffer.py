@@ -116,3 +116,6 @@ class Sniffer:
             file.close()
 
         return [to_ip, data, snif.res[0]]
+
+if __name__ == '__main__':
+    snif = Sniffer()
