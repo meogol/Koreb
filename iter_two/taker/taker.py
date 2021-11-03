@@ -1,10 +1,9 @@
 import random
 import sys
 import numpy as np
-from scapy.all import *
-from scapy.layers.inet import ICMP, TCP
-from scapy.layers.ipsec import IP
-from scapy.layers.l2 import Ether
+from scapy.layers.inet import IP, TCP
+from scapy.packet import Raw
+from scapy.sendrecv import send
 
 from iter_two.core.cahce.cache import CacheManager
 
@@ -89,9 +88,9 @@ if __name__ == '__main__':
     taker = Taker()
 
     pkg = ['192.168.0.106', 75, 1, 250]
+
     while True:
         taker.start(pkg)
-
 
     items = list()
     add = 0
