@@ -18,4 +18,4 @@ class Server:
         @param package: пакет в виде набора байт
         @return:
         """
-        self.socket.send_package(destination_ip, package)
+        self.socket.build_and_send_message(destination_ip, package)
