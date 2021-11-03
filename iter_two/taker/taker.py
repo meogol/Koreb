@@ -1,6 +1,11 @@
 import random
 import sys
 import numpy as np
+from scapy.all import *
+from scapy.layers.inet import ICMP, TCP
+from scapy.layers.ipsec import IP
+from scapy.layers.l2 import Ether
+
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -8,7 +13,7 @@ class Taker:
     def __init__(self):
         self.cache_manager = CacheManager()
 
-    def start(self, package, addr):
+    def start(self, package):
         """
         запускает анализ пакета в тейкере
         @param package: пакет в виде числового байткода
@@ -16,12 +21,17 @@ class Taker:
         @return:
         """
 
-        list_bytes = str(package)[3:len(str(package)) - 2].replace(' ', '').split(',')
-        destination_ip = list_bytes[0]  # ip получателя пакета
+        print(str(package))
+        list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').split(',')
+        destination_ip = list_bytes[0].replace("\'", "")  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
-            self.cache_manager.add_all_cache(destination_ip, list_bytes)
+
+            self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
+            list_to_send = bytes(list_bytes)
+            self.to_send(destination_ip, list_to_send)
+
             return
 
         last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
@@ -30,6 +40,9 @@ class Taker:
         print()
 
         self.cache_manager.add_all_cache(destination_ip, res)
+
+            list_to_send = bytes(res)
+            self.to_send(destination_ip, list_to_send)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -64,9 +77,17 @@ class Taker:
 
         return new_pkg
 
+    def to_send(self, dst_ip, package):
+        pkt = IP(len=RawVal(package), dst=dst_ip)
+        bytes(pkt)
+        print(pkt)
+        send(pkt)
 
 if __name__ == '__main__':
     taker = Taker()
+
+    pkg = ['192.168.0.33', 75, 1, 250]
+    taker.start(pkg)
 
     items = list()
     add = 0

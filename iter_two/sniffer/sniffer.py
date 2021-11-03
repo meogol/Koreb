@@ -95,8 +95,8 @@ if __name__ == '__main__':
     sniffer = Sniffer()
     face = 'Беспроводная сеть'
     pkg = 'tcp'
-    ip = '192.168.0.105'
+    ip = '192.168.0.33'
     port = '51076'
-    count = 100
+    count = 500
     snifflist = sniffer.to_sniff(face, pkg, ip, port, count, True, True, True)
     print(snifflist)
