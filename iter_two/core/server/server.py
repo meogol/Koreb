@@ -19,3 +19,8 @@ class Server:
         @return:
         """
         self.socket.build_and_send_message(destination_ip, package)
+
+
+if __name__ == '__main__':
+    s = Server(host='192.168.0.106')
+    s.init_listener_thread()
