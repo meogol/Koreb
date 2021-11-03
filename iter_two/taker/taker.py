@@ -7,6 +7,7 @@ from scapy.layers.ipsec import IP
 from scapy.layers.l2 import Ether
 
 from iter_two.core.cahce.cache import CacheManager
+from iter_two.sniffer.sniffer import Sniffer
 
 
 class Taker:
@@ -81,6 +82,9 @@ class Taker:
         pkt = IP(dst=dst_ip)/TCP(dport=port)/Raw(package)
         #bytes(pkt)
         print(pkt)
+
+        print(pkt[0].payload.payload)
+
         send(pkt)
 
 
