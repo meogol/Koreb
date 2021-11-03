@@ -76,9 +76,9 @@ class Taker:
 
         return new_pkg
 
-    def to_send(self, dst_ip, package):
+    def to_send(self, dst_ip, package, port=7777):
         package = bytes(package)
-        pkt = IP(dst=dst_ip)/TCP(dport=7777)/Raw(package)
+        pkt = IP(dst=dst_ip)/TCP(dport=port)/Raw(package)
         #bytes(pkt)
         print(pkt)
         send(pkt)
