@@ -41,8 +41,8 @@ class Taker:
 
         self.cache_manager.add_all_cache(destination_ip, res)
 
-            list_to_send = bytes(res)
-            self.to_send(destination_ip, list_to_send)
+        list_to_send = bytes(res)
+        self.to_send(destination_ip, list_to_send)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -88,11 +88,11 @@ class Taker:
 if __name__ == '__main__':
     taker = Taker()
 
-
+    pkg = ['192.168.0.106', 75, 1, 250]
     while True:
         taker.start(pkg)
 
-    pkg = ['192.168.0.106', 75, 1, 250]
+
     items = list()
     add = 0
     for i in range(100):
