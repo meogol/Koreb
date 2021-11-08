@@ -6,7 +6,7 @@ from setting_reader import setting_read
 
 class Server:
     def __init__(self, host='localhost', port=7777):
-        self.socket = Socket(host=setting_read().get('host'), port=setting_read().get('port'))
+        self.socket = Socket(host=str(setting_read().get('host')), port=int(setting_read().get('port')))
 
     def init_listener_thread(self):
         t = threading.Thread(target=self.socket.run_listener_server)
