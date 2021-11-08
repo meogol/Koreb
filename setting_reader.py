@@ -28,4 +28,3 @@ def check(config, result, field):
 if __name__ == '__main__':
     u = setting_read()
     print(u)
-
