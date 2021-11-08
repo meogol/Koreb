@@ -12,11 +12,8 @@ class StartProgram:
 
     def start(self):
         self.server.init_listener_thread()
-
-        th1 = threading.Thread(target=self.sniffer.traff_file_read, args=('Беспроводная сеть',
-                                                                          setting_read().get('pkg_type'),
-                                                                          setting_read().get('ip'),
-                                                                          setting_read().get('port'), 1))
+        sett = setting_read()
+        th1 = threading.Thread(target=self.sniffer.traff_file_read, kwargs={pkg=sett.get('pkg_type'), ip=sett.get('ip'), port=setting_read().get('port')})
         th1.start()
 
 
