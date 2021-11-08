@@ -29,7 +29,7 @@ class Taker:
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
             list_to_send = bytes(list_bytes)
-            self.to_send(destination_ip, list_to_send)
+            # self.to_send(destination_ip, list_to_send)
 
             return
 
@@ -41,7 +41,7 @@ class Taker:
         self.cache_manager.add_all_cache(destination_ip, res)
 
         list_to_send = bytes(res)
-        self.to_send(destination_ip, list_to_send)
+        # self.to_send(destination_ip, list_to_send)
 
     def recovery_pkg(self, package, last_pkg):
         """

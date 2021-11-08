@@ -12,8 +12,9 @@ class StartProgram:
 
     def start(self):
         self.server.init_listener_thread()
-        sett = setting_read()
-        th1 = threading.Thread(target=self.sniffer.traff_file_read, kwargs={pkg=sett.get('pkg_type'), ip=sett.get('ip'), port=setting_read().get('port')})
+        th1 = threading.Thread(target=self.sniffer.traff_file_read, kwargs={'pkg': setting_read().get("pkg_type"),
+                                                                            'ip': setting_read().get("ip"),
+                                                                            'port': setting_read().get("port")})
         th1.start()
 
 
@@ -28,6 +29,7 @@ if __name__ == '__main__':
     if is_admin():
         start = StartProgram()
         start.start()
+        input("End")
     else:
         # Re-run the program with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
