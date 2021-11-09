@@ -1,12 +1,11 @@
 import threading
-
 from iter_two.core.server.serv_socket import Socket
-from setting_reader import setting_read
+from setting_reader import setting_res
 
 
 class Server:
     def __init__(self, host='localhost', port=7777):
-        self.socket = Socket(host=str(setting_read().get('host')), port=int(setting_read().get('port')))
+        self.socket = Socket(host=str(setting_res.get('host')), port=int(setting_res.get('port')))
 
     def init_listener_thread(self):
         t = threading.Thread(target=self.socket.run_listener_server)

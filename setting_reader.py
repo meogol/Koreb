@@ -1,30 +1,31 @@
 import configparser
 
+setting_res = {'pkg_type': 'tcp', 'ip': "'192.168.0.102'", 'port': '7777', 'host': 'localhost'}
+
 
 def setting_read():
     config = configparser.ConfigParser()
-    config.read("settings.ini")
+    try:
+        config.read("settings.ini")
 
-    if config is not None:
-        result = {'pkg_type': '"TCP"', 'ip': '"192.168.0.103"', 'port': '"7777"', 'host': '"host"'}
+        if config is not None:
 
-        check(config, result, "pkg_type")
-        check(config, result, "ip")
-        check(config, result, "port")
-        check(config, result, "host")
-        return result
-    else:
+            check(config, setting_res, "pkg_type")
+            check(config, setting_res, "ip")
+            check(config, setting_res, "port")
+            check(config, setting_res, "host")
+
+    except KeyError:
         print('File dose not exist!')
 
 
 def check(config, result, field):
     try:
-        config["setting"][field]
         result[field] = config["setting"][field]
     except KeyError:
         print(field + " is not specified and it is set to the default value")
 
 
 if __name__ == '__main__':
-    u = setting_read()
-    print(u)
+    setting_read()
+    print(setting_res)
