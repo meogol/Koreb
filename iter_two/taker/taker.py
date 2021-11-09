@@ -29,7 +29,7 @@ class Taker:
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
             list_to_send = bytes(list_bytes)
-            self.to_send(destination_ip, list_to_send)
+            # self.to_send(destination_ip, list_to_send)
 
             return
 
@@ -41,7 +41,7 @@ class Taker:
         self.cache_manager.add_all_cache(destination_ip, res)
 
         list_to_send = bytes(res)
-        self.to_send(destination_ip, list_to_send)
+        # self.to_send(destination_ip, list_to_send)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -76,9 +76,10 @@ class Taker:
 
         return new_pkg
 
-    def to_send(self, dst_ip, package):
-        pkt = IP(len=RawVal(package), dst=dst_ip)
-        bytes(pkt)
+    def to_send(self, dst_ip, package, port=7777):
+        package = bytes(package)
+        pkt = IP(dst=dst_ip)/TCP(dport=port)/Raw(package)
+        #bytes(pkt)
         print(pkt)
         send(pkt)
 
@@ -86,8 +87,10 @@ class Taker:
 if __name__ == '__main__':
     taker = Taker()
 
-    pkg = ['192.168.0.33', 75, 1, 250]
-    taker.start(pkg)
+    pkg = ['192.168.0.106', 75, 1, 250]
+
+    while True:
+        taker.start(pkg)
 
     items = list()
     add = 0
