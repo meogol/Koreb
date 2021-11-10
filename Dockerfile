@@ -1,9 +1,7 @@
 # установка базового образа (host OS)
-FROM python:3.8
+FROM python:3.8 as controller
 # установка рабочей директории в контейнере
 WORKDIR /code
-#install pip
-RUN pip install
 # копирование файла зависимостей в рабочую директорию
 COPY requirements.txt .
 # установка зависимостей
