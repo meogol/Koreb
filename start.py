@@ -19,18 +19,10 @@ class StartProgram:
         th1.start()
 
 
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
 
 
 if __name__ == '__main__':
-    if is_admin():
-        start = StartProgram()
-        start.start()
-        input("End")
-    else:
-        # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+    start = StartProgram()
+    start.start()
+    input("End")
+
