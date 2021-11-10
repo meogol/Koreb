@@ -8,7 +8,7 @@ from iter_two.taker.taker import Taker
 
 
 class Socket:
-    def __init__(self, host='localhost', port=7777):
+    def __init__(self, host='192.168.0.101', port=7777):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.__host = host
         self.__port = port
@@ -24,7 +24,7 @@ class Socket:
         while True:
             self.socket.settimeout(self.__timeout)
             try:
-                d = self.socket.recvfrom(1024000)
+                d = self.socket.recvfrom(10240000000)
             except socket.timeout:
                 print('Time is out. {0} seconds have passed'.format(self.__timeout))
                 self.send_package()
@@ -52,7 +52,7 @@ class Socket:
         for item in self.cache_socket:
             self.socket.sendto(item.encode('utf-8'), (self.__host, self.__port))
 
-        d = self.socket.recvfrom(102400)
+        d = self.socket.recvfrom(10240000000)
         reply = d[0]
         self.__addr = d[1]
         print('Server reply: ' + reply.decode('utf-8'))
