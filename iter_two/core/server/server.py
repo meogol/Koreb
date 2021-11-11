@@ -11,6 +11,9 @@ class Server:
         t = threading.Thread(target=self.socket.run_listener_server)
         t.start()
 
+    def init_listener(self):
+        self.socket.run_listener_server()
+
     def send_package(self, destination_ip, package):
         """
 
