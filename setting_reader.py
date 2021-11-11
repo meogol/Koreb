@@ -1,6 +1,6 @@
 import configparser
 
-setting_res = {'pkg_type': 'tcp', 'ip': "'192.168.0.102'", 'port': '7777', 'host': 'localhost'}
+setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': 'localhost'}
 
 
 def setting_read():
