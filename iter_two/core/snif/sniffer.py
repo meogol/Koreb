@@ -1,6 +1,8 @@
 from iter_two.controller.controller import Controller
 from scapy.all import *
 
+from setting_reader import setting_res
+
 
 class Sniffer:
     def __init__(self):
@@ -23,8 +25,8 @@ class Sniffer:
         while True:
             snifflist = self.to_sniff(face, pkg, ip, port, count, True, True, True)
 
-            destination_ip = snifflist[0]
-
+            #destination_ip = snifflist[0]
+            destination_ip = setting_res.get("host")
             data_bytes = snifflist[2].__bytes__()
             list_bytes = list(data_bytes)
 
