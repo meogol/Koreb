@@ -22,7 +22,7 @@ class Controller:
         print()
         print(res)
         print(destination_ip)
-        print("len_start"+str(len(package)))
+        print("len_start "+str(len(package)))
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
             res = self.aggregator.contrast_last_package(package, destination_ip)
