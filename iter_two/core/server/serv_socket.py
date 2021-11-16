@@ -41,7 +41,7 @@ class Socket:
         @param: resending: отправляется ли пакет повторно
         """
         msg = str(package)
-        print("len_agr"+str(len(package)))
+        print("len_agr " + str(len(package)))
         msg = msg.replace("[", "[" + destination_ip + ", ", 1)
 
         self.cache_socket.append(msg)
