@@ -19,14 +19,17 @@ class SocketClient:
         @param: package: пакет в виде набора байт
         @param: resending: отправляется ли пакет повторно
         """
-        while 1:
-            send_msg = str(package)
-            send_msg = send_msg.replace("[", "[" + destination_ip + ", ", 1)
-            # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
-            # соответствующий порт
-            self.client.sendto(send_msg.encode('utf-8'), (self.host, self.port))
+        send_msg = str(package)
+        send_msg = send_msg.replace("[", "[" + destination_ip + ", ", 1)
+        # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
+        # соответствующий порт
+        self.client.sendto(send_msg.encode('utf-8'), (self.host, self.port))
 
-            # Декодировать полученную информацию
-            back_msg = self.client.recv(1024).decode('utf-8')
+        # Декодировать полученную информацию
+        back_msg = self.client.recv(1024).decode('utf-8')
 
-        self.client.close()
+
+if __name__ == '__main__':
+    c = SocketClient()
+    c.build_and_send_message("","ПРИВЕТ, Лёха")
+    c.build_and_send_message("", "Как дела?")
