@@ -39,7 +39,7 @@ class SocketClient:
 
     def send_package(self):
         for item in self.cache_socket:
-            self.socket.sendto(item.encode('utf-8'), self.__controller_addr)
+            self.socket.sendto(item.encode('utf-8'), self.__taker_addr)
 
         d = self.socket.recvfrom(10240000000)
         reply = d[0]
