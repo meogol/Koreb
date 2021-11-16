@@ -8,7 +8,7 @@ from iter_two.taker.taker import Taker
 
 
 class Socket:
-    def __init__(self, host='192.168.0.101', port=7777):
+    def __init__(self, host='192.168.0.101', port=7788):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.__host = host
         self.__port = port
