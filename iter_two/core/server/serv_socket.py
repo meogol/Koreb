@@ -10,10 +10,13 @@ from iter_two.taker.taker import Taker
 class SocketClient:
     def __init__(self, host='192.168.0.101', port=7788):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.__host = host
-        self.__port = port
+        self.__taker_ip = taker_ip
+        self.__taker_port = taker_port
+        self.__controller_ip = controller_ip
+        self.__controller_port = controller_port
         self.__timeout = 60
-        self.__addr = (self.__host, self.__port)
+        self.__taker_addr = (self.__taker_ip, self.__taker_port)
+        self.__controller_addr = (self.__controller_ip, self.__controller_port)
 
         self.taker = Taker()
         self.cache_socket = list()
@@ -36,11 +39,11 @@ class SocketClient:
 
     def send_package(self):
         for item in self.cache_socket:
-            self.socket.sendto(item.encode('utf-8'), (self.__host, self.__port))
+            self.socket.sendto(item.encode('utf-8'), self.__controller_addr)
 
         d = self.socket.recvfrom(10240000000)
         reply = d[0]
-        self.__addr = d[1]
+        #self.__addr = d[1]
         print('Server reply: ' + reply.decode('utf-8'))
         self.cache_socket.remove(self.cache_socket[0])
 
