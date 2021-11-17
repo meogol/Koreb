@@ -1,10 +1,4 @@
-import asyncio
-import threading
-from time import sleep
-
 import socket
-
-from iter_two.taker.taker import Taker
 
 
 class SocketClient:
