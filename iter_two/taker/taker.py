@@ -25,14 +25,15 @@ class Taker:
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
             list_to_send = bytes(list_bytes)
-            # self.to_send(destination_ip, list_to_send)
+            self.to_send(destination_ip, list_to_send)
 
             return
 
         last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
         res = self.recovery_pkg(list_bytes, last_pkg)
 
-        print_len(msg="Resource length:\t", pkg=res, dst=destination_ip)
+        print_len(msg="Agregate length:\t", pkg=list_bytes, dst=destination_ip)
+        print_len(msg="Resource length:\t", pkg=res, dst=destination_ip, print_pkg=False)
 
         self.cache_manager.add_all_cache(destination_ip, res)
 
