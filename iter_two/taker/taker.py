@@ -32,7 +32,7 @@ class Taker:
         last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
         res = self.recovery_pkg(list_bytes, last_pkg)
 
-        print_len(msg="Agregate length:\t", pkg=list_bytes, dst=destination_ip)
+        print_len(msg="\nAgregate length:\t", pkg=list_bytes, dst=destination_ip, print_pkg=False)
         print_len(msg="Resource length:\t", pkg=res, dst=destination_ip, print_pkg=False)
 
         self.cache_manager.add_all_cache(destination_ip, res)

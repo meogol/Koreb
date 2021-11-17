@@ -2,4 +2,4 @@
 def print_len(pkg, msg="", dst="", print_pkg=True):
     if print_pkg:
         print('\n' + str(pkg))
-    print('\n' + dst + '\n' + msg + str(len(pkg)) + '\n')
+    print(dst + '\n' + msg + str(len(pkg)))
