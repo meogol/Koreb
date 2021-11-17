@@ -6,7 +6,7 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
     def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
-        super().__init__(host, port)
+        super().__init__(host, port, "client")
 
     def build_and_send_message(self, destination_ip, package):
         """

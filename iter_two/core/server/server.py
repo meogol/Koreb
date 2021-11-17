@@ -17,12 +17,10 @@ class Server:
         else:
             self.ip = host
 
-        self.socket = Socket(host=self.ip, port=port, socket_type=socket_type)
-
         if self.socket_type == "server":
-            self.socket.__class__ = SocketServer
+            self.socket = SocketServer(host=self.ip, port=port)
         else:
-            self.socket.__class__ = SocketClient
+            self.socket = SocketClient(host=self.ip, port=port)
 
     def init_listener(self):
         self.socket.run_listener_server()
