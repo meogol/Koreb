@@ -13,13 +13,13 @@ class Server:
         """
         self.socket_type = socket_type
         self.socket = Socket(host=host, port=port)
+        if self.socket_type == "server":
+            self.socket.__class__ = SocketServer
+        else:
+            self.socket.__class__ = SocketClient
 
     def init_listener(self):
-        if self.socket_type == "server":
-            self.socket_server = SocketServer(self.socket.getHost(), self.socket.getPort())
-            self.socket_server.run_listener_server()
-        else:
-            return '400 Socket Type Error'
+        self.socket.run_listener_server()
 
     def send_package(self, destination_ip, package):
         """
@@ -27,8 +27,5 @@ class Server:
         @param package: пакет в виде набора байт
         @return:
         """
-        if self.socket_type == "client":
-            self.socket_client = SocketClient(self.socket.getHost(), self.socket.getPort())
-            self.socket_client.build_and_send_message(destination_ip, package)
-        else:
-            return '400 Socket Type Error'
+        self.socket_client.build_and_send_message(destination_ip, package)
+
