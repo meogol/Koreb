@@ -1,6 +1,6 @@
 import configparser
 
-setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.101'}
+setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.101', 'face': 'Беспроводная сеть'}
 
 
 def setting_read():
@@ -14,6 +14,7 @@ def setting_read():
             check(config, setting_res, "ip")
             check(config, setting_res, "port")
             check(config, setting_res, "host")
+            check(config, setting_res, "face")
 
     except KeyError:
         print('File dose not exist!')

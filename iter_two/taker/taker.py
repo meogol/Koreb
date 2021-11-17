@@ -1,11 +1,8 @@
-import random
-import sys
 import numpy as np
 from scapy.all import *
 from scapy.layers.inet import ICMP, TCP
 from scapy.layers.ipsec import IP
-from scapy.layers.l2 import Ether
-
+from iter_two.printer import print_len
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -21,7 +18,6 @@ class Taker:
         @return:
         """
 
-        print(str(package))
         list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').replace('[', '').replace(']', '').split(',')
         destination_ip = list_bytes[0].replace("\'", "")  # ip получателя пакета
         list_bytes = list(map(int, list_bytes[1:]))
@@ -35,8 +31,8 @@ class Taker:
 
         last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
         res = self.recovery_pkg(list_bytes, last_pkg)
-        print("len_res" + str(len(res)))
-        print()
+
+        print_len(msg="Resource length:\t", pkg=res, dst=destination_ip)
 
         self.cache_manager.add_all_cache(destination_ip, res)
 
@@ -79,32 +75,6 @@ class Taker:
     def to_send(self, dst_ip, package, port=7777):
         package = bytes(package)
         pkt = IP(dst=dst_ip)/TCP(dport=port)/Raw(package)
-        #bytes(pkt)
-        print(pkt)
         send(pkt)
 
 
-if __name__ == '__main__':
-    taker = Taker()
-
-    pkg = ['192.168.0.106', 75, 1, 250]
-
-    while True:
-        taker.start(pkg)
-
-    items = list()
-    add = 0
-    for i in range(100):
-        if i + add >= 95:
-            break
-
-        n = random.randint(0, 100)
-        if 10 < n < 30:
-            r = random.randint(3, 8)
-            add += r
-
-            items.append(-r - 1)
-        else:
-            items.append(i + add)
-
-    taker.recovery_pkg(items, [a for a in range(100)])

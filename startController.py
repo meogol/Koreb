@@ -5,5 +5,6 @@ if __name__ == '__main__':
     setting_read()
 
     sniffer = Sniffer()
+
     sniffer.traff_file_read(pkg=setting_res.get("pkg_type"), ip=setting_res.get("ip"), port=setting_res.get("port"))
 

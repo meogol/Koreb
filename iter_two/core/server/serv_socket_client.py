@@ -1,8 +1,12 @@
 import socket
 
+from iter_two.core.server.socket import Socket
+from setting_reader import setting_res
 
-class SocketClient:
-    def __init__(self, host='192.168.0.101', port=7777):
+
+class SocketClient(Socket):
+    def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
+        super().__init__(host, port)
         self.host = host
         self.port = port
         self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -13,14 +17,14 @@ class SocketClient:
         @param: package: пакет в виде набора байт
         @param: resending: отправляется ли пакет повторно
         """
-        while 1:
-            send_msg = str(package)
-            send_msg = send_msg.replace("[", "[" + destination_ip + ", ", 1)
-            # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
-            # соответствующий порт
-            self.client.sendto(send_msg.encode('utf-8'), (self.host, self.port))
+        send_msg = str(package)
+        send_msg = send_msg.replace("[", "[" + destination_ip + ", ", 1)
+        # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
+        # соответствующий порт
+        self.client.sendto(send_msg.encode('utf-8'), (self.host, self.port))
 
-            # Декодировать полученную информацию
-            back_msg = self.client.recv(1024).decode('utf-8')
+        # Декодировать полученную информацию
+        back_msg = self.client.recv(1024).decode('utf-8')
 
-        self.client.close()
+
+

@@ -1,12 +1,15 @@
 from iter_two.controller.controller import Controller
 from scapy.all import *
 
+from setting_reader import setting_res
+
 
 class Sniffer:
     def __init__(self):
         self.controller = Controller()
 
-    def traff_file_read(self, face='Беспроводная сеть', pkg='tcp', ip='192.168.0.101', port='6868', count=1):
+    def traff_file_read(self, face=setting_res.get("face"), pkg=setting_res.get("pkg_type"),
+                        ip=setting_res.get("ip"), port=setting_res.get("port"), count=1):
         """
         params
             face: Указываем интерфейс устройства, с которого будет снифиться трафик
@@ -21,10 +24,9 @@ class Sniffer:
                 data - полезная нагрузка пакета, snif.res[0] - сам пакет.
         """
         while True:
-            snifflist = self.to_sniff(face, pkg, ip, port, count, True, True, True)
+            snifflist = self.to_sniff(face, pkg, ip, port, count, True, True, False)
 
             destination_ip = snifflist[0]
-
             data_bytes = snifflist[2].__bytes__()
             list_bytes = list(data_bytes)
 
