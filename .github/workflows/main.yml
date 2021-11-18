@@ -30,4 +30,10 @@ jobs:
           echo "Application Name: ${{ env.APP_NAME }}"
           echo "Application Version: ${{ env.PKG_NAME }}"
       
+      - name: Git clone repo
+        uses: actions/checkout@v1
+        
+      - name: List current folder
+        run: ls -la
+        
   
