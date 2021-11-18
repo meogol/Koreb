@@ -25,7 +25,7 @@ class Taker:
         if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
             self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
             list_to_send = bytes(list_bytes)
-            self.to_send(destination_ip, list_to_send)
+            # self.to_send(destination_ip, list_to_send)
 
             return
 
