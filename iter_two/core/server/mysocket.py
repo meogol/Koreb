@@ -15,4 +15,4 @@ class Socket:
         return self.host
 
     def getPort(self):
-        return self.por
+        return self.port
