@@ -3,7 +3,7 @@
 name: CI
 
 # Controls when the workflow will run
-on:
+on: 
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     tags:
@@ -21,18 +21,6 @@ jobs:
   run_tests:
       runs-on: [ubuntu-latest]
       steps:
-        # Чекаутим код
-        - uses: actions/checkout@master
-        # Устанавливаем python нужной версии
-        - uses: actions/setup-python@v1
-          with:
-            python-version: '3.8'
-            architecture: 'x64'
-        - name: Install requirements
-          # Устанавливаем зависимости
-          run: pip install -r requirements.txt
-        - name: Run tests
-          run: coverage run test/tests.py
-        - name: Tests report
-          run: coverage report
+      - name: Print Message
+        run: echo "Hello"
   
