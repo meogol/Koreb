@@ -1,6 +1,6 @@
 import configparser
 
-setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.101', 'face': 'Беспроводная сеть'}
+setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.103', 'face': 'Беспроводная сеть'}
 
 
 def setting_read():

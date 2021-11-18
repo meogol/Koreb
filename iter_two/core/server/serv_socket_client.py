@@ -1,15 +1,12 @@
 import socket
 
-from iter_two.core.server.socket import Socket
+from iter_two.core.server.mysocket import Socket
 from setting_reader import setting_res
 
 
 class SocketClient(Socket):
     def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
-        super().__init__(host, port)
-        self.host = host
-        self.port = port
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        super().__init__(host, port, "client")
 
     def build_and_send_message(self, destination_ip, package):
         """
@@ -21,10 +18,10 @@ class SocketClient(Socket):
         send_msg = send_msg.replace("[", "[" + destination_ip + ", ", 1)
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
-        self.client.sendto(send_msg.encode('utf-8'), (self.host, self.port))
+        self.soc.sendto(send_msg.encode('utf-8'), (self.host, self.port))
 
         # Декодировать полученную информацию
-        back_msg = self.client.recv(1024).decode('utf-8')
+        back_msg = self.soc.recv(1024).decode('utf-8')
 
 
 
