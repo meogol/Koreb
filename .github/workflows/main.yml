@@ -43,5 +43,5 @@ jobs:
       - name: Run tests
         run: coverage run test/tests.py
       - name: Tests report
-        run: coverage report
+        run: testOne report
   
