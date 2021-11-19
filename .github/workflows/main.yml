@@ -41,7 +41,7 @@ jobs:
         # Устанавливаем зависимости
         run: pip install -r requirements.txt
       - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+        run: chmod +x ./test
       - name: Run tests
         run: test/tests.py
      
