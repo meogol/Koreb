@@ -41,7 +41,7 @@ jobs:
         # Устанавливаем зависимости
         run: pip install -r requirements.txt
       - name: Change wrapper permissions
-        run: chmod +x ./test
+        run: chmod +x ./test/tests.py
       - name: Run tests
         run: test/tests.py
      
