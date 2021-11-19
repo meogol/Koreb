@@ -40,9 +40,12 @@ jobs:
       - name: Install requirements
         # Устанавливаем зависимости
         run: pip install -r requirements.txt
-      - name: Change wrapper permissions
-        run: chmod +x ./test/tests.py
-      - name: Run tests
-        run: test/tests.py
+        
+      - name: Flake8
+        run: flake8 .
+      
+      - name: Mypy
+        run: mypy .
+        
      
   
