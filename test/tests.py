@@ -1,12 +1,15 @@
-import unittest
+#!/usr/bin/env python
+import netfilterqueue
+import scapy.all as scapy
 
 
-class AppTests(unittest.TestCase):
-    def testOne(self):
-        a=2
-        b=3
-        c = a+b
+def print_and_accept(packet):
+    scapy_packet = scapy.IP(packet.get_payload())
+    print("pkg:" + str(scapy_packet.show()))
+    packet.drop()
 
-if __name__ == '__main__':
-    test = AppTests()
-    test.testOne()
+
+nfqueue = netfilterqueue.NetfilterQueue()
+nfqueue.bind(0, print_and_accept)
+nfqueue.run()
+
