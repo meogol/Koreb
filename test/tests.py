@@ -5,7 +5,8 @@ import scapy.all as scapy
 
 def print_and_accept(packet):
     scapy_packet = scapy.IP(packet.get_payload())
-    print("pkg:" + str(scapy_packet.show()))
+    # print("pkg:" + str(scapy_packet.show()))
+    print(packet)
     packet.drop()
 
 
