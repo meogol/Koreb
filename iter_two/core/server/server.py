@@ -28,4 +28,6 @@ class Server:
         @return:
         """
         self.socket.build_and_send_message(destination_ip, package)
+        print("Send packet")
+        print()
 
