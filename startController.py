@@ -1,9 +1,9 @@
 
-from iter_two.core.snif.spoofer import Spoofer
-from setting_reader import setting_read, setting_res
+from iter_two.controller.snif.sniffer import Sniffer
+from setting_reader import setting_read
 
 if __name__ == '__main__':
     setting_read()
 
-    spoofer = Spoofer()
-    spoofer.to_process()
+    sniffer = Sniffer()
+    sniffer.to_process()

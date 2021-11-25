@@ -5,7 +5,7 @@ import scapy.all as scapy
 from iter_two.controller.controller import Controller
 
 
-class Spoofer:
+class Sniffer:
 
     def __init__(self):
         self.controller = Controller()
@@ -13,10 +13,10 @@ class Spoofer:
     def to_process(self):
         while True:
             nfqueue = netfilterqueue.NetfilterQueue()
-            nfqueue.bind(0, self.to_spoof)
+            nfqueue.bind(0, self.to_sniff)
             nfqueue.run()
 
-    def to_spoof(self, packet):
+    def to_sniff(self, packet):
         scapy_packet = scapy.IP(packet.get_payload())
         packet.drop()
 
