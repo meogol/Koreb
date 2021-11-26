@@ -5,10 +5,15 @@ from setting_reader import setting_res
 
 
 class SocketClient(Socket):
+
     def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
+        """
+        COUNT_OF_TRYING - количество попыток отправки одного пакета
+        """
+        self.COUNT_OF_TRYING = 5
         self.host = host
         self.port = port
-        super().__init__(host, port, "client")
+        super().__init__(self.host, self.port, "client")
 
     def build_and_send_message(self, destination_ip, package):
         """
@@ -23,26 +28,35 @@ class SocketClient(Socket):
 
         print("host\t" + self.host)
         print("port\t" + str(self.port))
-        self.host = "192.168.102"
-        self.port = 7777
-        self.soc.sendto(send_msg.encode('utf-8'), (self.host, self.port))
 
         # Декодировать полученную информацию
 
-        back_msg = self.soc.recv(1024).decode('utf-8')
-        """
-        print("BACK:")
-        print(str(back_msg))
-        print()
-        """
-        self.sock.settimeout(500.0)
         back_msg = None
-        back_msg = self.soc.recv(1024).decode('utf-8')
-        self.sock.settimeout(None)
-        if back_msg is None:
-            return 400
-        else:
-            return back_msg
 
+        tryingNum = 0
 
+        while back_msg != '200':
+
+            self.soc.sendto(send_msg.encode('utf-8'), (self.host, self.port))
+
+            self.soc.settimeout(5.0)
+
+            back_msg = self.soc.recv(1024).decode('utf-8')
+
+            tryingNum += 1
+            print("BACK:")
+            print(str(back_msg))
+
+            self.soc.settimeout(None)
+
+            if back_msg != '200':
+                print("\n400 ERROR to get response! try again...\n")
+
+                if tryingNum == self.COUNT_OF_TRYING:
+                    print("\nSKIP PACKET\n")
+                    return back_msg
+
+            else:
+                print("\n200 SUCCESS!\n")
+                return back_msg
 
