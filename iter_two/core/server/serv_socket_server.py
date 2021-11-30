@@ -1,5 +1,6 @@
 import asyncio
 import threading
+from random import randint
 from time import sleep
 
 import socket
@@ -20,9 +21,19 @@ class SocketServer(Socket):
             data, addr = self.soc.recvfrom(10240000)
             # Декодировать полученное сообщение
             recvmsg = data.decode('utf-8')
-            self.taker.start(recvmsg)
+            #self.taker.start(recvmsg)
 
-            replymsg = '2'
+            replymsg = '200'
+
+            """
+            Для отладки обратной связи
+            
+            if randint(0, 3) == 1:
+                replymsg = '200'
+            else:
+                replymsg = '400'
+            """
+
             self.soc.sendto(replymsg.encode('utf-8'), addr)
 
 
