@@ -1,3 +1,5 @@
+import math
+
 from iter_two.controller.aggregator import Aggregator
 from iter_two.core.cahce.cache import CacheManager
 from iter_two.core.server.server import Server
@@ -17,7 +19,14 @@ class Controller:
         @return:
         """
 
-        res = package
-        self.server.send_package(destination_ip, package)
+        int_package = int_from_bytes(bytes(package))
+        int_list = [(int_package//(10**i))%10 for i in range(math.ceil(math.log(int_package, 10))-1, -1, -1)]
+        self.server.send_package(destination_ip, int_list)
 
 
+def int_to_bytes(x: int) -> bytes:
+    return x.to_bytes((x.bit_length() + 7) // 8, 'big')
+
+
+def int_from_bytes(xbytes: bytes) -> int:
+    return int.from_bytes(xbytes, 'big')
