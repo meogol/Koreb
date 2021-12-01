@@ -33,7 +33,8 @@ class Taker:
 
         byte_package = int_to_bytes(int_package)
         print("byte_package\t" + str(byte_package))
-        send(byte_package)
+        scapy_package = scapy.IP(byte_package)
+        send(scapy_package)
 
     def recovery_pkg(self, package, last_pkg):
         """
