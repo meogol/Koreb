@@ -1,4 +1,6 @@
 import socket
+import pickle
+import numpy
 
 from iter_two.core.server.mysocket import Socket
 from setting_reader import setting_res
@@ -11,8 +13,8 @@ class SocketClient(Socket):
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
         self.COUNT_OF_TRYING = 5
-        self.host = host
-        self.port = port
+        self.host = "192.168.0.102"
+        self.port = 7777
         super().__init__(self.host, self.port, "client")
 
     def build_and_send_message(self, destination_ip, package):
@@ -21,8 +23,7 @@ class SocketClient(Socket):
         @param: package: пакет в виде набора байт
         @param: resending: отправляется ли пакет повторно
         """
-        send_msg = str(package)
-        send_msg = send_msg.replace("[", "[" + destination_ip + ", ", 1)
+        send_msg = package
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
@@ -36,8 +37,8 @@ class SocketClient(Socket):
         tryingNum = 0
 
         while back_msg != '200':
-
-            self.soc.sendto(send_msg.encode('utf-8'), (self.host, self.port))
+            data = pickle.dumps(send_msg)
+            self.soc.sendto(data, (self.host, self.port))
 
             self.soc.settimeout(5.0)
 
@@ -59,4 +60,3 @@ class SocketClient(Socket):
             else:
                 print("\n200 SUCCESS!\n")
                 return back_msg
-
