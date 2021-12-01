@@ -23,9 +23,17 @@ class Taker:
         @param addr: кортеж вида (ip, port)
         @return:
         """
-        list_bytes = pickle.loads(package)
-        print("pl" + str(list_bytes))
-        send(list_bytes)
+        int_list = pickle.loads(package)
+
+        int_package = 0
+        for i in range(len(int_list)) :
+            int_package += int_list[i] * 10**(len(int_list)-i-1)
+        print("int_list\t" + str(int_list))
+        print("int_package\t" + str(int_package))
+
+        byte_package = int_to_bytes(int_package)
+        print("byte_package\t" + str(byte_package))
+        send(byte_package)
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -61,3 +69,6 @@ class Taker:
 
         return new_pkg
 
+
+def int_to_bytes(x: int) -> bytes:
+    return x.to_bytes((x.bit_length() + 7) // 8, 'big')
