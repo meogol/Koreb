@@ -20,8 +20,8 @@ class SocketServer(Socket):
             # Получать сообщения и адреса. Recvfrom используется для получения сообщений в UDP
             data, addr = self.soc.recvfrom(10240000)
             # Декодировать полученное сообщение
-            recvmsg = data.decode('utf-8')
-            #self.taker.start(recvmsg)
+            recvmsg = data
+            self.taker.start(recvmsg)
 
             replymsg = '200'
 

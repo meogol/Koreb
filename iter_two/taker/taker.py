@@ -1,9 +1,13 @@
+import pickle
+
 import numpy as np
+import numpy as numpy
 from scapy.all import *
 from scapy.layers.inet import ICMP, TCP
 from scapy.layers.ipsec import IP
 from scapy.layers.l2 import Ether
 
+import scapy.all as scapy
 from iter_two.printer import print_len
 from iter_two.core.cahce.cache import CacheManager
 
@@ -20,30 +24,38 @@ class Taker:
         @return:
         """
 
-        list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').replace('[', '').replace(']', '').split(',')
-        destination_ip = list_bytes[0].replace("\'", "")  # ip получателя пакета
-        list_bytes = list(map(int, list_bytes[1:]))
+        # list_bytes = str(package)[2:len(str(package)) - 1].replace(' ', '').replace('[', '').replace(']', '').split(',')
+        # destination_ip = list_bytes[0].replace("\'", "")  # ip получателя пакета
 
-        if ':' not in destination_ip:
+        destination_ip = "192.168.0.100"
+        list_bytes = pickle.loads(package)
+        print(list_bytes)
 
-            if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
-                self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
-                list_to_send = bytes(list_bytes)
-                self.to_send(destination_ip, list_to_send)
 
-                return
 
-            last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
-            res = self.recovery_pkg(list_bytes, last_pkg)
+        if self.cache_manager.get_last_pkg_cache(destination_ip) is None:
+            scapy_packet = scapy.IP(bytes(list_bytes))
+            destination_ip1 = scapy_packet.sprintf("%IP.dst%")
 
-            print_len(msg="\nAgregate length:\t", pkg=list_bytes, dst=destination_ip, print_pkg=False)
-            print_len(msg="Resource length:\t", pkg=res, dst=destination_ip, print_pkg=False)
+            self.cache_manager.add_last_pkg_cache(destination_ip, list_bytes)
 
-            self.cache_manager.add_all_cache(destination_ip, res)
-
-            list_to_send = bytes(res)
+            list_to_send = numpy.array(list_bytes, dtype=numpy.int8)
             self.to_send(destination_ip, list_to_send)
+            return
 
+
+        last_pkg = self.cache_manager.get_last_pkg_cache(destination_ip)
+        res = self.recovery_pkg(list_bytes, last_pkg)
+
+        print_len(msg="\nAgregate length:\t", pkg=list_bytes, dst=destination_ip, print_pkg=False)
+        print_len(msg="Resource length:\t", pkg=res, dst=destination_ip, print_pkg=False)
+
+        self.cache_manager.add_all_cache(destination_ip, res)
+
+        list_to_send = bytes(res)
+        self.to_send(destination_ip, list_to_send)
+
+        return
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -52,13 +64,14 @@ class Taker:
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
-
+        a = bytearray(package)
         filtered = list()
         for x in package:
             if x >= 0:
                 filtered.append(x)
             else:
                 filtered.extend([-1] * -x)
+
 
         this_pkg = np.array(filtered)
         last_pkg = np.array(last_pkg)
@@ -81,9 +94,7 @@ class Taker:
     def to_send(self, dst_ip, package, port=7777):
         package = bytes(package)
         if ':' not in dst_ip:
-            pkt = IP(dst=dst_ip)/TCP(dport=port)/Raw(package)
+            pkt = IP(dst=dst_ip) / TCP(dport=port) / Raw(package)
         else:
             pkt = Ether(dst=dst_ip) / TCP(dport=port) / Raw(package)
         send(pkt)
-
-
