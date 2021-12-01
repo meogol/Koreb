@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import netfilterqueue
 import scapy.all as scapy
+from scapy.layers.inet import IP, TCP
+from scapy.layers.l2 import Ether
+from scapy.packet import Raw
+from scapy.sendrecv import send
 
 from iter_two.controller.controller import Controller
 
@@ -17,16 +21,27 @@ class Sniffer:
             nfqueue.run()
 
     def to_sniff(self, packet):
+        print(packet.get_payload())
         scapy_packet = scapy.IP(packet.get_payload())
         packet.drop()
-
         print(scapy_packet)
 
         src_ip = scapy_packet.sprintf("%IP.src%")
         dst_ip = scapy_packet.sprintf("%IP.dst%")
         data = list(scapy.raw(scapy_packet))
 
-        self.controller.analyse_command(data, dst_ip)
+        """HARDCODE"""
+        if src_ip == "192.168.0.101":
+            package = bytes(scapy_packet)
+            if ':' not in dst_ip:
+                pkt = IP(src="192.168.0.101", dst="192.168.0.109") / TCP() / Raw(data)
+            else:
+                pkt = Ether(src="192.168.0.101", dst="192.168.0.109") / TCP() / Raw(data)
+            send(scapy_packet)
+            print("VANYA OTVECHAETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+        else:
+            print("NE OTVECHAET :c")
+            self.controller.analyse_command(scapy_packet, dst_ip)
 
         print("from_ip:\t" + str(src_ip))
         print("to_ip:\t\t" + str(dst_ip))

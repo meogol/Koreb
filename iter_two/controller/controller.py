@@ -18,12 +18,6 @@ class Controller:
         """
 
         res = package
+        self.server.send_package(destination_ip, package)
 
-        print_len(pkg=package, msg="Start length:\t", dst=destination_ip)
-
-        if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
-            res = self.aggregator.contrast_last_package(package, destination_ip)
-
-        self.cache_manager.add_all_cache(destination_ip, package)
-        self.server.send_package(destination_ip, res)
 
