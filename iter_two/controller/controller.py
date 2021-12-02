@@ -19,9 +19,10 @@ class Controller:
         @param destination_ip: ip получателя пакета
         @return:
         """
-
-        int_package = int_from_bytes(bytes(package))
+        
+        int_package = int_from_bytes(package)
         int_list = [(int_package//(10**i))%10 for i in range(math.ceil(math.log(int_package, 10))-1, -1, -1)]
+        # int_list = int_to_list(int_package)
         int_list = self.aggregator.contrast_last_package(int_list, destination_ip)
         self.cache_manager.add_all_cache(destination_ip, package)
         self.server.send_package(destination_ip, int_list)
@@ -33,6 +34,16 @@ def int_to_bytes(x: int) -> bytes:
 
 def int_from_bytes(xbytes: bytes) -> int:
     return int.from_bytes(xbytes, 'big')
+
+
+def int_to_list(int_pkg):
+    result = []
+    while int_pkg > 0:
+        result.append(int_pkg % 10)
+        int_pkg //= 10
+
+    result.reverse()
+    return result
 
 
 if __name__ == '__main__':
