@@ -12,7 +12,7 @@ class Server:
         socket_type = "server" or "client"
         """
         self.socket_type = socket_type
-        host = "192.168.0.102"
+        host = "192.168.0.103"
         port = 7777
         if self.socket_type == "server":
             self.socket = SocketServer(host=host, port=port)
