@@ -5,6 +5,7 @@ from iter_two.core.cahce.cache import CacheManager
 from iter_two.core.server.server import Server
 from iter_two.printer import print_len
 
+
 class Controller:
     def __init__(self):
         self.server = Server(socket_type="client")
@@ -21,6 +22,8 @@ class Controller:
 
         int_package = int_from_bytes(bytes(package))
         int_list = [(int_package//(10**i))%10 for i in range(math.ceil(math.log(int_package, 10))-1, -1, -1)]
+        int_list = self.aggregator.contrast_last_package(int_list, destination_ip)
+        self.cache_manager.add_all_cache(destination_ip, package)
         self.server.send_package(destination_ip, int_list)
 
 
@@ -30,3 +33,8 @@ def int_to_bytes(x: int) -> bytes:
 
 def int_from_bytes(xbytes: bytes) -> int:
     return int.from_bytes(xbytes, 'big')
+
+
+if __name__ == '__main__':
+    ter = Controller()
+    ter.analyse_command(12587463147, 'it')

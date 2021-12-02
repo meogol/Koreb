@@ -25,6 +25,10 @@ class Taker:
         """
         int_list = pickle.loads(package)
 
+        if self.cache_manager.get_last_pkg_cache('192.168.0.101') is not None:
+            int_list = Taker.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.0.101'))
+        self.cache_manager.add_all_cache('192.168.0.101', int_list)
+
         int_package = 0
         for i in range(len(int_list)) :
             int_package += int_list[i] * 10**(len(int_list)-i-1)
@@ -36,7 +40,8 @@ class Taker:
         scapy_package = scapy.IP(byte_package)
         send(scapy_package)
 
-    def recovery_pkg(self, package, last_pkg):
+    @staticmethod
+    def recovery_pkg(package, last_pkg):
         """
         восстановление пакета
         @param last_pkg:
