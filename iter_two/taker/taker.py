@@ -8,12 +8,13 @@ from scapy.layers.ipsec import IP
 from scapy.layers.l2 import Ether
 
 import scapy.all as scapy
-from iter_two.printer import print_len
 from iter_two.core.cahce.cache import CacheManager
 
 
 class Taker:
-    def __init__(self):
+    def __init__(self, TO_LOG=True, TO_CONSOLE=True):
+        self.TO_LOG = TO_LOG
+        self.TO_CONSOLE = TO_CONSOLE
         self.cache_manager = CacheManager()
 
     def start(self, package):
@@ -28,13 +29,24 @@ class Taker:
         int_package = 0
         for i in range(len(int_list)) :
             int_package += int_list[i] * 10**(len(int_list)-i-1)
-        print("int_list\t" + str(int_list))
-        print("int_package\t" + str(int_package))
 
         byte_package = int_to_bytes(int_package)
-        print("byte_package\t" + str(byte_package))
+
+        if self.TO_LOG:
+            logging.debug("INT LIST:\t\t" + str(int_list))
+            logging.debug("INT PACKAGE:\t" + str(int_package))
+            logging.debug("BYTE PACKAGE:\t" + str(byte_package))
+
+        if self.TO_CONSOLE:
+            print("int_list\t" + str(int_list))
+            print("int_package\t" + str(int_package))
+            print("byte_package\t" + str(byte_package))
+
+
         scapy_package = scapy.IP(byte_package)
         send(scapy_package)
+
+
 
     def recovery_pkg(self, package, last_pkg):
         """

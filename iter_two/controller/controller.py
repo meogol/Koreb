@@ -3,11 +3,12 @@ import math
 from iter_two.controller.aggregator import Aggregator
 from iter_two.core.cahce.cache import CacheManager
 from iter_two.core.server.server import Server
-from iter_two.printer import print_len
 
 class Controller:
-    def __init__(self):
-        self.server = Server(socket_type="client")
+    def __init__(self, TO_LOG, TO_CONSOLE):
+        self.TO_LOG = TO_LOG
+        self.TO_CONSOLE = TO_CONSOLE
+        self.server = Server(socket_type="client", TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
         self.cache_manager = CacheManager()
         self.aggregator = Aggregator(self.cache_manager)
 
