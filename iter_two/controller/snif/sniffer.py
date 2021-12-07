@@ -7,6 +7,7 @@ from scapy.packet import Raw
 from scapy.sendrecv import send
 
 from iter_two.controller.controller import Controller
+from setting_reader import setting_read, setting_res
 
 
 class Sniffer:
@@ -30,13 +31,15 @@ class Sniffer:
         dst_ip = scapy_packet.sprintf("%IP.dst%")
         data = list(scapy.raw(scapy_packet))
 
-        """HARDCODE"""
-        if src_ip == "192.168.0.101":
+        setting_read()
+
+        """ NOT A HARDCODE"""
+        if src_ip == setting_res.get('ip'):
             package = bytes(scapy_packet)
             if ':' not in dst_ip:
-                pkt = IP(src="192.168.0.101", dst="192.168.0.109") / TCP() / Raw(data)
+                pkt = IP(src=setting_res.get('ip'), dst=setting_res.get('host')) / TCP() / Raw(data)
             else:
-                pkt = Ether(src="192.168.0.101", dst="192.168.0.109") / TCP() / Raw(data)
+                pkt = Ether(src=setting_res.get('ip'), dst=setting_res.get('host')) / TCP() / Raw(data)
             send(scapy_packet)
             print("VANYA OTVECHAETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
         else:

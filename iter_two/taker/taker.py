@@ -43,14 +43,12 @@ class Taker:
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
-        a = bytearray(package)
         filtered = list()
         for x in package:
             if x >= 0:
                 filtered.append(x)
             else:
                 filtered.extend([-1] * -x)
-
 
         this_pkg = np.array(filtered)
         last_pkg = np.array(last_pkg)
