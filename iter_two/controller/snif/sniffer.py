@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import logging
+
 import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP
@@ -12,8 +14,10 @@ from setting_reader import setting_read, setting_res
 
 class Sniffer:
 
-    def __init__(self):
-        self.controller = Controller()
+    def __init__(self, TO_LOG, TO_CONSOLE):
+        self.controller = Controller(TO_LOG, TO_CONSOLE)
+        self.TO_LOG = TO_LOG
+        self.TO_CONSOLE = TO_CONSOLE
 
     def to_process(self):
         while True:
@@ -22,10 +26,14 @@ class Sniffer:
             nfqueue.run()
 
     def to_sniff(self, packet):
-        print(packet.get_payload())
+
         scapy_packet = scapy.IP(packet.get_payload())
         packet.drop()
-        print(scapy_packet)
+
+        if self.TO_LOG:
+            logging.info("PACKAGE:\t" + scapy_packet)
+        if self.TO_CONSOLE:
+            print(scapy_packet)
 
         src_ip = scapy_packet.sprintf("%IP.src%")
         dst_ip = scapy_packet.sprintf("%IP.dst%")
@@ -41,12 +49,26 @@ class Sniffer:
             else:
                 pkt = Ether(src=setting_res.get('client_ip'), dst=setting_res.get('server_ip')) / TCP() / Raw(data)
             send(scapy_packet)
-            print("VANYA OTVECHAETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+
+            if self.TO_LOG:
+                logging.info("THIS IS: Response from client")
+            if self.TO_CONSOLE:
+                print("THIS IS: Response from client")
         else:
-            print("NE OTVECHAET :c")
+            if self.TO_LOG:
+                logging.info("THIS IS: Server's package")
+            if self.TO_CONSOLE:
+                print("THIS IS: Server's package")
+
             self.controller.analyse_command(scapy_packet, dst_ip)
 
-        print("from_ip:\t" + str(src_ip))
-        print("to_ip:\t\t" + str(dst_ip))
-        print("data:\t\t" + str(data))
-        print()
+        if self.TO_LOG:
+            logging.info("FROM:\t" + str(src_ip))
+            logging.info("TO:\t\t" + str(dst_ip))
+            logging.info("DATA:\t\t" + str(data) + '\n')
+
+        if self.TO_CONSOLE:
+            print("from_ip:\t" + str(src_ip))
+            print("to_ip:\t\t" + str(dst_ip))
+            print("data:\t\t" + str(data))
+            print()

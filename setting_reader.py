@@ -1,12 +1,17 @@
 import configparser
+import logging
 
 setting_res = {'pkg_type': 'tcp', 'client_ip': 'localhost', 'port': '7777', 'taker_ip': '192.168.0.106',
                'face': 'Беспроводная сеть', 'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
 
 
-def setting_read():
+def setting_read(TO_LOG, TO_CONSOLE):
     config = configparser.ConfigParser()
     try:
+
+        if TO_LOG:
+            logging.info("Reading settings...")
+
         config.read("settings.ini", encoding='UTF-8')
 
         if config is not None:
@@ -20,8 +25,14 @@ def setting_read():
             check(config, setting_res, "server_ip")
             check(config, setting_res, "gateway_ip")
 
+        if TO_LOG:
+            logging.info("Success!\n")
+
     except KeyError:
-        print('File dose not exist!')
+        if TO_LOG:
+            logging.exception("File does not exist!\n")
+        if TO_CONSOLE:
+            print('File does not exist!\n')
 
 
 def check(config, result, field):

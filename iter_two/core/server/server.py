@@ -1,3 +1,4 @@
+import logging
 import threading
 
 from iter_two.core.server.serv_socket_client import SocketClient
@@ -11,12 +12,14 @@ class Server:
         """
         socket_type = "server" or "client"
         """
+        self.TO_LOG = TO_LOG
+        self.TO_CONSOLE = TO_CONSOLE
         self.socket_type = socket_type
 
         if self.socket_type == "server":
-            self.socket = SocketServer(host=host, port=port)
+            self.socket = SocketServer(host=host, port=port, TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
         else:
-            self.socket = SocketClient(host=host, port=port)
+            self.socket = SocketClient(host=host, port=port, TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
 
     def init_listener(self):
         self.socket.run_listener_server()
@@ -27,11 +30,16 @@ class Server:
         @param package: пакет в виде набора байт
         @return:
         """
+
+        if self.TO_LOG:
+            logging.info("Sending Package...")
+
         self.socket.build_and_send_message(destination_ip, package)
         """
         back_msg = None
         while back_msg != 200:
             back_msg = self.socket.build_and_send_message(destination_ip, package)
         """
-        print("Send packet")
-        print()
+        if self.TO_CONSOLE:
+            print("Send package")
+            print()
