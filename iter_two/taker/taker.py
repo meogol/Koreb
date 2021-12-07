@@ -82,10 +82,10 @@ class Taker:
             return new_pkg
         except TypeError:
             if self.TO_LOG:
-                logging.exception("AGGREGATOR ERROR!")
+                logging.exception("RECOVERY ERROR!")
             if self.TO_CONSOLE:
-                print("AGGREGATOR ERROR!")
-            
+                print("RECOVERY ERROR!")
+
 
 
 def int_to_bytes(x: int) -> bytes:
