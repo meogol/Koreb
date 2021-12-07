@@ -1,13 +1,13 @@
 import configparser
 
-setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.106', 'face': 'Беспроводная сеть',
-               'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
+setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.106',
+               'face': 'Беспроводная сеть', 'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
 
 
 def setting_read():
     config = configparser.ConfigParser()
     try:
-        config.read("settings.ini")
+        config.read("settings.ini", encoding='UTF-8')
 
         if config is not None:
 

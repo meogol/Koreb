@@ -56,5 +56,5 @@ if __name__ == '__main__':
     setting_read()
 
     arp = ARP()
-    # arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
-    arp.to_arp("192.168.0.109", "192.168.0.101")
+    arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
+    # arp.to_arp("192.168.0.109", "192.168.0.101")
