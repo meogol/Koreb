@@ -1,6 +1,6 @@
 import configparser
 
-setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.106',
+setting_res = {'pkg_type': 'tcp', 'client_ip': 'localhost', 'port': '7777', 'taker_ip': '192.168.0.106',
                'face': 'Беспроводная сеть', 'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
 
 
@@ -12,9 +12,9 @@ def setting_read():
         if config is not None:
 
             check(config, setting_res, "pkg_type")
-            check(config, setting_res, "ip")
+            check(config, setting_res, "client_ip")
             check(config, setting_res, "port")
-            check(config, setting_res, "host")
+            check(config, setting_res, "taker_ip")
             check(config, setting_res, "face")
 
             check(config, setting_res, "server_ip")

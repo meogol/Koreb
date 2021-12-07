@@ -34,12 +34,12 @@ class Sniffer:
         setting_read()
 
         """ NOT A HARDCODE"""
-        if src_ip == setting_res.get('ip'):
+        if src_ip == setting_res.get('server_ip'):
             package = bytes(scapy_packet)
             if ':' not in dst_ip:
-                pkt = IP(src=setting_res.get('ip'), dst=setting_res.get('host')) / TCP() / Raw(data)
+                pkt = IP(src=setting_res.get('server_ip'), dst=setting_res.get('taker_ip')) / TCP() / Raw(data)
             else:
-                pkt = Ether(src=setting_res.get('ip'), dst=setting_res.get('host')) / TCP() / Raw(data)
+                pkt = Ether(src=setting_res.get('server_ip'), dst=setting_res.get('taker_ip')) / TCP() / Raw(data)
             send(scapy_packet)
             print("VANYA OTVECHAETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
         else:

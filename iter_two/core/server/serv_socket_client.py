@@ -8,13 +8,13 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
+    def __init__(self, host=setting_res.get("taker_ip"), port=int(setting_res.get("port"))):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
         self.COUNT_OF_TRYING = 5
-        self.host = "192.168.0.102"
-        self.port = 7777
+        self.host = host
+        self.port = port
         super().__init__(self.host, self.port, "client")
 
     def build_and_send_message(self, destination_ip, package):
