@@ -9,14 +9,14 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, host=setting_res.get("host"), port=setting_res.get("port"), TO_LOG=True, TO_CONSOLE=True):
+    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), TO_LOG=True, TO_CONSOLE=True):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
         self.TO_LOG = TO_LOG
         self.TO_CONSOLE = TO_CONSOLE
         self.COUNT_OF_TRYING = 5
-        self.host = host
+        self.taker_ip = taker_ip
         self.port = port
         super().__init__(self.host, self.port, "client")
 
@@ -31,11 +31,11 @@ class SocketClient(Socket):
         # соответствующий порт
 
         if self.TO_LOG:
-            logging.debug("TAKER's IP:\t" + self.host)
+            logging.debug("TAKER's IP:\t" + self.taker_ip)
             logging.debug("TAKER's PORT:\t" + str(self.port))
 
         if self.TO_CONSOLE:
-            print("host\t" + self.host)
+            print("taker_ip\t" + self.taker_ip)
             print("port\t" + str(self.port))
 
         # Декодировать полученную информацию
@@ -48,7 +48,7 @@ class SocketClient(Socket):
             data = pickle.dumps(send_msg)
 
 
-            self.soc.sendto(data, (self.host, self.port))
+            self.soc.sendto(data, (self.taker_ip, self.port))
 
             self.soc.settimeout(5.0)
 

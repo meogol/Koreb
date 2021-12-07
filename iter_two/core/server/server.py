@@ -8,7 +8,7 @@ from setting_reader import setting_res
 
 
 class Server:
-    def __init__(self, socket_type="server", host=str(setting_res.get('host')), port=int(setting_res.get('port')), TO_LOG=True, TO_CONSOLE=True):
+    def __init__(self, socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')), TO_LOG=True, TO_CONSOLE=True):
         """
         socket_type = "server" or "client"
         """
@@ -17,9 +17,9 @@ class Server:
         self.socket_type = socket_type
 
         if self.socket_type == "server":
-            self.socket = SocketServer(host=host, port=port, TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
+            self.socket = SocketServer(taker_ip=taker_ip, port=port, TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
         else:
-            self.socket = SocketClient(host=host, port=port, TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
+            self.socket = SocketClient(taker_ip=taker_ip, port=port, TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
 
     def init_listener(self):
         self.socket.run_listener_server()
