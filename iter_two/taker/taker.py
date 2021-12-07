@@ -55,31 +55,37 @@ class Taker:
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
+        try:
+            filtered = list()
+            for x in package:
+                if x >= 0:
+                    filtered.append(x)
+                else:
+                    filtered.extend([-1] * -x)
 
-        filtered = list()
-        for x in package:
-            if x >= 0:
-                filtered.append(x)
+            this_pkg = np.array(filtered)
+            last_pkg = np.array(last_pkg)
+
+            last = []
+            if len(this_pkg) > len(last_pkg):
+                prom_pkg = this_pkg[:len(last_pkg)]
+                last = this_pkg[len(last_pkg):]
             else:
-                filtered.extend([-1] * -x)
+                prom_pkg = this_pkg
 
-        this_pkg = np.array(filtered)
-        last_pkg = np.array(last_pkg)
+            index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
 
-        last = []
-        if len(this_pkg) > len(last_pkg):
-            prom_pkg = this_pkg[:len(last_pkg)]
-            last = this_pkg[len(last_pkg):]
-        else:
-            prom_pkg = this_pkg
+            this_pkg[index_non_zero] = last_pkg[index_non_zero]
 
-        index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
+            new_pkg = this_pkg
 
-        this_pkg[index_non_zero] = last_pkg[index_non_zero]
-
-        new_pkg = this_pkg
-
-        return new_pkg
+            return new_pkg
+        except TypeError:
+            if self.TO_LOG:
+                logging.exception("AGGREGATOR ERROR!")
+            if self.TO_CONSOLE:
+                print("AGGREGATOR ERROR!")
+            
 
 
 def int_to_bytes(x: int) -> bytes:
