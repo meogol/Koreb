@@ -1,20 +1,22 @@
 import logging
 
 from iter_two.core.server.server import Server
+from logs import print_logs
 from setting_reader import setting_read, setting_res
 
 if __name__ == '__main__':
 
-    TO_LOG = True
-    TO_CONSOLE = True
+    logs = {'to_log': True, 'to_console': False}
 
-    if TO_LOG:
+    if logs['to_log']:
         logging.basicConfig(filename="taker.log", level=logging.INFO, filemode="w")
-        logging.info("Taker started!\n")
 
-    setting_read(TO_LOG, TO_CONSOLE)
+    print_logs(logs=logs, msg="Taker started!\n", log_type="info")
 
-    server = Server(socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')), TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
+
+    setting_read(logs)
+
+    server = Server(socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')), logs=logs)
     server.init_listener()
 
     input("End")

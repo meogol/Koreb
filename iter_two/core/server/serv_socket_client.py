@@ -4,17 +4,17 @@ import pickle
 import numpy
 
 from iter_two.core.server.mysocket import Socket
+from logs import print_logs
 from setting_reader import setting_res
 
 
 class SocketClient(Socket):
 
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), TO_LOG=True, TO_CONSOLE=True):
+    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), logs={'to_log':True, 'to_console': True}):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
-        self.TO_LOG = TO_LOG
-        self.TO_CONSOLE = TO_CONSOLE
+        self.logs = logs
         self.COUNT_OF_TRYING = 5
         self.taker_ip = taker_ip
         self.port = port
@@ -30,13 +30,8 @@ class SocketClient(Socket):
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
-        if self.TO_LOG:
-            logging.debug("TAKER's IP:\t" + self.taker_ip)
-            logging.debug("TAKER's PORT:\t" + str(self.port))
-
-        if self.TO_CONSOLE:
-            print("taker_ip\t" + self.taker_ip)
-            print("port\t" + str(self.port))
+        print_logs(logs=self.logs, msg="TAKER's IP:\t" + self.taker_ip, log_type="debug")
+        print_logs(logs=self.logs, msg="TAKER's PORT:\t" + str(self.port), log_type="debug")
 
         # Декодировать полученную информацию
 
@@ -55,43 +50,25 @@ class SocketClient(Socket):
             try:
                 back_msg = self.soc.recv(1024).decode('utf-8')
             except UnicodeError:
-                if self.TO_LOG:
-                    logging.exception("UNICODE ERROR!")
-                if self.TO_CONSOLE:
-                    print("Unicode Error")
+                print_logs(logs=self.logs, msg="UNICODE ERROR!", log_type="exception")
 
             tryingNum += 1
 
-            if self.TO_LOG:
-                logging.debug("Response from taker:\t" + str(back_msg))
-            if self.TO_CONSOLE:
-                print("BACK:")
-                print(str(back_msg))
+            print_logs(logs=self.logs, msg="Response from taker:\t" + str(back_msg), log_type="debug")
 
             self.soc.settimeout(None)
 
             if back_msg != '200':
-                if self.TO_LOG:
-                    logging.exception("400 ERROR to get response!")
-                if self.TO_CONSOLE:
-                    print("\n400 ERROR to get response! try again...\n")
+                print_logs(logs=self.logs, msg="400 ERROR to get response!", log_type="exception")
 
                 if tryingNum == self.COUNT_OF_TRYING:
-
-                    if self.TO_LOG:
-                        logging.info("PACKAGE WAS SKIPED\n")
-                    if self.TO_CONSOLE:
-                        print("\nPACKAGE WAS SKIPED\n")
+                    print_logs(logs=self.logs, msg="PACKAGE WAS SKIPED\n", log_type="info")
 
                     return back_msg
 
                 else:
-                    if self.TO_LOG:
-                        logging.info("Trying to send again...\n")
+                    print_logs(logs=self.logs, msg="Trying to send again...\n", log_type="info")
 
             else:
-                if self.TO_LOG:
-                    logging.info("200 SUCCESS!\n")
-                if self.TO_CONSOLE:
-                    print("\n200 SUCCESS!\n")
+                print_logs(logs=self.logs, msg="200 SUCCESS!\n", log_type="info")
                 return back_msg

@@ -5,10 +5,9 @@ from iter_two.core.cahce.cache import CacheManager
 from iter_two.core.server.server import Server
 
 class Controller:
-    def __init__(self, TO_LOG, TO_CONSOLE):
-        self.TO_LOG = TO_LOG
-        self.TO_CONSOLE = TO_CONSOLE
-        self.server = Server(socket_type="client", TO_LOG=TO_LOG, TO_CONSOLE=TO_CONSOLE)
+    def __init__(self, logs={'to_log':True, 'to_console': True}):
+        self.logs = logs
+        self.server = Server(socket_type="client", logs=self.logs)
         self.cache_manager = CacheManager()
         self.aggregator = Aggregator(self.cache_manager)
 
