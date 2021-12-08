@@ -64,13 +64,11 @@ class Taker:
             else:
                 prom_pkg = this_pkg
 
-            index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
+            index_of_negative_elements = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
 
-            this_pkg[index_non_zero] = last_pkg[index_non_zero]
+            this_pkg[index_of_negative_elements] = last_pkg[index_of_negative_elements]
 
-            new_pkg = this_pkg
-
-            return new_pkg
+            return this_pkg
         except TypeError:
             print_logs(logs=self.logs, msg="RECOVERY ERROR!", log_type="exception")
 
