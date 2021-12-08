@@ -18,15 +18,12 @@ class Taker:
         @return:
         """
         int_list = pickle.loads(package)
-
-
         """
         Протестить разаггрегатор!!!!!
         """
         scapy_packet = scapy.IP(package.get_payload())
         dst_ip = scapy_packet.sprintf("%IP.dst%")
         int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
-
 
         int_package = 0
         for i in range(len(int_list)):
@@ -59,16 +56,7 @@ class Taker:
             this_pkg = np.array(filtered)
             last_pkg = np.array(last_pkg)
 
-            # if len(this_pkg) > len(last_pkg):
-            #     prom_pkg = this_pkg[:len(last_pkg)]
-            # else:
-            #     prom_pkg = this_pkg
-
             this_pkg = np.where(this_pkg < 0, last_pkg, this_pkg)
-
-            # index_of_negative_elements = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
-            #
-            # this_pkg[index_of_negative_elements] = last_pkg[index_of_negative_elements]
 
             return this_pkg
         except TypeError:
