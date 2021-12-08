@@ -29,8 +29,8 @@ class Taker:
 
 
         int_package = 0
-        for i in range(len(int_list)) :
-            int_package += int_list[i] * 10**(len(int_list)-i-1)
+        for i in range(len(int_list)):
+            int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
 
         byte_package = int_to_bytes(int_package)
 
