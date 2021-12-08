@@ -5,6 +5,7 @@ import time
 import scapy.all as scapy
 
 from setting_reader import setting_read, setting_res
+from sh_files.sh_runner import queue_set, proxy_off
 
 mac = ""
 
@@ -50,10 +51,14 @@ class ARP:
             print("\n[+] Detected CTRL+C ...... Quitting")
             self.restore(target_ip, gateway_ip)
             self.restore(gateway_ip, target_ip)
+            proxy_off()
 
 
 if __name__ == '__main__':
     setting_read()
-
-    arp = ARP()
-    arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
+    user_id = queue_set()
+    if user_id:
+        pass
+    else:
+        arp = ARP()
+        arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
