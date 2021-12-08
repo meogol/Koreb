@@ -1,6 +1,5 @@
 import pickle
 import numpy as np
-import numpy as numpy
 from scapy.all import *
 import scapy.all as scapy
 from iter_two.core.cahce.cache import CacheManager
@@ -22,8 +21,8 @@ class Taker:
         int_list = pickle.loads(package)
 
         int_package = 0
-        for i in range(len(int_list)) :
-            int_package += int_list[i] * 10**(len(int_list)-i-1)
+        for i in range(len(int_list)):
+            int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
 
         byte_package = int_to_bytes(int_package)
 
