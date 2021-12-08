@@ -1,12 +1,6 @@
 import pickle
-
 import numpy as np
-import numpy as numpy
 from scapy.all import *
-from scapy.layers.inet import ICMP, TCP
-from scapy.layers.ipsec import IP
-from scapy.layers.l2 import Ether
-
 import scapy.all as scapy
 from iter_two.core.cahce.cache import CacheManager
 from logs import print_logs
@@ -21,16 +15,17 @@ class Taker:
         """
         запускает анализ пакета в тейкере
         @param package: пакет в виде числового байткода
-        @param addr: кортеж вида (ip, port)
         @return:
         """
         int_list = pickle.loads(package)
 
 
         """
-        Протестить разаггрегатор
+        Протестить разаггрегатор!!!!!
         """
-        int_list = self.recovery_pkg(int_list)
+        scapy_packet = scapy.IP(package.get_payload())
+        dst_ip = scapy_packet.sprintf("%IP.dst%")
+        int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
 
 
         int_package = 0

@@ -23,9 +23,8 @@ class Controller:
         int_list = [(int_package//(10**i))%10 for i in range(math.ceil(math.log(int_package, 10))-1, -1, -1)]
 
         """
-        Надо протестить аггрегатор
+        Протестить аггрегатор!!!
         """
-
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
             int_list = self.aggregator.contrast_last_package(int_list, destination_ip)
         self.cache_manager.add_all_cache(destination_ip, int_list)
