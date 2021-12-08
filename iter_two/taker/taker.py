@@ -8,12 +8,13 @@ from scapy.layers.ipsec import IP
 from scapy.layers.l2 import Ether
 
 import scapy.all as scapy
-from iter_two.printer import print_len
 from iter_two.core.cahce.cache import CacheManager
+from logs import print_logs
 
 
 class Taker:
-    def __init__(self):
+    def __init__(self, logs={'to_log':True, 'to_console': True}):
+        self.logs = logs
         self.cache_manager = CacheManager()
 
     def start(self, package):
@@ -28,13 +29,17 @@ class Taker:
         int_package = 0
         for i in range(len(int_list)) :
             int_package += int_list[i] * 10**(len(int_list)-i-1)
-        print("int_list\t" + str(int_list))
-        print("int_package\t" + str(int_package))
 
         byte_package = int_to_bytes(int_package)
-        print("byte_package\t" + str(byte_package))
+
+        print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
+        print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
+        print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
+
         scapy_package = scapy.IP(byte_package)
         send(scapy_package)
+
+
 
     def recovery_pkg(self, package, last_pkg):
         """
@@ -43,31 +48,34 @@ class Taker:
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
+        try:
+            filtered = list()
+            for x in package:
+                if x >= 0:
+                    filtered.append(x)
+                else:
+                    filtered.extend([-1] * -x)
 
-        filtered = list()
-        for x in package:
-            if x >= 0:
-                filtered.append(x)
+            this_pkg = np.array(filtered)
+            last_pkg = np.array(last_pkg)
+
+            last = []
+            if len(this_pkg) > len(last_pkg):
+                prom_pkg = this_pkg[:len(last_pkg)]
+                last = this_pkg[len(last_pkg):]
             else:
-                filtered.extend([-1] * -x)
+                prom_pkg = this_pkg
 
-        this_pkg = np.array(filtered)
-        last_pkg = np.array(last_pkg)
+            index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
 
-        last = []
-        if len(this_pkg) > len(last_pkg):
-            prom_pkg = this_pkg[:len(last_pkg)]
-            last = this_pkg[len(last_pkg):]
-        else:
-            prom_pkg = this_pkg
+            this_pkg[index_non_zero] = last_pkg[index_non_zero]
 
-        index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
+            new_pkg = this_pkg
 
-        this_pkg[index_non_zero] = last_pkg[index_non_zero]
+            return new_pkg
+        except TypeError:
+            print_logs(logs=self.logs, msg="RECOVERY ERROR!", log_type="exception")
 
-        new_pkg = this_pkg
-
-        return new_pkg
 
 
 def int_to_bytes(x: int) -> bytes:
