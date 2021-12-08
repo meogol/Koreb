@@ -1,19 +1,14 @@
 import pickle
-
 import numpy as np
 import numpy as numpy
 from scapy.all import *
-from scapy.layers.inet import ICMP, TCP
-from scapy.layers.ipsec import IP
-from scapy.layers.l2 import Ether
-
 import scapy.all as scapy
 from iter_two.core.cahce.cache import CacheManager
 from logs import print_logs
 
 
 class Taker:
-    def __init__(self, logs={'to_log':True, 'to_console': True}):
+    def __init__(self, logs={'to_log': True, 'to_console': True}):
         self.logs = logs
         self.cache_manager = CacheManager()
 
@@ -39,30 +34,26 @@ class Taker:
         scapy_package = scapy.IP(byte_package)
         send(scapy_package)
 
-
-
     def recovery_pkg(self, package, last_pkg):
         """
         восстановление пакета
-        @param last_pkg:
+        @param last_pkg: прошлый пакет, пришедший на определённый IP
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
         try:
             filtered = list()
-            for x in package:
-                if x >= 0:
-                    filtered.append(x)
+            for item in package:
+                if item >= 0:
+                    filtered.append(item)
                 else:
-                    filtered.extend([-1] * -x)
+                    filtered.extend([-1] * -item)
 
             this_pkg = np.array(filtered)
             last_pkg = np.array(last_pkg)
 
-            last = []
             if len(this_pkg) > len(last_pkg):
                 prom_pkg = this_pkg[:len(last_pkg)]
-                last = this_pkg[len(last_pkg):]
             else:
                 prom_pkg = this_pkg
 
@@ -77,7 +68,5 @@ class Taker:
             print_logs(logs=self.logs, msg="RECOVERY ERROR!", log_type="exception")
 
 
-
 def int_to_bytes(x: int) -> bytes:
     return x.to_bytes((x.bit_length() + 7) // 8, 'big')
-
