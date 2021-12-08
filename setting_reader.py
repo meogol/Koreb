@@ -26,7 +26,7 @@ def setting_read(logs={'to_log':True, 'to_console': True}):
             check(config, setting_res, "server_ip", logs)
             check(config, setting_res, "gateway_ip", logs)
 
-        print_logs(logs=logs, msg="SUCCESS!\n", log_type="info")
+        print_logs(logs=logs, msg="Settings was read successfully!\n", log_type="info")
 
     except KeyError:
         print_logs(logs=logs, msg="File does not exist!\n", log_type="exception")

@@ -70,5 +70,5 @@ class SocketClient(Socket):
                     print_logs(logs=self.logs, msg="Trying to send again...\n", log_type="info")
 
             else:
-                print_logs(logs=self.logs, msg="200 SUCCESS!\n", log_type="info")
+                print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
                 return back_msg
