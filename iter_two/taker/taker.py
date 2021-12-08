@@ -9,12 +9,12 @@ from scapy.layers.l2 import Ether
 
 import scapy.all as scapy
 from iter_two.core.cahce.cache import CacheManager
+from logs import print_logs
 
 
 class Taker:
-    def __init__(self, TO_LOG=True, TO_CONSOLE=True):
-        self.TO_LOG = TO_LOG
-        self.TO_CONSOLE = TO_CONSOLE
+    def __init__(self, logs={'to_log':True, 'to_console': True}):
+        self.logs = logs
         self.cache_manager = CacheManager()
 
     def start(self, package):
@@ -32,16 +32,9 @@ class Taker:
 
         byte_package = int_to_bytes(int_package)
 
-        if self.TO_LOG:
-            logging.debug("INT LIST:\t\t" + str(int_list))
-            logging.debug("INT PACKAGE:\t" + str(int_package))
-            logging.debug("BYTE PACKAGE:\t" + str(byte_package))
-
-        if self.TO_CONSOLE:
-            print("int_list\t" + str(int_list))
-            print("int_package\t" + str(int_package))
-            print("byte_package\t" + str(byte_package))
-
+        print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
+        print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
+        print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
 
         scapy_package = scapy.IP(byte_package)
         send(scapy_package)
@@ -81,10 +74,7 @@ class Taker:
 
             return new_pkg
         except TypeError:
-            if self.TO_LOG:
-                logging.exception("RECOVERY ERROR!")
-            if self.TO_CONSOLE:
-                print("RECOVERY ERROR!")
+            print_logs(logs=self.logs, msg="RECOVERY ERROR!", log_type="exception")
 
 
 

@@ -1,18 +1,19 @@
 import logging
 
 from iter_two.controller.snif.sniffer import Sniffer
+from logs import print_logs
 from setting_reader import setting_read
 
 if __name__ == '__main__':
 
-    TO_LOG = True
-    TO_CONSOLE = True
+    logs = {'to_log': True, 'to_console':False}
 
-    if TO_LOG:
+    if logs['to_log']:
         logging.basicConfig(filename="controller.log", level=logging.INFO, filemode="w")
-        logging.info("Controller started!\n")
 
-    setting_read(TO_LOG, TO_CONSOLE)
+    print_logs(logs=logs, msg="Controller started!\n", log_type="info")
 
-    sniffer = Sniffer(TO_LOG, TO_CONSOLE)
+    setting_read(logs)
+
+    sniffer = Sniffer(logs)
     sniffer.to_process()
