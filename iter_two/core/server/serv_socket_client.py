@@ -20,6 +20,26 @@ class SocketClient(Socket):
         self.port = port
         super().__init__(self.host, self.port, "client")
 
+    def check_package_list_size(self, package):
+        """
+        Функция проверяет длину пакета. Если превышает 10240000 байт, то делит его на 2: старый и новый, и записывает
+        в картеж.
+        :param package: оригинальный пакет, приходящий к нам
+        :return: картеж вида (обработанный пакет, оригинальный пакет) / (оригинальный пакет, 0)
+        """
+        original_package = package
+
+        if len(package) >= 10240000:
+            i = len(package) / 2
+            while i < len(package):
+                package.remove(i)
+
+            packages = (package, original_package)
+            return packages
+
+        else:
+            packages = (package, 0)
+
     def build_and_send_message(self, destination_ip, package):
         """
         @param: destination_ip: ip получателя пакета
@@ -27,6 +47,9 @@ class SocketClient(Socket):
         @param: resending: отправляется ли пакет повторно
         """
         send_msg = package
+
+        send_msg = self.check_package_list_size(send_msg)[0]
+
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
