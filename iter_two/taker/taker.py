@@ -26,6 +26,13 @@ class Taker:
         """
         int_list = pickle.loads(package)
 
+
+        """
+        Протестить разаггрегатор
+        """
+        int_list = self.recovery_pkg(int_list)
+
+
         int_package = 0
         for i in range(len(int_list)) :
             int_package += int_list[i] * 10**(len(int_list)-i-1)
