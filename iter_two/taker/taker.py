@@ -43,6 +43,7 @@ class Taker:
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
+
         filtered = list()
         for x in package:
             if x >= 0:
