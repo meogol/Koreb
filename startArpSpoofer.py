@@ -10,6 +10,10 @@ from sh_files.sh_runner import queue_set, proxy_off
 mac = ""
 
 
+class NotRootUserError(Exception):
+    pass
+
+
 class ARP:
 
     def get_mac(self, ip):
@@ -58,7 +62,7 @@ if __name__ == '__main__':
     setting_read()
     user_id = queue_set()
     if user_id:
-        pass
+        raise NotRootUserError("You are not in root user\nPlease go to root and boot program again")
     else:
         arp = ARP()
         arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
