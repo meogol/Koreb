@@ -22,7 +22,7 @@ def method(last, this):
     # приведение распакованного текущего пакета к списку
     print("Восстановленный:", ras)
     if This == ras:
-        return 1
+        return 1 
     else:
         return 0
 
