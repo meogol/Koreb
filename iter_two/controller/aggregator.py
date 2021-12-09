@@ -10,33 +10,33 @@ class Aggregator:
 
     def contrast_last_package(self, package, destination_ip):
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
-            lp = np.array(self.cache_manager.get_last_pkg_cache(destination_ip))
-            p = np.array(package)
-            lp_len = len(lp)
-            p_len = len(package)
+            last_pkg = np.array(self.cache_manager.get_last_pkg_cache(destination_ip))
+            this_pkg = np.array(package)
+            last_pkg_len = len(last_pkg)
+            this_pkg_len = len(package)
             tail = []
 
-            if lp_len == p_len:
-                diff = abs(np.subtract(lp, p))
-            elif lp_len > p_len:
-                lp = lp[:p_len]
-                diff = abs(np.subtract(lp, p))
+            if last_pkg_len == this_pkg_len:
+                diff = abs(np.subtract(last_pkg, this_pkg))
+            elif last_pkg_len > this_pkg_len:
+                last_pkg = last_pkg[:this_pkg_len]
+                diff = abs(np.subtract(last_pkg, this_pkg))
             else:
-                tail = p[lp_len:]
-                p = p[:lp_len]
-                diff = abs(np.subtract(lp, p))
+                tail = this_pkg[last_pkg_len:]
+                this_pkg = this_pkg[:last_pkg_len]
+                diff = abs(np.subtract(last_pkg, this_pkg))
 
             if np.nonzero(diff)[0].size == len(diff):
                 if len(tail) != 0:
-                    return list(p) + list(tail)
+                    return list(this_pkg) + list(tail)
                 else:
-                    return list(p)
+                    return list(this_pkg)
             elif np.nonzero(diff)[0].size == 0:
-                p = [-len(diff)]
+                this_pkg = [-len(diff)]
                 if len(tail) != 0:
-                    return list(p) + list(tail)
+                    return list(this_pkg) + list(tail)
                 else:
-                    return list(p)
+                    return list(this_pkg)
             else:
                 nz = np.nonzero(diff)[0]
                 prev = None
@@ -55,28 +55,14 @@ class Aggregator:
                 if nz[-1] + 1 != len(diff):
                     slices.append([nz[-1] + 1, len(diff)])
 
-                p = list(p)
+                this_pkg = list(this_pkg)
                 shift = 0
 
                 for i in slices:
-                    p[i[0] - shift:i[1] - shift] = [-(i[1] - i[0])]
+                    this_pkg[i[0] - shift:i[1] - shift] = [-(i[1] - i[0])]
                     shift += (i[1] - i[0] - 1)
 
                 if len(tail) != 0:
-                    return list(p) + list(tail)
+                    return list(this_pkg) + list(tail)
                 else:
-                    return list(p)
-
-
-if __name__ == '__main__':
-    package = [0, 12, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 2, 67, 243, 34, 6, 87, 86]
-    cache_manager = CacheManager()
-    p = [0, 45, 456, 45, 23, 56, 12, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 2, 435, 5, 88, 93, 67, 243, 34, 6, 87, 86]
-    # print(package)
-    cache_manager.add_last_pkg_cache("192.168.0.106", p)
-    aggregator = Aggregator(cache_manager)
-    package = aggregator.contrast_last_package(package, "192.168.0.106")
-    # print(package)
-    taker = Taker()
-    package = taker.recovery_pkg(package, p)
-    # print(package)
+                    return list(this_pkg)
