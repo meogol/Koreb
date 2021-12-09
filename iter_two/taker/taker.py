@@ -56,7 +56,23 @@ class Taker:
             this_pkg = np.array(filtered)
             last_pkg = np.array(last_pkg)
 
-            this_pkg = np.where(this_pkg < 0, last_pkg, this_pkg)
+            if len(this_pkg) > len(last_pkg):
+                this_pkg = this_pkg[:len(last_pkg)]
+            else:
+                this_pkg = this_pkg
+            if len(this_pkg) < len(last_pkg):
+                last_pkg = last_pkg[:len(this_pkg)]
+
+            print(this_pkg)
+            print(last_pkg)
+
+            this_pkg = np.where(this_pkg > 0, this_pkg, last_pkg)
+
+            print()
+            print(this_pkg)
+            # index_of_negative_elements = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
+            #
+            # this_pkg[index_of_negative_elements] = last_pkg[index_of_negative_elements]
 
             return this_pkg
         except TypeError:
