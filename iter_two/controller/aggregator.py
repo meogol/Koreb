@@ -72,11 +72,11 @@ if __name__ == '__main__':
     package = [0, 12, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 2, 67, 243, 34, 6, 87, 86]
     cache_manager = CacheManager()
     p = [0, 45, 456, 45, 23, 56, 12, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 2, 435, 5, 88, 93, 67, 243, 34, 6, 87, 86]
-    # print(package)
+    print(package)
     cache_manager.add_last_pkg_cache("192.168.0.106", p)
     aggregator = Aggregator(cache_manager)
     package = aggregator.contrast_last_package(package, "192.168.0.106")
-    # print(package)
+    print(package)
     taker = Taker()
     package = taker.recovery_pkg(package, p)
-    # print(package)
+    print(package)
