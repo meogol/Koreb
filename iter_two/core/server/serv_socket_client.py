@@ -25,23 +25,23 @@ class SocketClient(Socket):
 
         if len(package) >= 1500:
             exceed = len(package) / 1500
-            slice_size = len(package) / exceed
+            slice_size = len(package) / exceed + 1
             last_slice_pos = 0
-            j = 1
+            pkg_counter = 0
 
             for i in range(exceed):
-                packages.append(j)
-                packages.append(package[last_slice_pos + 1 : last_slice_pos + slice_size])
-                last_slice_pos += slice_size
-                if i == exceed: j = "final"
+                if pkg_counter == exceed: pkg_counter = 'final'
 
-            packages = dict(packages)
+                packages.append(package[last_slice_pos + 1 : last_slice_pos + slice_size])
+                packages[i].append(str(pkg_counter))
+                last_slice_pos += slice_size
+                pkg_counter += 1
 
             return packages
+
         else:
-            packages.append("final")
-            packages.append(package)
-            packages = dict(packages)
+            packages[0].append(package)
+            packages[0].append("final")
             
             return packages
 
@@ -51,8 +51,8 @@ class SocketClient(Socket):
         @param: package: пакет в виде набора байт
         @param: resending: отправляется ли пакет повторно
         """
-        send_msg = package
-        send_msg = self.check_package_list_size(send_msg)
+        message_to_send = package
+        message_to_send = self.check_package_list_size(message_to_send)
 
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
@@ -66,9 +66,11 @@ class SocketClient(Socket):
 
         tryingNum = 0
 
-        while back_msg != '200':
-            data = pickle.dumps(send_msg)
+        i = 0
+        while (back_msg != '200') and (i in message_to_send):
+            data = pickle.dumps(message_to_send[i])
 
+            i += 1
 
             self.soc.sendto(data, (self.taker_ip, self.port))
 
@@ -99,3 +101,4 @@ class SocketClient(Socket):
             else:
                 print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
                 return back_msg
+
