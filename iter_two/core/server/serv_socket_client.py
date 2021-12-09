@@ -43,7 +43,6 @@ class SocketClient(Socket):
                 if last_slice_pos != len(package):
                     packages.append(package[last_slice_pos: len(package) - last_slice_pos])
 
-                return packages
 
             else:
                 slice_size = round(len(package) / exceed + 1)
@@ -62,13 +61,12 @@ class SocketClient(Socket):
                 if last_slice_pos != len(package):
                     packages.append(package[last_slice_pos: len(package) - last_slice_pos])
 
-                return packages
 
         else:
             packages[0].append(package)
             packages[0].append(0)
 
-            return packages
+        return packages
 
     def build_and_send_message(self, destination_ip, package):
         """
