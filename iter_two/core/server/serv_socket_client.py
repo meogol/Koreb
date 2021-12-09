@@ -23,25 +23,28 @@ class SocketClient(Socket):
     def check_package_list_size(self, package):
         packages = list()
 
-        if len(package) >= 1500:
-            exceed = len(package) / 1500
+        if len(package) >= 20:
+            exceed = len(package) / 20
             slice_size = len(package) / exceed + 1
             last_slice_pos = 0
             pkg_counter = 0
 
             for i in range(exceed):
-                if pkg_counter == exceed: pkg_counter = 'final'
+                if pkg_counter == exceed: pkg_counter =  0
 
                 packages.append(package[last_slice_pos + 1 : last_slice_pos + slice_size])
-                packages[i].append(str(pkg_counter))
+                packages[i].append(pkg_counter)
                 last_slice_pos += slice_size
                 pkg_counter += 1
+
+            if last_slice_pos != len(package):
+                packages.append(package[last_slice_pos : len(package) - last_slice_pos])
 
             return packages
 
         else:
             packages[0].append(package)
-            packages[0].append("final")
+            packages[0].append(0)
             
             return packages
 
@@ -102,3 +105,6 @@ class SocketClient(Socket):
                 print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
                 return back_msg
 
+if __name__ == '__main__':
+    socket_client = SocketClient()
+    package = list(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,)
