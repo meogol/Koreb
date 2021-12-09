@@ -56,12 +56,29 @@ class Taker:
             this_pkg = np.array(filtered)
             last_pkg = np.array(last_pkg)
 
-            this_pkg = np.where(this_pkg < 0, last_pkg, this_pkg)
+            tail = []
+            if len(this_pkg) > len(last_pkg):
+                tail = this_pkg[len(last_pkg):]
+                this_pkg = this_pkg[:len(last_pkg)]
+            elif len(this_pkg) < len(last_pkg):
+                last_pkg = last_pkg[:len(this_pkg)]
 
-            return this_pkg
+            new_pkg = np.where(this_pkg > 0, this_pkg, last_pkg)
+
+            if len(tail) != 0:
+                new_pkg = np.append(new_pkg, tail)
+
+            return new_pkg
         except TypeError:
             print_logs(logs=self.logs, msg="RECOVERY ERROR!", log_type="exception")
 
 
 def int_to_bytes(x: int) -> bytes:
     return x.to_bytes((x.bit_length() + 7) // 8, 'big')
+
+
+if __name__ == '__main__':
+    last = [0, 132, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 22, 167, 23, 134, 6, 27, 86]
+    pkg = [20, 12, -4, 40, -5, 2, 67, 243, 34, 26, 87, 186, 12, 42, 534]
+    t = Taker()
+    print(t.recovery_pkg(pkg, last))
