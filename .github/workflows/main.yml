@@ -22,4 +22,4 @@ jobs:
       run: |
         pip install pytest
         pip install pytest-cov
-        pytest iter_two/test/test_aggregator.py
+        pytest iter_two/test/test_aggregator.py --cov=com --cov-report=xml --cov-report=html
