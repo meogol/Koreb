@@ -119,4 +119,3 @@ class SocketClient(Socket):
             else:
                 print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
                 return back_msg
-
