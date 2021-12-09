@@ -26,12 +26,12 @@ class SocketClient(Socket):
         if len(package) >= 20:
             exceed = round(len(package) / 20)
 
+            last_slice_pos = 0
+            pkg_counter = 1
+
+            slice_size = round(len(package) / exceed + 1)
+
             if exceed == 1:
-                slice_size = round(len(package) / 2)
-
-                last_slice_pos = 0
-                pkg_counter = 1
-
                 for i in range(exceed + 1):
                     if pkg_counter == exceed + 1: pkg_counter = 0
 
@@ -45,11 +45,6 @@ class SocketClient(Socket):
 
 
             else:
-                slice_size = round(len(package) / exceed + 1)
-
-                last_slice_pos = 0
-                pkg_counter = 1
-
                 for i in range(exceed):
                     if pkg_counter == exceed: pkg_counter = 0
 
