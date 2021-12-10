@@ -3,6 +3,7 @@ import numpy as np
 import scapy.all as scapy
 import threading
 
+from iter_two.taker.packages_data_class import PackagesData
 from scapy.all import *
 from iter_two.core.cahce.cache import CacheManager
 from logs import print_logs
@@ -16,26 +17,32 @@ class Taker:
         self.stack = LifoQueue()
         self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
         self.check_stack_thread.start()
+        self.packages_data= PackagesData()
 
     def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list):
-        packages = list()
+        is_end = False
 
         while True:
             if self.stack.get() is not None:
-                packages.append(pkg_number)
-                packages.append(self.stack.get())
-            else:
-                continue
+                if pkg_number == 
+                self.packages_data.add_to_data(pkg_number, int_package, is_end)
 
-        byte_package = int_to_bytes(int_package)
 
-        print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
-        print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
-        print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
 
-        scapy_package = scapy.IP(byte_package)
 
-        send(scapy_package)
+
+
+            byte_package = int_to_bytes(int_package)
+
+            print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
+            print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
+            print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
+
+            scapy_package = scapy.IP(byte_package)
+
+            send(scapy_package)
+
+
 
     def start(self, package):
         """
@@ -50,13 +57,13 @@ class Taker:
         scapy_packet = scapy.IP(package.get_payload())
         dst_ip = scapy_packet.sprintf("%IP.dst%")
 
-        pkg_number = package[len(package) - 1]
-        package = package.remove(len(package) - 1)
-
         int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
         int_package = 0
         for i in range(len(int_list)):
             int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
+
+        pkg_number = int_package[len(int_package) - 1]
+        int_package = int_package.remove(len(package) - 1)
 
         self.stack.put(int_list)
         self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list)
