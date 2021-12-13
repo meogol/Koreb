@@ -10,7 +10,8 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), logs={'to_log':True, 'to_console': True}):
+    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"),
+                 logs={'to_log': True, 'to_console': True}):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
@@ -18,7 +19,7 @@ class SocketClient(Socket):
         self.COUNT_OF_TRYING = 5
         self.taker_ip = taker_ip
         self.port = port
-        super().__init__(self.host, self.port, "client")
+        # super().__init__(self.host, self.port, "client")
 
     def check_package_list_size(self, package):
         packages = list()
@@ -33,10 +34,12 @@ class SocketClient(Socket):
 
             if exceed == 1:
                 for i in range(exceed + 1):
-                    if pkg_counter == exceed + 1: pkg_counter = 0
+                    if pkg_counter == exceed + 1: pkg_counter = -1
 
                     packages.append(package[last_slice_pos: last_slice_pos + slice_size])
                     packages[i].append(pkg_counter)
+                    packages.append(len(package[last_slice_pos: last_slice_pos + slice_size]))
+                    packages[i].append(len(package))
                     last_slice_pos += slice_size
                     pkg_counter += 1
 
@@ -46,10 +49,12 @@ class SocketClient(Socket):
 
             else:
                 for i in range(exceed):
-                    if pkg_counter == exceed: pkg_counter = 0
+                    if pkg_counter == exceed: pkg_counter = -1
 
                     packages.append(package[last_slice_pos: last_slice_pos + slice_size])
                     packages[i].append(pkg_counter)
+                    packages[i].append(len(package[last_slice_pos: last_slice_pos + slice_size]))
+                    packages[i].append(len(package))
                     last_slice_pos += slice_size
                     pkg_counter += 1
 
@@ -59,7 +64,8 @@ class SocketClient(Socket):
 
         else:
             packages[0].append(package)
-            packages[0].append(0)
+            packages[0].append(-1)
+            packages[0].append(len(package))
 
         return packages
 
@@ -85,7 +91,7 @@ class SocketClient(Socket):
         tryingNum = 0
 
         i = 0
-        while (back_msg != '200') and (i in message_to_send):
+        while (back_msg != '200') and (i < len(message_to_send)):
             data = pickle.dumps(message_to_send[i])
 
             i += 1
@@ -119,3 +125,9 @@ class SocketClient(Socket):
             else:
                 print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
                 return back_msg
+
+
+if __name__ == '__main__':
+    soc = SocketClient()
+    package = list(range(1, 100))
+    soc.check_package_list_size(package)
