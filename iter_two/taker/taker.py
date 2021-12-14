@@ -21,6 +21,18 @@ class Taker:
         self.packages_data = PackagesData()
 
     def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length, pkg_length_of_full_set_of_pkgs):
+        """
+        Метод циклично проверяет стек на наличие пришедших от serv_socket_client пакетов,
+        после чего обрабатывает каждый пакет, последовательно вытаскивая из стека.
+        Он собирает все пакеты в один, обрабатывает его и получает "payload", который и шлёт клиенту
+
+        :param pkg_number: Порядковый номер пришедшего пакета
+        :param int_package: Интовое число байт
+        :param int_list: Пришедший пакет в виде листа значений типа инт
+        :param pkg_length: Длина пришедшего пакета
+        :param pkg_length_of_full_set_of_pkgs: Длина изначального полного пакета
+        :return:
+        """
         is_end = False
         pkg_list_for_sort = list()
         pkg_buffer_list = list()
