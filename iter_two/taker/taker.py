@@ -20,7 +20,7 @@ class Taker:
         self.check_stack_thread.start()
         self.packages_data = PackagesData()
 
-    def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length, pkg_length_of_full_set_of_pkgs):
+    def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs):
         """
         Метод циклично проверяет стек на наличие пришедших от serv_socket_client пакетов,
         после чего обрабатывает каждый пакет, последовательно вытаскивая из стека.
@@ -29,7 +29,6 @@ class Taker:
         :param pkg_number: Порядковый номер пришедшего пакета
         :param int_package: Интовое число байт
         :param int_list: Пришедший пакет в виде листа значений типа инт
-        :param pkg_length: Длина пришедшего пакета
         :param pkg_length_of_full_set_of_pkgs: Длина изначального полного пакета
         :return:
         """
@@ -55,26 +54,25 @@ class Taker:
 
                 if len(pkg_list_for_sort) == pkg_length_of_full_set_of_pkgs:
                     pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iter: iter.get_number())
-                    buffer = pkg_list_for_sort[0]
+                    pkg_list_for_sort.append(pkg_list_for_sort[0])
                     pkg_list_for_sort.remove(0)
-                    pkg_list_for_sort.append(buffer)
 
+                    i = 0
                     for item in pkg_list_for_sort:
                         pkg_buffer_list += item.get_pkg()
-
-                    for i in range(len(pkg_buffer_list)):
                         int_package += pkg_buffer_list[i] * 10 ** (len(pkg_buffer_list) - i - 1)
+                        i += 1
 
-                    for item in pkg_list_for_sort:
-                        byte_package = int_to_bytes(int_package)
+                    byte_package = int_to_bytes(int_package)
 
-                        print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
-                        print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
-                        print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
+                    print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
+                    print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
+                    print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
 
-                        scapy_package = scapy.IP(byte_package)
+                    scapy_package = scapy.IP(byte_package)
 
-                        send(scapy_package)
+                    send(scapy_package)
+
 
 
     def start(self, package):
@@ -92,18 +90,16 @@ class Taker:
 
         int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
 
-        pkg_number = int_list[len(int_list) - 3]
-        pkg_length = int_list[len(int_list) - 2]
+        pkg_number = int_list[len(int_list) - 2]
         pkg_length_of_full_set_of_pkgs = int_list[len(int_list) - 1]
 
         int_list = int_list.remove(len(int_list) - 1)
         int_list = int_list.remove(len(int_list) - 2)
-        int_list = int_list.remove(len(int_list) - 3)
 
         int_package = 0
 
         self.stack.put(int_list)
-        self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length, pkg_length_of_full_set_of_pkgs)
+        self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs)
 
     def recovery_pkg(self, package, last_pkg):
         """

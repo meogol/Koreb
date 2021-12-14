@@ -21,61 +21,55 @@ class SocketClient(Socket):
         self.port = port
         super().__init__(self.host, self.port, "client")
 
+    def change_list(self, package, packages, last_slice_pos, slice_size, exceed, iterator):
+        pkg_counter = 1
+
+        for i in range(exceed + iterator):
+            if pkg_counter == exceed + iterator: pkg_counter = -1
+
+            packages.append(package[last_slice_pos: last_slice_pos + slice_size])
+            packages[i].append(pkg_counter)
+            packages[i].append(len(package))
+            last_slice_pos += slice_size
+            pkg_counter += 1
+
+        if last_slice_pos != len(package):
+            packages.append(package[last_slice_pos: len(package) - last_slice_pos])
+
+        return packages
+
     def check_package_list_size(self, package):
         """
         Метод проверяет входящий пакет на соответствие максимальной длине сокета. При несоответствии - разбивается так,
-        чтобы в себе хранить отрезок определённой длины, номер, длину среза, длину изначального пакета
+        чтобы в себе хранить отрезок определённой длины, номер, длину изначального пакета
 
         :param package:  Пакет для разбиения
         :return: Лист из листов, где каждый из них - часть изначального пакета, хранящего в конце:
             1) порядковый номер
-            2) длину среза изначального пакета
-            3) длину изначального пакета, который мы резали
+            2) длину изначального пакета, который мы резали
         """
         packages = list()
 
         if len(package) >= 2000:
-            exceed = round(len(package) / 20)
-
             last_slice_pos = 0
-            pkg_counter = 1
+
+            exceed = round(len(package) / 2000)
 
             slice_size = round(len(package) / exceed + 1)
 
             if exceed == 1:
-                for i in range(exceed + 1):
-                    if pkg_counter == exceed + 1: pkg_counter = -1
-
-                    packages.append(package[last_slice_pos: last_slice_pos + slice_size])
-                    packages[i].append(pkg_counter)
-                    packages.append(len(package[last_slice_pos: last_slice_pos + slice_size]))
-                    packages[i].append(len(package))
-                    last_slice_pos += slice_size
-                    pkg_counter += 1
-
-                if last_slice_pos != len(package):
-                    packages.append(package[last_slice_pos: len(package) - last_slice_pos])
-
+                packages = self.change_list(package, packages, last_slice_pos, slice_size, exceed, 1)
 
             else:
-                for i in range(exceed):
-                    if pkg_counter == exceed: pkg_counter = -1
-
-                    packages.append(package[last_slice_pos: last_slice_pos + slice_size])
-                    packages[i].append(pkg_counter)
-                    packages[i].append(len(package[last_slice_pos: last_slice_pos + slice_size]))
-                    packages[i].append(len(package))
-                    last_slice_pos += slice_size
-                    pkg_counter += 1
+                packages = self.change_list(package, packages, last_slice_pos, slice_size, exceed, 0)
 
                 if last_slice_pos != len(package):
                     packages.append(package[last_slice_pos: len(package) - last_slice_pos])
 
-
         else:
-            packages[0].append(package)
-            packages[0].append(-1)
-            packages[0].append(len(package))
+            packages.append(package)
+            packages.append(-1)
+            packages.append(len(package))
 
         return packages
 
