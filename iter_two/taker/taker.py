@@ -16,34 +16,45 @@ class Taker:
         self.logs = logs
         self.cache_manager = CacheManager()
         self.stack = queue.LifoQueue(0)
-        # self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
-        # self.check_stack_thread.start()
+        self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
+        self.check_stack_thread.start()
         self.packages_data = PackagesData()
 
     def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length, pkg_length_of_full_set_of_pkgs):
         is_end = False
         pkg_list_for_sort = list()
+        pkg_buffer_list = list()
 
         while True:
             if self.stack.empty() != True:
                 if pkg_number == -1:
                     is_end = True
-                    self.packages_data.add_to_data(pkg_number, self.stack.get(), is_end)
+                    int_list = self.stack.get()
+
+                    self.packages_data.add_to_data(pkg_number, int_list, is_end, int_package)
                     pkg_list_for_sort.append(self.packages_data)
 
                 else:
                     is_end = False
-                    self.packages_data.add_to_data(pkg_number, self.stack.get(), is_end)
+                    int_list = self.stack.get()
+
+                    self.packages_data.add_to_data(pkg_number, int_list, is_end, int_package)
                     pkg_list_for_sort.append(self.packages_data)
 
                 if len(pkg_list_for_sort) == pkg_length_of_full_set_of_pkgs:
                     pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iter: iter.get_number())
-                    # buffer = pkg_list_for_sort[0]
-                    # pkg_list_for_sort.remove(0)
-                    # pkg_list_for_sort.append(buffer)
+                    buffer = pkg_list_for_sort[0]
+                    pkg_list_for_sort.remove(0)
+                    pkg_list_for_sort.append(buffer)
 
                     for item in pkg_list_for_sort:
-                        byte_package = int_to_bytes(item.get_pkg())
+                        pkg_buffer_list += item.get_pkg()
+
+                    for i in range(len(pkg_buffer_list)):
+                        int_package += pkg_buffer_list[i] * 10 ** (len(pkg_buffer_list) - i - 1)
+
+                    for item in pkg_list_for_sort:
+                        byte_package = int_to_bytes(int_package)
 
                         print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
                         print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
@@ -68,9 +79,6 @@ class Taker:
         dst_ip = scapy_packet.sprintf("%IP.dst%")
 
         int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
-        int_package = 0
-        for i in range(len(int_list)):
-            int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
 
         pkg_number = int_list[len(int_list) - 3]
         pkg_length = int_list[len(int_list) - 2]
@@ -79,6 +87,8 @@ class Taker:
         int_list = int_list.remove(len(int_list) - 1)
         int_list = int_list.remove(len(int_list) - 2)
         int_list = int_list.remove(len(int_list) - 3)
+
+        int_package = 0
 
         self.stack.put(int_list)
         self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length, pkg_length_of_full_set_of_pkgs)
@@ -125,10 +135,10 @@ def int_to_bytes(x: int) -> bytes:
 if __name__ == '__main__':
     take = Taker()
     pkg_number = 1
-    int_package = 1000
+    int_package = 0
     van = [1, 2, 3, 4]
     pkg_leangth = 1
-    pkg_length_of_full_set_of_pkgs = 1
+    pkg_length_of_full_set_of_pkgs = 2
     take.stack.put(van)
-
+    take.stack.put(van)
     take.check_n_send_pkg_from_stack(pkg_number, int_package, van, pkg_leangth, pkg_length_of_full_set_of_pkgs)
