@@ -19,7 +19,7 @@ class SocketClient(Socket):
         self.COUNT_OF_TRYING = 5
         self.taker_ip = taker_ip
         self.port = port
-        # super().__init__(self.host, self.port, "client")
+        super().__init__(self.host, self.port, "client")
 
     def check_package_list_size(self, package):
         """
