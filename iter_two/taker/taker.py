@@ -60,7 +60,7 @@ class Taker:
 
                 if summator == pkg.get_full_load():
                     pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iterator: iterator.get_number())
-                    if len(pkg_list_for_sort):
+                    if len(pkg_list_for_sort) > 2:
                         pkg_list_for_sort = pkg_list_for_sort[1:] + pkg_list_for_sort[:0]
 
                     i = 0
