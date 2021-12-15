@@ -72,10 +72,10 @@ class SocketClient(Socket):
         """
         packages = list()
 
-        if len(package) >= 2000:
+        if len(package) >= 1200:
             last_slice_pos = 0
 
-            exceed = round(len(package) / 2000)
+            exceed = round(len(package) / 1200)
 
             slice_size = round(len(package) / exceed + 1)
 
