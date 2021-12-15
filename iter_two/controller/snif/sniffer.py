@@ -40,7 +40,6 @@ class Sniffer:
 
         """ NOT A HARDCODE"""
         if src_ip == setting_res.get('client_ip'):
-            package = bytes(scapy_packet)
             if ':' not in dst_ip:
                 pkt = IP(src=setting_res.get('client_ip'), dst=setting_res.get('server_ip')) / TCP() / Raw(data)
             else:
