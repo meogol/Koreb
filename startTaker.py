@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     setting_read(logs)
 
-    server = Server(socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')), logs=logs)
+    server = Server(socket_type="server", logs=logs)
     server.init_listener()
 
     input("End")

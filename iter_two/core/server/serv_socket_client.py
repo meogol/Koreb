@@ -12,7 +12,7 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"),
+    def __init__(self, taker_ip, port,
                  logs={'to_log': True, 'to_console': True}):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
