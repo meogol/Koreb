@@ -65,4 +65,4 @@ if __name__ == '__main__':
         raise NotRootUserError("You are not in root user\nPlease go to root and boot program again")
     else:
         arp = ARP()
-        arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
+        arp.to_arp(str(setting_res.get('192.168.1.106')), str(setting_res.get('192.168.1.1')))

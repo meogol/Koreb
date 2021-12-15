@@ -20,7 +20,18 @@ class Taker:
         self.check_stack_thread.start()
         self.packages_data = PackagesData()
 
-    def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs):
+    def add_to_data(self, pkg_number, int_list, int_package, pkg_length_of_full_set_of_pkgs):
+        if pkg_number == -1:
+            is_end = True
+            self.packages_data.add_to_data(pkg_number, int_list, is_end, int_package, pkg_length_of_full_set_of_pkgs)
+            self.stack.put(self.packages_data)
+
+        else:
+            is_end = False
+            self.packages_data.add_to_data(pkg_number, int_list, is_end, int_package, pkg_length_of_full_set_of_pkgs)
+            self.stack.put(self.packages_data)
+
+    def check_n_send_pkg_from_stack(self):
         """
         Метод циклично проверяет стек на наличие пришедших от serv_socket_client пакетов,
         после чего обрабатывает каждый пакет, последовательно вытаскивая из стека.
@@ -38,25 +49,16 @@ class Taker:
 
         while True:
             if self.stack.empty() != True:
-                if pkg_number == -1:
-                    is_end = True
-                    int_list = self.stack.get()
+                pkg = self.stack.get()
 
-                    self.packages_data.add_to_data(pkg_number, int_list, is_end, int_package)
-                    pkg_list_for_sort.append(self.packages_data)
+                pkg_list_for_sort.append(pkg)
 
-                else:
-                    is_end = False
-                    int_list = self.stack.get()
-
-                    self.packages_data.add_to_data(pkg_number, int_list, is_end, int_package)
-                    pkg_list_for_sort.append(self.packages_data)
-
-                if len(pkg_list_for_sort) == pkg_length_of_full_set_of_pkgs:
-                    pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iter: iter.get_number())
+                if len(pkg_list_for_sort) == pkg.get_full_load():
+                    pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iterator: iterator.get_number())
                     pkg_list_for_sort = pkg_list_for_sort[1:] + pkg_list_for_sort[:0]
 
                     i = 0
+                    int_package=0
                     for item in pkg_list_for_sort:
                         pkg_buffer_list += item.get_pkg()
                         int_package += pkg_buffer_list[i] * 10 ** (len(pkg_buffer_list) - i - 1)
@@ -64,14 +66,13 @@ class Taker:
 
                     byte_package = int_to_bytes(int_package)
 
-                    print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(int_list), log_type="debug")
+                    print_logs(logs=self.logs, msg="INT LIST:\t\t" + str(pkg.get_pkg()), log_type="debug")
                     print_logs(logs=self.logs, msg="INT PACKAGE:\t" + str(int_package), log_type="debug")
                     print_logs(logs=self.logs, msg="BYTE PACKAGE:\t" + str(byte_package), log_type="debug")
 
                     scapy_package = scapy.IP(byte_package)
 
                     send(scapy_package)
-
 
 
     def start(self, package):
@@ -96,8 +97,9 @@ class Taker:
 
         int_package = 0
 
-        self.stack.put(int_list)
-        self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs)
+        self.add_to_data(pkg_number, int_list, int_package, pkg_length_of_full_set_of_pkgs)
+
+        # self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs)
 
     def recovery_pkg(self, package, last_pkg):
         """
