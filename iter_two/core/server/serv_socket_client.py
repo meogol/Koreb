@@ -10,7 +10,8 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), logs={'to_log':True, 'to_console': True}):
+    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"),
+                 logs={'to_log': True, 'to_console': True}):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
@@ -18,7 +19,7 @@ class SocketClient(Socket):
         self.COUNT_OF_TRYING = 5
         self.taker_ip = taker_ip
         self.port = port
-        super().__init__(self.host, self.port, "client")
+        #super().__init__(self.host, self.port, "client")
 
     def build_and_send_message(self, destination_ip, package):
         """
@@ -41,7 +42,6 @@ class SocketClient(Socket):
 
         while back_msg != '200':
             data = pickle.dumps(send_msg)
-
 
             self.soc.sendto(data, (self.taker_ip, self.port))
 

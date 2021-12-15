@@ -13,10 +13,10 @@ if __name__ == '__main__':
 
     print_logs(logs=logs, msg="Taker started!\n", log_type="info")
 
-
     setting_read(logs)
 
-    server = Server(socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')), logs=logs)
+    server = Server(socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')),
+                    logs=logs)
     server.init_listener()
 
     input("End")
