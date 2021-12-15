@@ -30,7 +30,7 @@ class Sniffer:
         scapy_packet = scapy.IP(packet.get_payload())
         packet.drop()
 
-        print_logs(logs=self.logs, msg="PACKAGE:\t" + scapy_packet, log_type="info")
+        print_logs(logs=self.logs, msg="PACKAGE:\t" + str(scapy_packet), log_type="info")
 
         src_ip = scapy_packet.sprintf("%IP.src%")
         dst_ip = scapy_packet.sprintf("%IP.dst%")
