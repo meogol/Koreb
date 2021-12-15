@@ -54,7 +54,7 @@ class Taker:
 
                 if len(pkg_list_for_sort) == pkg_length_of_full_set_of_pkgs:
                     pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iter: iter.get_number())
-                    pkg_list_for_sort = pkg_list_for_sort[1:len(pkg_list_for_sort)] + pkg_list_for_sort[:0]
+                    pkg_list_for_sort = pkg_list_for_sort[1:] + pkg_list_for_sort[:0]
 
                     i = 0
                     for item in pkg_list_for_sort:
