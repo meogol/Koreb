@@ -99,8 +99,6 @@ class Taker:
 
         self.add_to_data(pkg_number, int_list, int_package, pkg_length_of_full_set_of_pkgs)
 
-        # self.check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs)
-
     def recovery_pkg(self, package, last_pkg):
         """
         восстановление пакета
