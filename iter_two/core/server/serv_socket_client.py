@@ -77,9 +77,6 @@ class SocketClient(Socket):
             else:
                 packages = self.change_list(package, packages, last_slice_pos, slice_size, exceed, 0)
 
-                if last_slice_pos != len(package):
-                    packages.append(package[last_slice_pos: len(package) - last_slice_pos])
-
         else:
             packages.append(package)
             packages.append(-1)
