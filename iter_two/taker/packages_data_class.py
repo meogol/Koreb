@@ -5,12 +5,14 @@ class PackagesData:
         self.__number = 0
         self.__dst_ip = "ip"
         self.__package_int_load = 0
+        self.__full_pkg_load = 0
 
-    def add_to_data(self, pkg_number, package, is_end, load):
+    def add_to_data(self, pkg_number, package, is_end, load, full_pkg_load):
         self.__package = package
         self.__number = pkg_number
         self.__isEnd = is_end
         self.__package_int_load = load
+        self.__full_pkg_load = full_pkg_load
 
     def get_isEnd(self):
         return self.__isEnd
@@ -24,8 +26,11 @@ class PackagesData:
     def get_pkg(self):
         return self.__package
 
-    def get_load(self, load):
-        self.__package_int_load = load
-
     def get_load(self):
         return self.__package_int_load
+
+    def get_full_load(self):
+        return self.__full_pkg_load
+
+    def set_load(self, load):
+        self.__package_int_load = load
