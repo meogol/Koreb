@@ -20,14 +20,12 @@ class SocketClient(Socket):
         global setting_res
         self.logs = logs
         self.COUNT_OF_TRYING = 5
-        self.host = taker_ip
-        self.port = port
+        self.host = setting_res.get("taker_ip")
+        self.port = setting_res.get("port")
         self.stack = list()
         self.send_thread = threading.Thread(target=self.check_stack)
         self.send_thread.start()
 
-        self.taker_ip = setting_res.get("taker_ip")
-        self.port = setting_res.get("port")
         super().__init__(self.host, self.port, "client")
 
     def check_stack(self):
