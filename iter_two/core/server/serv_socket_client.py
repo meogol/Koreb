@@ -49,7 +49,7 @@ class SocketClient(Socket):
         for i in range(exceed + iterator):
             if pkg_counter == exceed + iterator: pkg_counter = -1
 
-            packages.append(package[last_slice_pos: last_slice_pos + slice_size])
+            packages[i].append(package[last_slice_pos: last_slice_pos + slice_size])
             packages[i].append(pkg_counter)
             packages[i].append(len(package))
             last_slice_pos += slice_size
@@ -87,8 +87,8 @@ class SocketClient(Socket):
 
         else:
             packages.append(package)
-            packages.append(-1)
-            packages.append(len(package))
+            packages[0].append(-1)
+            packages[0].append(len(package))
 
         return packages
 
