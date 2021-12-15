@@ -17,7 +17,6 @@ class SocketClient(Socket):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
-        global setting_res
         self.logs = logs
         self.COUNT_OF_TRYING = 5
         self.host = taker_ip
