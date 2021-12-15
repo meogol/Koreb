@@ -46,6 +46,8 @@ class Taker:
         is_end = False
         pkg_list_for_sort = list()
         pkg_buffer_list = list()
+        summator = 0
+
 
         while True:
             if self.stack.empty() != True:
@@ -53,9 +55,13 @@ class Taker:
 
                 pkg_list_for_sort.append(pkg)
 
-                if len(pkg_list_for_sort) == pkg.get_full_load():
+                for item in pkg_list_for_sort:
+                    summator += len(item.get_pkg())
+
+                if summator == pkg.get_full_load():
                     pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iterator: iterator.get_number())
-                    pkg_list_for_sort = pkg_list_for_sort[1:] + pkg_list_for_sort[:0]
+                    if len(pkg_list_for_sort):
+                        pkg_list_for_sort = pkg_list_for_sort[1:] + pkg_list_for_sort[:0]
 
                     i = 0
                     int_package=0
@@ -74,6 +80,7 @@ class Taker:
 
                     send(scapy_package)
 
+                    summator = 0
 
     def start(self, package):
         """
@@ -91,7 +98,7 @@ class Taker:
         int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
 
         pkg_number = int_list[len(int_list) - 2]
-        pkg_length_of_full_set_of_pkgs = int_list[len(int_list) - 1]
+        pkg_length_of_full_set_of_pkgs = int_list[len(int_list) - 1] + 1
 
         int_list = int_list[0:len(int_list)-2]
 
