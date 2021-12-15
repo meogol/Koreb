@@ -7,7 +7,7 @@ setting_res = {'pkg_type': 'tcp', 'client_ip': 'localhost', 'port': '7777', 'tak
                'face': 'Беспроводная сеть', 'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
 
 
-def setting_read(logs={'to_log':True, 'to_console': True}):
+def setting_read(logs={'to_log':True, 'to_console': False}):
     config = configparser.ConfigParser()
     try:
 

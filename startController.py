@@ -2,7 +2,7 @@ import logging
 
 from iter_two.controller.snif.sniffer import Sniffer
 from logs import print_logs
-from setting_reader import setting_read
+from setting_reader import setting_read, setting_res
 
 if __name__ == '__main__':
 
