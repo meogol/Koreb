@@ -11,7 +11,10 @@ from setting_reader import setting_res
 
 
 class SocketServer(Socket):
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), logs={'to_log':True, 'to_console': True}):
+    def __init__(self, taker_ip, port, logs={'to_log':True, 'to_console': True}):
+        global setting_res
+        taker_ip = setting_res.get("taker_ip")
+        port = int(setting_res.get("port"))
         super().__init__(taker_ip, port, "server")
         self.logs = logs
         self.taker = Taker(logs=self.logs)
