@@ -32,7 +32,7 @@ class Server:
 
         print_logs(logs=self.logs, msg="Sending Package...", log_type="info")
 
-        self.socket.build_and_send_message(destination_ip, package)
+        self.socket.add_to_stack(destination_ip, package)
         """
         back_msg = None
         while back_msg != 200:

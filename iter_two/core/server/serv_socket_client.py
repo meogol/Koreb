@@ -1,6 +1,8 @@
 import logging
 import socket
 import pickle
+import threading
+
 import numpy
 
 from iter_two.core.server.mysocket import Socket
@@ -17,9 +19,21 @@ class SocketClient(Socket):
         """
         self.logs = logs
         self.COUNT_OF_TRYING = 5
-        self.taker_ip = taker_ip
+        self.host = taker_ip
         self.port = port
+        self.stack = list()
+        self.send_thread = threading.Thread(self.check_stack)
+        self.send_thread.start()
+
         super().__init__(self.host, self.port, "client")
+
+    def check_stack(self):
+        while True:
+            if len(self.stack) == 0:
+                continue
+
+            cart_pkg = self.stack[0]
+            self.build_and_send_message(cart_pkg[0], cart_pkg[1])
 
     def change_list(self, package, packages, last_slice_pos, slice_size, exceed, iterator):
         pkg_counter = 1
@@ -73,6 +87,9 @@ class SocketClient(Socket):
 
         return packages
 
+    def add_to_stack(self, destination_ip, package):
+        self.stack.append((destination_ip, package))
+
     def build_and_send_message(self, destination_ip, package):
         """
         @param: destination_ip: ip получателя пакета
@@ -80,12 +97,13 @@ class SocketClient(Socket):
         @param: resending: отправляется ли пакет повторно
         """
         message_to_send = package
+
         message_to_send = self.check_package_list_size(message_to_send)
 
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
-        print_logs(logs=self.logs, msg="TAKER's IP:\t" + self.taker_ip, log_type="debug")
+        print_logs(logs=self.logs, msg="TAKER's IP:\t" + self.host, log_type="debug")
         print_logs(logs=self.logs, msg="TAKER's PORT:\t" + str(self.port), log_type="debug")
 
         # Декодировать полученную информацию
@@ -100,7 +118,7 @@ class SocketClient(Socket):
 
             i += 1
 
-            self.soc.sendto(data, (self.taker_ip, self.port))
+            self.soc.sendto(data, (self.host, self.port))
 
             self.soc.settimeout(5.0)
 
