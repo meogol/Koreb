@@ -37,11 +37,11 @@ class SocketClient(Socket):
             cart_pkg = self.stack[0]
             back_msg = self.build_and_send_message(cart_pkg[0], cart_pkg[1])
 
-            i+=1
-            
-            if back_msg == '200':
+            i += 1
+
+            if back_msg == '200' or i == 5:
                 self.stack.remove(cart_pkg)
-                i=0
+                i = 0
 
     def change_list(self, package, packages, last_slice_pos, slice_size, exceed, iterator):
         pkg_counter = 1
@@ -120,41 +120,38 @@ class SocketClient(Socket):
 
         tryingNum = 0
 
-        i = 0
+        for package_part in message_to_send:
+            data = pickle.dumps(package_part)
 
-        data = pickle.dumps(message_to_send[i])
+            self.soc.sendto(data, (self.host, self.port))
 
-        i += 1
+            self.soc.settimeout(5.0)
 
-        self.soc.sendto(data, (self.host, self.port))
+            try:
+                back_msg = self.soc.recv(1024).decode('utf-8')
+            except UnicodeError:
+                print_logs(logs=self.logs, msg="UNICODE ERROR!", log_type="exception")
 
-        self.soc.settimeout(5.0)
+            tryingNum += 1
 
-        try:
-            back_msg = self.soc.recv(1024).decode('utf-8')
-        except UnicodeError:
-            print_logs(logs=self.logs, msg="UNICODE ERROR!", log_type="exception")
+            print_logs(logs=self.logs, msg="Response from taker:\t" + str(back_msg), log_type="debug")
 
-        tryingNum += 1
+            self.soc.settimeout(5)
 
-        print_logs(logs=self.logs, msg="Response from taker:\t" + str(back_msg), log_type="debug")
+            if back_msg != '200':
+                print_logs(logs=self.logs, msg="400 ERROR to get response!", log_type="exception")
 
-        self.soc.settimeout(5)
+                if tryingNum == self.COUNT_OF_TRYING:
+                    print_logs(logs=self.logs, msg="PACKAGE WAS SKIPED\n", log_type="info")
 
-        if back_msg != '200':
-            print_logs(logs=self.logs, msg="400 ERROR to get response!", log_type="exception")
+                    return back_msg
 
-            if tryingNum == self.COUNT_OF_TRYING:
-                print_logs(logs=self.logs, msg="PACKAGE WAS SKIPED\n", log_type="info")
-
-                return back_msg
+                else:
+                    print_logs(logs=self.logs, msg="Trying to send again...\n", log_type="info")
 
             else:
-                print_logs(logs=self.logs, msg="Trying to send again...\n", log_type="info")
-
-        else:
-            print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
-            return back_msg
+                print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
+                return back_msg
 
 
 if __name__ == '__main__':
