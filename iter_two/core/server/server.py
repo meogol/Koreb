@@ -8,10 +8,13 @@ from setting_reader import setting_res
 
 
 class Server:
-    def __init__(self, socket_type="server", taker_ip=str(setting_res.get('taker_ip')), port=int(setting_res.get('port')), logs={'to_log':True, 'to_console': True}):
+    def __init__(self, socket_type="server", taker_ip="localhost", port=7777, logs={'to_log':True, 'to_console': True}):
         """
         socket_type = "server" or "client"
         """
+        global setting_res
+        taker_ip = str(setting_res.get('taker_ip'))
+        port = int(setting_res.get('port'))
         self.logs = logs
         self.socket_type = socket_type
 

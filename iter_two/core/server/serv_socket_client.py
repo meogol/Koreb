@@ -10,15 +10,16 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"),
+    def __init__(self, taker_ip, port,
                  logs={'to_log': True, 'to_console': True}):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
+        global setting_res
         self.logs = logs
         self.COUNT_OF_TRYING = 5
-        self.taker_ip = taker_ip
-        self.port = port
+        self.taker_ip = setting_res.get("taker_ip")
+        self.port = setting_res.get("port")
         super().__init__(self.host, self.port, "client")
 
     def change_list(self, package, packages, last_slice_pos, slice_size, exceed, iterator):
