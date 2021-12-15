@@ -10,7 +10,8 @@ from setting_reader import setting_res
 
 class SocketClient(Socket):
 
-    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"), logs={'to_log':True, 'to_console': True}):
+    def __init__(self, taker_ip=setting_res.get("taker_ip"), port=setting_res.get("port"),
+                 logs={'to_log': True, 'to_console': True}):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
@@ -20,13 +21,67 @@ class SocketClient(Socket):
         self.port = port
         super().__init__(self.host, self.port, "client")
 
+    def change_list(self, package, packages, last_slice_pos, slice_size, exceed, iterator):
+        pkg_counter = 1
+
+        for i in range(exceed + iterator):
+            if pkg_counter == exceed + iterator: pkg_counter = -1
+
+            packages.append(package[last_slice_pos: last_slice_pos + slice_size])
+            packages[i].append(pkg_counter)
+            packages[i].append(len(package))
+            last_slice_pos += slice_size
+            pkg_counter += 1
+
+        if last_slice_pos != len(package):
+            packages.append(package[last_slice_pos: len(package) - last_slice_pos])
+
+        return packages
+
+    def check_package_list_size(self, package):
+        """
+        Метод проверяет входящий пакет на соответствие максимальной длине сокета. При несоответствии - разбивается так,
+        чтобы в себе хранить отрезок определённой длины, номер, длину изначального пакета
+
+        :param package:  Пакет для разбиения
+        :return: Лист из листов, где каждый из них - часть изначального пакета, хранящего в конце:
+            1) порядковый номер
+            2) длину изначального пакета, который мы резали
+        """
+        packages = list()
+
+        if len(package) >= 2000:
+            last_slice_pos = 0
+
+            exceed = round(len(package) / 2000)
+
+            slice_size = round(len(package) / exceed + 1)
+
+            if exceed == 1:
+                packages = self.change_list(package, packages, last_slice_pos, slice_size, exceed, 1)
+
+            else:
+                packages = self.change_list(package, packages, last_slice_pos, slice_size, exceed, 0)
+
+                if last_slice_pos != len(package):
+                    packages.append(package[last_slice_pos: len(package) - last_slice_pos])
+
+        else:
+            packages.append(package)
+            packages.append(-1)
+            packages.append(len(package))
+
+        return packages
+
     def build_and_send_message(self, destination_ip, package):
         """
         @param: destination_ip: ip получателя пакета
         @param: package: пакет в виде набора байт
         @param: resending: отправляется ли пакет повторно
         """
-        send_msg = package
+        message_to_send = package
+        message_to_send = self.check_package_list_size(message_to_send)
+
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
@@ -39,9 +94,11 @@ class SocketClient(Socket):
 
         tryingNum = 0
 
-        while back_msg != '200':
-            data = pickle.dumps(send_msg)
+        i = 0
+        while (back_msg != '200') and (i < len(message_to_send)):
+            data = pickle.dumps(message_to_send[i])
 
+            i += 1
 
             self.soc.sendto(data, (self.taker_ip, self.port))
 
@@ -72,3 +129,9 @@ class SocketClient(Socket):
             else:
                 print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
                 return back_msg
+
+
+if __name__ == '__main__':
+    soc = SocketClient()
+    package = list(range(1, 100))
+    soc.check_package_list_size(package)
