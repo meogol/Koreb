@@ -16,8 +16,8 @@ class Taker:
         self.logs = logs
         self.cache_manager = CacheManager()
         self.stack = queue.LifoQueue(0)
-        # self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
-        # self.check_stack_thread.start()
+        self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
+        self.check_stack_thread.start()
         self.packages_data = PackagesData()
 
     def check_n_send_pkg_from_stack(self, pkg_number, int_package, int_list, pkg_length_of_full_set_of_pkgs):
@@ -54,8 +54,8 @@ class Taker:
 
                 if len(pkg_list_for_sort) == pkg_length_of_full_set_of_pkgs:
                     pkg_list_for_sort = sorted(pkg_list_for_sort, key = lambda iter: iter.get_number())
-                    pkg_list_for_sort.append(pkg_list_for_sort[0])
-                    pkg_list_for_sort.remove(pkg_list_for_sort[0])
+                    last_pkg_index = pkg_list_for_sort.index(pkg_list_for_sort[0])
+                    pkg_list_for_sort = pkg_list_for_sort[:last_pkg_index]
 
                     i = 0
                     for item in pkg_list_for_sort:
@@ -146,7 +146,6 @@ if __name__ == '__main__':
     int_package = 0
     van = [1, 2, 3, 4]
     pkg_leangth = 1
-    pkg_length_of_full_set_of_pkgs = 2
-    take.stack.put(van)
+    pkg_length_of_full_set_of_pkgs = 1
     take.stack.put(van)
     take.check_n_send_pkg_from_stack(pkg_number, int_package, van, pkg_length_of_full_set_of_pkgs)
