@@ -34,7 +34,8 @@ class SocketServer(Socket):
             else:
                 replymsg = '400'
             """
-
+            break
+            a == a
             self.soc.sendto(replymsg.encode('utf-8'), addr)
 
 
