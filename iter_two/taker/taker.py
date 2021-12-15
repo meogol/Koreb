@@ -3,7 +3,7 @@ import numpy as np
 import scapy.all as scapy
 import threading
 import queue
-
+from scapy.layers.ipsec import IP
 from iter_two.taker.packages_data_class import PackagesData
 from scapy.all import *
 from iter_two.core.cahce.cache import CacheManager
