@@ -22,7 +22,7 @@ class SocketClient(Socket):
         self.host = taker_ip
         self.port = port
         self.stack = list()
-        self.send_thread = threading.Thread(self.check_stack)
+        self.send_thread = threading.Thread(target=self.check_stack)
         self.send_thread.start()
 
         super().__init__(self.host, self.port, "client")
