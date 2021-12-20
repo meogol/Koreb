@@ -63,12 +63,12 @@ class Taker:
                     if len(pkg_list_for_sort) > 2:
                         pkg_list_for_sort = pkg_list_for_sort[1:] + pkg_list_for_sort[:0]
 
-                    i = 0
                     int_package=0
                     for item in pkg_list_for_sort:
                         pkg_buffer_list += item.get_pkg()
+
+                    for i in range(len(pkg_buffer_list)):
                         int_package += pkg_buffer_list[i] * 10 ** (len(pkg_buffer_list) - i - 1)
-                        i += 1
 
                     byte_package = int_to_bytes(int_package)
 
@@ -92,10 +92,11 @@ class Taker:
         """
         Протестить разаггрегатор!!!!!
         """
-        scapy_packet = scapy.IP(package.get_payload())
-        dst_ip = scapy_packet.sprintf("%IP.dst%")
+        # scapy_packet = scapy.IP(package)
+        # dst_ip = scapy_packet.sprintf("%IP.dst%")
 
-        int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache(dst_ip))
+        if self.cache_manager.get_last_pkg_cache('192.168.1.106') is not None:
+            int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.1.106'))
 
         pkg_number = int_list[len(int_list) - 2]
         pkg_length_of_full_set_of_pkgs = int_list[len(int_list) - 1] + 1
@@ -104,6 +105,7 @@ class Taker:
 
         int_package = 0
 
+        self.cache_manager.add_all_cache('192.168.1.106', int_list)
         self.add_to_data(pkg_number, int_list, int_package, pkg_length_of_full_set_of_pkgs)
 
     def recovery_pkg(self, package, last_pkg):
