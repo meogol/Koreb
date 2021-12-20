@@ -21,11 +21,14 @@ class Controller:
         """
 
         int_package = int_from_bytes(bytes(package))
+
+        print('int_package', int_package)
+
         int_list = [(int_package // (10 ** i)) % 10 for i in range(math.ceil(math.log(int_package, 10)) - 1, -1, -1)]
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
-            int_list = self.aggregator.contrast_last_package(int_list, destination_ip)
-        self.cache_manager.add_all_cache(destination_ip, int_list)
+            int_list = self.aggregator.contrast_last_package(int_list, '192.168.1.45')
+        self.cache_manager.add_all_cache('192.168.1.45', int_list)
 
         self.server.send_package(destination_ip, int_list)
 

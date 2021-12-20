@@ -38,20 +38,28 @@ class Sniffer:
 
         setting_read()
 
+        if dst_ip == setting_res.get('server_ip'):
+            print('src:', src_ip)
+
         """ NOT A HARDCODE"""
         if src_ip == setting_res.get('client_ip'):
             if ':' not in dst_ip:
                 pkt = IP(src=setting_res.get('client_ip'), dst=setting_res.get('server_ip')) / TCP() / Raw(data)
+                #print('все ок 1')
             else:
                 pkt = Ether(src=setting_res.get('client_ip'), dst=setting_res.get('server_ip')) / TCP() / Raw(data)
+               # print('все ок 2')
             send(scapy_packet)
 
             print_logs(logs=self.logs, msg="THIS IS: Response from client", log_type="info")
 
         else:
             print_logs(logs=self.logs, msg="THIS IS: Server's package", log_type="info")
+            #print('все ок 3')
 
             self.controller.analyse_command(scapy_packet, dst_ip)
+
+       # print('все ок 4')
 
         print_logs(logs=self.logs, msg="FROM:\t" + str(src_ip), log_type="info")
         print_logs(logs=self.logs, msg="TO:\t\t" + str(dst_ip), log_type="info")

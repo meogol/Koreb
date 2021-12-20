@@ -24,6 +24,13 @@ class SocketClient(Socket):
         self.port = port
         self.stack = list()
         self.stack = queue.LifoQueue(0)
+
+        # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
+        # соответствующий порт
+
+        print_logs(logs=self.logs, msg="TAKER's IP:\t" + self.host, log_type="debug")
+        print_logs(logs=self.logs, msg="TAKER's PORT:\t" + str(self.port), log_type="debug")
+
         self.send_thread = threading.Thread(target=self.check_stack)
         self.send_thread.start()
 
@@ -110,12 +117,6 @@ class SocketClient(Socket):
 
         message_to_send = self.check_package_list_size(message_to_send)
 
-        # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
-        # соответствующий порт
-
-        print_logs(logs=self.logs, msg="TAKER's IP:\t" + self.host, log_type="debug")
-        print_logs(logs=self.logs, msg="TAKER's PORT:\t" + str(self.port), log_type="debug")
-
         # Декодировать полученную информацию
 
         back_msg = None
@@ -137,8 +138,6 @@ class SocketClient(Socket):
             tryingNum += 1
 
             print_logs(logs=self.logs, msg="Response from taker:\t" + str(back_msg), log_type="debug")
-
-            self.soc.settimeout(5)
 
             if back_msg != '200':
                 print_logs(logs=self.logs, msg="400 ERROR to get response!", log_type="exception")
