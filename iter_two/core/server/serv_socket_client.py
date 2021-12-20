@@ -1,4 +1,5 @@
 import logging
+import queue
 import socket
 import pickle
 import threading
@@ -22,6 +23,7 @@ class SocketClient(Socket):
         self.host = taker_ip
         self.port = port
         self.stack = list()
+        self.stack = queue.LifoQueue(0)
         self.send_thread = threading.Thread(target=self.check_stack)
         self.send_thread.start()
 
@@ -29,18 +31,21 @@ class SocketClient(Socket):
 
     def check_stack(self):
         i = 0
+        cart_pkg = None
         while True:
 
-            if len(self.stack) == 0:
+            if self.stack.empty() and cart_pkg is None:
                 continue
 
-            cart_pkg = self.stack[0]
+            if cart_pkg is None:
+                cart_pkg = self.stack.get()
+
             back_msg = self.build_and_send_message(cart_pkg[0], cart_pkg[1])
 
             i += 1
 
             if back_msg == '200' or i == 5:
-                self.stack.remove(cart_pkg)
+                cart_pkg = None
                 i = 0
 
     def change_list(self, package, packages, last_slice_pos, slice_size, exceed, iterator):
@@ -93,7 +98,7 @@ class SocketClient(Socket):
         return packages
 
     def add_to_stack(self, destination_ip, package):
-        self.stack.append((destination_ip, package))
+        self.stack.put((destination_ip, package))
 
     def build_and_send_message(self, destination_ip, package):
         """
