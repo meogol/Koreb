@@ -25,18 +25,19 @@ class Controller:
     def add_stack(self, package):
         self.stack.put(package)
 
-    def analyse_command(self, package, destination_ip="192.168.1.45"):
+    def analyse_command(self):
         """
 
         @param package: пакет в виде набора байт
         @param destination_ip: ip получателя пакета
         @return:
         """
+        destination_ip = "192.168.1.45"
         while True:
             if self.stack.empty():
                 continue
 
-            int_package = int_from_bytes(bytes(package))
+            int_package = int_from_bytes(bytes(self.stack.get()))
             int_list = [(int_package // (10 ** i)) % 10 for i in range(math.ceil(math.log(int_package, 10)) - 1, -1, -1)]
             self.cache_manager.add_all_cache("192.168.1.1", int_list)
             self.server.send_package(destination_ip, int_list)
