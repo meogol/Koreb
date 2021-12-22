@@ -1,4 +1,5 @@
 import pickle
+import queue
 
 import numpy as np
 import numpy as numpy
@@ -15,15 +16,30 @@ from iter_two.core.cahce.cache import CacheManager
 class Taker:
     def __init__(self):
         self.cache_manager = CacheManager()
+        self.stack = queue.LifoQueue(0)
+        self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
+        self.check_stack_thread.start()
 
-    def start(self, package):
+    def add_stack(self, package):
+        int_list = pickle.loads(package)
+
+        self.stack.put(int_list)
+
+    def check_n_send_pkg_from_stack(self):
+        while True:
+            if self.stack.empty():
+                continue
+
+            pkg = self.stack.get()
+            self.start(pkg)
+
+    def start(self, int_list):
         """
         запускает анализ пакета в тейкере
         @param package: пакет в виде числового байткода
         @param addr: кортеж вида (ip, port)
         @return:
         """
-        int_list = pickle.loads(package)
         # print("int_pickle\t" + str(int_list))
 
         if self.cache_manager.get_last_pkg_cache('192.168.1.57') is not None:
@@ -66,7 +82,7 @@ class Taker:
 
         tail = []
         if len(this_pkg) > len(last_pkg):
-            tail = this_pkg[len(last_pkg+1):]
+            tail = this_pkg[len(last_pkg + 1):]
             this_pkg = this_pkg[:len(last_pkg)]
         elif len(this_pkg) < len(last_pkg):
             last_pkg = last_pkg[:len(this_pkg)]
