@@ -21,7 +21,7 @@ class SocketServer(Socket):
             data, addr = self.soc.recvfrom(8192)
             # Декодировать полученное сообщение
             recvmsg = data
-            self.taker.start(recvmsg)
+            self.taker.add_stack(recvmsg)
 
             replymsg = '200'
 
