@@ -16,7 +16,7 @@ from iter_two.core.cahce.cache import CacheManager
 class Taker:
     def __init__(self):
         self.cache_manager = CacheManager()
-        self.stack = queue.LifoQueue(0)
+        self.stack = queue.Queue(0)
         self.check_stack_thread = threading.Thread(target=self.check_n_send_pkg_from_stack)
         self.check_stack_thread.start()
 
