@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 
 from iter_two.core.cahce.cache import CacheManager
@@ -9,64 +10,53 @@ class Aggregator:
         self.cache_manager = cache_manager
 
     def contrast_last_package(self, package, destination_ip):
-        print("Contrast")
+
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
-            lp = np.array(self.cache_manager.get_last_pkg_cache(destination_ip))
-            p = np.array(package)
-            lp_len = len(lp)
-            p_len = len(package)
+            last_pkg = numpy.array(self.cache_manager.get_last_pkg_cache(destination_ip))
+            this_pkg = numpy.array(package)
+            last_pkg_len = len(last_pkg)
+            this_pkg_len = len(package)
             tail = []
 
-            if lp_len == p_len:
-                diff = abs(np.subtract(lp, p))
-            elif lp_len > p_len:
-                lp = lp[:p_len]
-                diff = abs(np.subtract(lp, p))
-            else:
-                tail = p[lp_len:]
-                p = p[:lp_len]
-                diff = abs(np.subtract(lp, p))
+            if last_pkg_len > this_pkg_len:
+                last_pkg = last_pkg[:this_pkg_len]
 
-            if np.nonzero(diff)[0].size == len(diff):
-                if len(tail) != 0:
-                    return list(p) + list(tail)
-                else:
-                    return list(p)
-            elif np.nonzero(diff)[0].size == 0:
-                p = [-len(diff)]
-                if len(tail) != 0:
-                    return list(p) + list(tail)
-                else:
-                    return list(p)
-            else:
-                nz = np.nonzero(diff)[0]
+            elif last_pkg_len < this_pkg_len:
+                tail = this_pkg[last_pkg_len:]
+                this_pkg = this_pkg[:last_pkg_len]
+
+            diff = numpy.subtract(last_pkg, this_pkg)
+
+            nonzero_size = numpy.nonzero(diff)[0].size
+
+            if nonzero_size == 0:
+                this_pkg = [-len(diff)]
+
+            elif nonzero_size != len(diff):
+                nonzero = numpy.nonzero(diff)[0]
                 prev = None
-                slices = []
-                if nz[0] != 0:
-                    slices.append([0, nz[0]])
-                for i in nz:
-                    if prev is None:
-                        prev = i
-                    else:
-                        if i - prev >= 2:
-                            slices.append([prev + 1, i])
-                            prev = i
-                        else:
-                            prev = i
-                if nz[-1] + 1 != len(diff):
-                    slices.append([nz[-1] + 1, len(diff)])
 
-                p = list(p)
+                this_pkg = list(this_pkg)
                 shift = 0
 
-                for i in slices:
-                    p[i[0] - shift:i[1] - shift] = [-(i[1] - i[0])]
-                    shift += (i[1] - i[0] - 1)
+                if nonzero[0] != 0:
+                    this_pkg[0 - shift:nonzero[0] - shift] = [- nonzero[0]]
+                    shift += (nonzero[0] - 1)
 
-                if len(tail) != 0:
-                    return list(p) + list(tail)
-                else:
-                    return list(p)
+                for i in nonzero:
+                    if prev is not None and i - prev >= 2:
+                        this_pkg[prev + 1 - shift:i - shift] = [- i + prev + 1]
+                        shift += (i - prev - 2)
+                    prev = i
+
+                if nonzero[-1] + 1 != len(diff):
+                    this_pkg[nonzero[-1] + 1 - shift:len(diff) - shift] = [- len(diff) + nonzero[-1] + 1]
+                    shift += (len(diff) - nonzero[-1] - 2)
+
+            if len(tail) != 0:
+                return list(this_pkg) + list(tail)
+            else:
+                return list(this_pkg)
 
 
 if __name__ == '__main__':

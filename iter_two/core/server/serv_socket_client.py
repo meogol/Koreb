@@ -13,7 +13,7 @@ class SocketClient(Socket):
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
         self.COUNT_OF_TRYING = 5
-        self.host = "192.168.0.103"
+        self.host = "192.168.1.91"
         self.port = 7777
         super().__init__(self.host, self.port, "client")
 
