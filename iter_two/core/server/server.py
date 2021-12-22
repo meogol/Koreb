@@ -12,12 +12,12 @@ class Server:
         socket_type = "server" or "client"
         """
         self.socket_type = socket_type
-        host = "192.168.1.91"
+        host = "192.168.1.110"
         port = 7777
         if self.socket_type == "server":
-            self.socket = SocketServer(host="192.168.1.91", port=7777)
+            self.socket = SocketServer(host="192.168.1.110", port=7777)
         else:
-            self.socket = SocketClient(host="192.168.1.91", port=7777)
+            self.socket = SocketClient(host="192.168.1.110", port=7777)
 
     def init_listener(self):
         self.socket.run_listener_server()

