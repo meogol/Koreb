@@ -69,11 +69,11 @@ class Taker:
         elif len(this_pkg) < len(last_pkg):
             last_pkg = last_pkg[:len(this_pkg)]
 
-        new_pkg = np.where(this_pkg > 0, this_pkg, last_pkg)
+        new_pkg = np.where(this_pkg >= 0, this_pkg, last_pkg)
 
         if len(tail) != 0:
             new_pkg = np.append(new_pkg, tail)
-        print("new pkg:", new_pkg)
+        #print("new pkg:", new_pkg)
         return new_pkg
 
 
