@@ -30,8 +30,8 @@ class Taker:
         self.cache_manager.add_all_cache('192.168.0.101', int_list)
 
         int_package = 0
-        for i in range(len(int_list)) :
-            int_package += int_list[i] * 10**(len(int_list)-i-1)
+        for i in range(len(int_list)):
+            int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
         print("int_list\t" + str(int_list))
         print("int_package\t" + str(int_package))
 
@@ -44,36 +44,36 @@ class Taker:
     def recovery_pkg(package, last_pkg):
         """
         восстановление пакета
-        @param last_pkg:
+        @param last_pkg: прошлый пакет, пришедший на определённый IP
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
-        a = bytearray(package)
-        filtered = list()
-        for x in package:
-            if x >= 0:
-                filtered.append(x)
-            else:
-                filtered.extend([-1] * -x)
+        try:
+            filtered = list()
+            for item in package:
+                if item >= 0:
+                    filtered.append(item)
+                else:
+                    filtered.extend([-1] * -item)
 
+            this_pkg = np.array(filtered)
+            last_pkg = np.array(last_pkg)
 
-        this_pkg = np.array(filtered)
-        last_pkg = np.array(last_pkg)
+            tail = []
+            if len(this_pkg) > len(last_pkg):
+                tail = this_pkg[len(last_pkg):]
+                this_pkg = this_pkg[:len(last_pkg)]
+            elif len(this_pkg) < len(last_pkg):
+                last_pkg = last_pkg[:len(this_pkg)]
 
-        last = []
-        if len(this_pkg) > len(last_pkg):
-            prom_pkg = this_pkg[:len(last_pkg)]
-            last = this_pkg[len(last_pkg):]
-        else:
-            prom_pkg = this_pkg
+            new_pkg = np.where(this_pkg >= 0, this_pkg, last_pkg)
 
-        index_non_zero = [i for i in range(len(prom_pkg)) if prom_pkg[i] < 0]
+            if len(tail) != 0:
+                new_pkg = np.append(new_pkg, tail)
 
-        this_pkg[index_non_zero] = last_pkg[index_non_zero]
-
-        new_pkg = this_pkg
-
-        return new_pkg
+            return new_pkg
+        except TypeError:
+            print("RECOVERY ERROR!")
 
 
 def int_to_bytes(x: int) -> bytes:

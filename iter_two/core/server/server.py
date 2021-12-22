@@ -12,7 +12,7 @@ class Server:
         socket_type = "server" or "client"
         """
         self.socket_type = socket_type
-        host = "192.168.0.103"
+        host = "192.168.0.91"
         port = 7777
         if self.socket_type == "server":
             self.socket = SocketServer(host=host, port=port)
@@ -34,5 +34,5 @@ class Server:
         while back_msg != 200:
             back_msg = self.socket.build_and_send_message(destination_ip, package)
         """
-        print("Send packet")
-        print()
+        # print("Send packet")
+        # print()
