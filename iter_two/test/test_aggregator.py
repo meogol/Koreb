@@ -13,9 +13,11 @@ def method(last, this):
     agr = Aggregator(cache)
     agr_this = agr.contrast_last_package(package=this, destination_ip="192.168.0.106")
     # агрегация текущего пакета
+
     print("\n"
           "Изначальный:   ", This)
     print("Предыдущий:    ", Last)
+
     print("Агрегированный:", agr_this)
     ras_pack2 = taker.recovery_pkg(package=agr_this, last_pkg=Last)
     # распаковка текущего пакета
@@ -36,7 +38,7 @@ def test_contrast_last_package1():
     a = (method(last, this))
     assert a == 1
 
-
+    
 # @pytest.mark.agreg_large_this
 def test_contrast_last_package2():
     # в данном тесте сравнение пакетов, когда предыдущий короче текущего
@@ -52,6 +54,7 @@ def test_contrast_last_package3():
     last = [0, 132, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 22, 167, 23, 134, 6, 27, 86]
     this = [20, 12, 123, 35, 0, 0, 40, 5, 3, 5, 7, 3, 2, 67, 243, 34]
     a = (method(last, this))
+
     assert a == 1
 
 # @pytest.mark.agreg_smal_this
@@ -61,3 +64,4 @@ def test_contrast_last_package4():
     this = [20, 12, 123, 35, 0, 0, 40, 5, 3, 5, 7, 3, 2, 67, 243, 34]
     a = (method(last, this))
     assert a == 1
+

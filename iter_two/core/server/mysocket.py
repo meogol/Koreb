@@ -7,7 +7,9 @@ class Socket:
     def __init__(self, host=setting_res.get("host"), port=setting_res.get("port"), socket_type="server"):
         self.host = '192.168.1.91'
         self.port = 7777
+
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
         if socket_type == "server":
             self.soc.bind((self.host, self.port))
 

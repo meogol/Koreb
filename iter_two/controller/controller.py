@@ -3,12 +3,13 @@ import math
 from iter_two.controller.aggregator import Aggregator
 from iter_two.core.cahce.cache import CacheManager
 from iter_two.core.server.server import Server
-from iter_two.printer import print_len
+
 
 
 class Controller:
-    def __init__(self):
-        self.server = Server(socket_type="client")
+    def __init__(self, logs={'to_log': True, 'to_console': True}):
+        self.logs = logs
+        self.server = Server(socket_type="client", logs=self.logs)
         self.cache_manager = CacheManager()
         self.aggregator = Aggregator(self.cache_manager)
 
@@ -21,11 +22,13 @@ class Controller:
         """
 
         int_package = int_from_bytes(bytes(package))
+
         int_list = [(int_package//(10**i))%10 for i in range(math.ceil(math.log(int_package, 10))-1, -1, -1)]
         # int_list = int_to_list(int_package)
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
             int_list = self.aggregator.contrast_last_package(int_list, destination_ip)
         self.cache_manager.add_all_cache(destination_ip, int_list)
+
         self.server.send_package(destination_ip, int_list)
 
 
