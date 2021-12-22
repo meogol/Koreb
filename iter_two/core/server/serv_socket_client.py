@@ -1,6 +1,4 @@
-import queue
 import pickle
-import threading
 from iter_two.core.server.mysocket import Socket
 from setting_reader import setting_res
 
@@ -14,10 +12,8 @@ class SocketClient(Socket):
         self.COUNT_OF_TRYING = 5
         self.taker_ip = taker_ip
         self.port = port
-        self.stack = queue.LifoQueue(0)
-        self.send_thread = threading.Thread(target=self.check_stack)
-        self.send_thread.start()
         super().__init__(self.taker_ip, self.port, "client")
+
 
     def build_and_send_message(self, destination_ip, package):
         """

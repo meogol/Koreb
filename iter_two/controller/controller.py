@@ -1,6 +1,9 @@
 import pickle
 
 import math
+import queue
+import threading
+
 import numpy
 
 from iter_two.controller.aggregator import Aggregator
@@ -15,32 +18,28 @@ class Controller:
         self.server = Server(socket_type="client")
         self.cache_manager = CacheManager()
         self.aggregator = Aggregator(self.cache_manager)
+        self.stack = queue.Queue(0)
+        self.check_stack_thread = threading.Thread(target=self.analyse_command)
+        self.check_stack_thread.start()
 
-    def analyse_command(self, package, destination_ip):
+    def add_stack(self, package):
+        self.stack.put(package)
+
+    def analyse_command(self, package, destination_ip="192.168.1.45"):
         """
 
         @param package: пакет в виде набора байт
         @param destination_ip: ip получателя пакета
         @return:
         """
+        while True:
+            if self.stack.empty():
+                continue
 
-        int_package = int_from_bytes(bytes(package))
-        # print(int_package)
-        int_list = [(int_package // (10 ** i)) % 10 for i in range(math.ceil(math.log(int_package, 10)) - 1, -1, -1)]
-        int_list_first = int_to_list(int_package)
-
-        # if self.cache_manager.get_last_pkg_cache("192.168.1.1") is not None:
-        #     int_list = self.aggregator.contrast_last_package(int_list_first, "192.168.1.1")
-        #     int_list1 = Taker.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.1.1'))
-        #     print((numpy.array(int_list_first) == int_list1))
-        #
-        #     a = pickle.dumps(int_list_first)
-        #     b = pickle.loads(a)
-        #     print(int_list_first == b)
-
-        self.cache_manager.add_all_cache("192.168.1.1", int_list)
-
-        self.server.send_package(destination_ip, int_list)
+            int_package = int_from_bytes(bytes(package))
+            int_list = [(int_package // (10 ** i)) % 10 for i in range(math.ceil(math.log(int_package, 10)) - 1, -1, -1)]
+            self.cache_manager.add_all_cache("192.168.1.1", int_list)
+            self.server.send_package(destination_ip, int_list)
 
 
 def int_to_bytes(x: int) -> bytes:

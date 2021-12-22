@@ -47,7 +47,7 @@ class Sniffer:
             # print("from_ip:\t" + str(src_ip))
             # print("to_ip:\t\t" + str(dst_ip))
 
-            self.controller.analyse_command(scapy_packet, dst_ip)
+            self.controller.add_stack(scapy_packet)
 
         # print("data:\t\t" + str(data))
         # print()
