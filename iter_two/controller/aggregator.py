@@ -10,7 +10,7 @@ class Aggregator:
         self.cache_manager = cache_manager
 
     def contrast_last_package(self, package, destination_ip):
-
+        # print("Contrast")
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
             last_pkg = numpy.array(self.cache_manager.get_last_pkg_cache(destination_ip))
             this_pkg = numpy.array(package)
