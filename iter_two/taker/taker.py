@@ -89,58 +89,61 @@ class Taker:
         @return:
         """
         int_list = pickle.loads(package)
-        """
-        Протестить разаггрегатор!!!!!
-        """
-        # scapy_packet = scapy.IP(package)
-        # dst_ip = scapy_packet.sprintf("%IP.dst%")
 
-        if self.cache_manager.get_last_pkg_cache('192.168.1.106') is not None:
-            int_list = self.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.1.106'))
+        # print("int_pickle\t" + str(int_list))
 
-        pkg_number = int_list[len(int_list) - 2]
-        pkg_length_of_full_set_of_pkgs = int_list[len(int_list) - 1] + 1
+        if self.cache_manager.get_last_pkg_cache('192.168.1.57') is not None:
+            int_list = Taker.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.1.57'))
 
-        int_list = int_list[0:len(int_list)-2]
+        # print("int_list\t" + str(int_list))
+
+        self.cache_manager.add_all_cache('192.168.1.57', int_list)
+
+        if type(int_list) == numpy.ndarray:
+            int_list = int_list.tolist()
 
         int_package = 0
+        for i in range(len(int_list)):
+            int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
+        # print("int_package\t" + str(int_package))
 
-        self.cache_manager.add_all_cache('192.168.1.106', int_list)
-        self.add_to_data(pkg_number, int_list, int_package, pkg_length_of_full_set_of_pkgs)
+        byte_package = int_to_bytes(int_package)
+        # print("byte_package\t" + str(byte_package))
+        scapy_package = scapy.IP(byte_package)
+        send(scapy_package)
 
-    def recovery_pkg(self, package, last_pkg):
+
+    @staticmethod
+    def recovery_pkg(package, last_pkg):
         """
         восстановление пакета
         @param last_pkg: прошлый пакет, пришедший на определённый IP
         @param package: передаваемый пакет. Передавать стоит в виде листа чисел
         @return: восстановленный пакет. Возвращается в виде листа чисел
         """
-        try:
-            filtered = list()
-            for item in package:
-                if item >= 0:
-                    filtered.append(item)
-                else:
-                    filtered.extend([-1] * -item)
 
-            this_pkg = np.array(filtered)
-            last_pkg = np.array(last_pkg)
+        filtered = list()
+        for item in package:
+            if item >= 0:
+                filtered.append(item)
+            else:
+                filtered.extend([-1] * -item)
 
-            tail = []
-            if len(this_pkg) > len(last_pkg):
-                tail = this_pkg[len(last_pkg):]
-                this_pkg = this_pkg[:len(last_pkg)]
-            elif len(this_pkg) < len(last_pkg):
-                last_pkg = last_pkg[:len(this_pkg)]
+        this_pkg = np.array(filtered)
+        last_pkg = np.array(last_pkg)
 
-            new_pkg = np.where(this_pkg > 0, this_pkg, last_pkg)
+        tail = []
+        if len(this_pkg) > len(last_pkg):
+            tail = this_pkg[len(last_pkg+1):]
+            this_pkg = this_pkg[:len(last_pkg)]
+        elif len(this_pkg) < len(last_pkg):
+            last_pkg = last_pkg[:len(this_pkg)]
 
-            if len(tail) != 0:
-                new_pkg = np.append(new_pkg, tail)
+        new_pkg = np.where(this_pkg >= 0, this_pkg, last_pkg)
 
-            return new_pkg
-        except TypeError:
-            print_logs(logs=self.logs, msg="RECOVERY ERROR!", log_type="exception")
+        if len(tail) != 0:
+            new_pkg = np.append(new_pkg, tail)
+        return new_pkg
 
 
 def int_to_bytes(x: int) -> bytes:

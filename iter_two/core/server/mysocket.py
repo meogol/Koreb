@@ -4,9 +4,9 @@ from setting_reader import setting_res
 
 
 class Socket:
-    def __init__(self, host=setting_res.get("taker_ip"), port=int(setting_res.get("port")), socket_type="server"):
-        self.host = host
-        self.port = port
+    def __init__(self, host=setting_res.get("host"), port=setting_res.get("port"), socket_type="server"):
+        self.host = '192.168.1.91'
+        self.port = 7777
 
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 

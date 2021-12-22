@@ -20,12 +20,9 @@ class SocketClient(Socket):
         """
         self.logs = logs
         self.COUNT_OF_TRYING = 5
-        self.host = taker_ip
-        self.port = port
-        self.stack = list()
-        self.stack = queue.LifoQueue(0)
-        self.send_thread = threading.Thread(target=self.check_stack)
-        self.send_thread.start()
+        
+        self.host = "192.168.0.103"
+        self.port = 7777
 
         super().__init__(self.host, self.port, "client")
 
@@ -113,17 +110,18 @@ class SocketClient(Socket):
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
-        print_logs(logs=self.logs, msg="TAKER's IP:\t" + self.host, log_type="debug")
-        print_logs(logs=self.logs, msg="TAKER's PORT:\t" + str(self.port), log_type="debug")
+        # print("host\t" + self.host)
+        # print("port\t" + str(self.port))
+
 
         # Декодировать полученную информацию
 
         back_msg = None
 
         tryingNum = 0
-
-        for package_part in message_to_send:
-            data = pickle.dumps(package_part)
+        
+        while back_msg != '200':
+            data = pickle.dumps(send_msg)
 
             self.soc.sendto(data, (self.host, self.port))
 
@@ -135,16 +133,20 @@ class SocketClient(Socket):
                 print_logs(logs=self.logs, msg="UNICODE ERROR!", log_type="exception")
 
             tryingNum += 1
+            
+            # print("BACK:")
+            # print(str(back_msg))
+
 
             print_logs(logs=self.logs, msg="Response from taker:\t" + str(back_msg), log_type="debug")
 
             self.soc.settimeout(5)
 
             if back_msg != '200':
-                print_logs(logs=self.logs, msg="400 ERROR to get response!", log_type="exception")
+                # print("\n400 ERROR to get response! try again...\n")
 
                 if tryingNum == self.COUNT_OF_TRYING:
-                    print_logs(logs=self.logs, msg="PACKAGE WAS SKIPED\n", log_type="info")
+                    # print("\nSKIP PACKET\n")
 
                     return back_msg
 
@@ -152,7 +154,9 @@ class SocketClient(Socket):
                     print_logs(logs=self.logs, msg="Trying to send again...\n", log_type="info")
 
             else:
-                print_logs(logs=self.logs, msg="200 SUCCESS! Package was sent successfully.\n", log_type="info")
+              
+                # print("\n200 SUCCESS!\n")
+
                 return back_msg
 
 

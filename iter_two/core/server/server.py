@@ -18,9 +18,12 @@ class Server:
         port = int(setting_res.get('port'))
         self.logs = logs
         self.socket_type = socket_type
-
+        
+        host = "192.168.1.91"
+        port = 7777
         if self.socket_type == "server":
-            self.socket = SocketServer(taker_ip=taker_ip, port=port, logs=self.logs)
+            self.socket = SocketServer(host="192.168.1.91", port=7777)
+
         else:
             self.socket = SocketClient(taker_ip=taker_ip, port=port, logs=self.logs)
 
@@ -41,4 +44,8 @@ class Server:
         back_msg = None
         while back_msg != 200:
             back_msg = self.socket.build_and_send_message(destination_ip, package)
+
         """
+        # print("Send packet")
+        # print()
+

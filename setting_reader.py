@@ -1,7 +1,10 @@
 import configparser
 import logging
 
-from logs import print_logs
+
+setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.1.91', 'face': 'Беспроводная сеть',
+               'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
+
 
 setting_res = {'pkg_type': 'tcp', 'client_ip': 'localhost', 'port': '7777', 'taker_ip': '192.168.0.106',
                'face': 'Беспроводная сеть', 'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}

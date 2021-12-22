@@ -53,6 +53,8 @@ class Sniffer:
 
             self.controller.analyse_command(scapy_packet, dst_ip)
 
-        print_logs(logs=self.logs, msg="FROM:\t" + str(src_ip), log_type="info")
-        print_logs(logs=self.logs, msg="TO:\t\t" + str(dst_ip), log_type="info")
-        print_logs(logs=self.logs, msg="DATA:\t\t" + str(data) + '\n', log_type="info")
+        # print("from_ip:\t" + str(src_ip))
+        # print("to_ip:\t\t" + str(dst_ip))
+        # print("data:\t\t" + str(data))
+        # print()
+
