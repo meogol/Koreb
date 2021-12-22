@@ -24,10 +24,12 @@ class Taker:
         @return:
         """
         int_list = pickle.loads(package)
-        print("int_list\t" + str(int_list))
+        print("int_pickle\t" + str(int_list))
 
         if self.cache_manager.get_last_pkg_cache('192.168.1.57') is not None:
             int_list = Taker.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.1.57'))
+
+        print("int_list\t" + str(int_list))
 
         self.cache_manager.add_all_cache('192.168.1.57', int_list)
 
@@ -64,16 +66,15 @@ class Taker:
 
         tail = []
         if len(this_pkg) > len(last_pkg):
-            tail = this_pkg[len(last_pkg):]
+            tail = this_pkg[len(last_pkg+1):]
             this_pkg = this_pkg[:len(last_pkg)]
         elif len(this_pkg) < len(last_pkg):
             last_pkg = last_pkg[:len(this_pkg)]
 
-        new_pkg = np.where(this_pkg > 0, this_pkg, last_pkg)
+        new_pkg = np.where(this_pkg >= 0, this_pkg, last_pkg)
 
         if len(tail) != 0:
             new_pkg = np.append(new_pkg, tail)
-        print("new pkg:", new_pkg)
         return new_pkg
 
 
