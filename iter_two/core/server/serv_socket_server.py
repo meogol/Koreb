@@ -12,6 +12,8 @@ from setting_reader import setting_res
 
 class SocketServer(Socket):
     def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
+        host = "192.168.1.110"
+        port = 7777
         super().__init__(host, port, "server")
         self.taker = Taker()
 
