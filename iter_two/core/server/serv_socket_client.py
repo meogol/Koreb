@@ -1,21 +1,23 @@
-import socket
+import queue
 import pickle
-import numpy
-
+import threading
 from iter_two.core.server.mysocket import Socket
 from setting_reader import setting_res
 
 
 class SocketClient(Socket):
 
-    def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
+    def __init__(self, taker_ip=setting_res.get("host"), port=setting_res.get("port")):
         """
         COUNT_OF_TRYING - количество попыток отправки одного пакета
         """
         self.COUNT_OF_TRYING = 5
-        self.host = "192.168.1.91"
-        self.port = 7777
-        super().__init__(self.host, self.port, "client")
+        self.taker_ip = taker_ip
+        self.port = port
+        self.stack = queue.LifoQueue(0)
+        self.send_thread = threading.Thread(target=self.check_stack)
+        self.send_thread.start()
+        super().__init__(self.taker_ip, self.port, "client")
 
     def build_and_send_message(self, destination_ip, package):
         """
