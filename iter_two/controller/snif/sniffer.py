@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import logging
+
 import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP
@@ -7,16 +9,19 @@ from scapy.packet import Raw
 from scapy.sendrecv import send
 
 from iter_two.controller.controller import Controller
+from logs import print_logs
+from setting_reader import setting_read, setting_res
 
 
 class Sniffer:
 
-    def __init__(self):
-        self.controller = Controller()
+    def __init__(self, logs={'to_log':True, 'to_console': True}):
+        self.controller = Controller(logs)
+        self.logs = logs
 
     def to_process(self):
+        nfqueue = netfilterqueue.NetfilterQueue()
         while True:
-            nfqueue = netfilterqueue.NetfilterQueue()
             nfqueue.bind(0, self.to_sniff)
             nfqueue.run()
 
@@ -26,10 +31,12 @@ class Sniffer:
         packet.drop()
         # print(scapy_packet)
 
+
         src_ip = scapy_packet.sprintf("%IP.src%")
         dst_ip = scapy_packet.sprintf("%IP.dst%")
         data = list(scapy.raw(scapy_packet))
 
+        
 
         """HARDCODE"""
         if src_ip == "192.168.1.45" and dst_ip == "192.168.1.57":

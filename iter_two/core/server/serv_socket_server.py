@@ -11,20 +11,21 @@ from setting_reader import setting_res
 
 
 class SocketServer(Socket):
-    def __init__(self, host=setting_res.get("host"), port=setting_res.get("port")):
-        super().__init__(host, port, "server")
-        self.taker = Taker()
+    def __init__(self, taker_ip, port, logs={'to_log':True, 'to_console': True}):
+        super().__init__(taker_ip, port, "server")
+        self.logs = logs
+        self.taker = Taker(logs=self.logs)
 
     def run_listener_server(self):
+
+        replymsg = '200'
+        
         while True:
             # Получать сообщения и адреса. Recvfrom используется для получения сообщений в UDP
-            data, addr = self.soc.recvfrom(10240000)
+            data, addr = self.soc.recvfrom(8192)
             # Декодировать полученное сообщение
             recvmsg = data
             self.taker.start(recvmsg)
-
-            replymsg = '200'
-
             """
             Для отладки обратной связи
             

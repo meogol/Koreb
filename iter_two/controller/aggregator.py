@@ -5,11 +5,15 @@ from iter_two.core.cahce.cache import CacheManager
 from iter_two.taker.taker import Taker
 
 
+
 class Aggregator:
     def __init__(self, cache_manager):
         self.cache_manager = cache_manager
 
     def contrast_last_package(self, package, destination_ip):
+
+        # print("Contrast")
+
 
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:
             last_pkg = numpy.array(self.cache_manager.get_last_pkg_cache(destination_ip))
@@ -59,14 +63,11 @@ class Aggregator:
                 return list(this_pkg)
 
 
-if __name__ == '__main__':
-    package = [0, 12, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 2, 67, 243, 34, 6, 87, 86]
-    cache_manager = CacheManager()
-    p = [0, 45, 456, 45, 23, 56, 12, 123, 35, 0, 0, 0, 5, 3, 5, 7, 3, 2, 435, 5, 88, 93, 67, 243, 34, 6, 87, 86]
-    print(package)
-    aggregator = Aggregator(cache_manager)
-    package = aggregator.contrast_last_package(package, "192.168.0.106")
-    print(package)
-    taker = Taker()
-    package = taker.recovery_pkg(package, p)
-    print(package)
+                if nonzero[-1] + 1 != len(diff):
+                    this_pkg[nonzero[-1] + 1 - shift:len(diff) - shift] = [- len(diff) + nonzero[-1] + 1]
+                    shift += (len(diff) - nonzero[-1] - 2)
+
+            if len(tail) != 0:
+                return list(this_pkg) + list(tail)
+            else:
+                return list(this_pkg)

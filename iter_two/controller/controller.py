@@ -10,9 +10,11 @@ from iter_two.printer import print_len
 from iter_two.taker.taker import Taker
 
 
+
 class Controller:
-    def __init__(self):
-        self.server = Server(socket_type="client")
+    def __init__(self, logs={'to_log': True, 'to_console': True}):
+        self.logs = logs
+        self.server = Server(socket_type="client", logs=self.logs)
         self.cache_manager = CacheManager()
         self.aggregator = Aggregator(self.cache_manager)
 

