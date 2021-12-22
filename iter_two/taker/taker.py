@@ -24,12 +24,12 @@ class Taker:
         @return:
         """
         int_list = pickle.loads(package)
-        print("int_pickle\t" + str(int_list))
+        # print("int_pickle\t" + str(int_list))
 
         if self.cache_manager.get_last_pkg_cache('192.168.1.57') is not None:
             int_list = Taker.recovery_pkg(int_list, self.cache_manager.get_last_pkg_cache('192.168.1.57'))
 
-        print("int_list\t" + str(int_list))
+        # print("int_list\t" + str(int_list))
 
         self.cache_manager.add_all_cache('192.168.1.57', int_list)
 
@@ -39,10 +39,10 @@ class Taker:
         int_package = 0
         for i in range(len(int_list)):
             int_package += int_list[i] * 10 ** (len(int_list) - i - 1)
-        print("int_package\t" + str(int_package))
+        # print("int_package\t" + str(int_package))
 
         byte_package = int_to_bytes(int_package)
-        print("byte_package\t" + str(byte_package))
+        # print("byte_package\t" + str(byte_package))
         scapy_package = scapy.IP(byte_package)
         send(scapy_package)
 

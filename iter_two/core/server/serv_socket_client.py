@@ -27,8 +27,8 @@ class SocketClient(Socket):
         # Используйте этот сокет для кодирования того, что вы вводите, и отправьте его на этот адрес и
         # соответствующий порт
 
-        print("host\t" + self.host)
-        print("port\t" + str(self.port))
+        # print("host\t" + self.host)
+        # print("port\t" + str(self.port))
 
         # Декодировать полученную информацию
 
@@ -44,18 +44,18 @@ class SocketClient(Socket):
             back_msg = self.soc.recv(1024).decode('utf-8')
 
             tryingNum += 1
-            print("BACK:")
-            print(str(back_msg))
+            # print("BACK:")
+            # print(str(back_msg))
 
             self.soc.settimeout(None)
 
             if back_msg != '200':
-                print("\n400 ERROR to get response! try again...\n")
+                # print("\n400 ERROR to get response! try again...\n")
 
                 if tryingNum == self.COUNT_OF_TRYING:
-                    print("\nSKIP PACKET\n")
+                    # print("\nSKIP PACKET\n")
                     return back_msg
 
             else:
-                print("\n200 SUCCESS!\n")
+                # print("\n200 SUCCESS!\n")
                 return back_msg

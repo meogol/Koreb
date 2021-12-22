@@ -43,7 +43,7 @@ class Sniffer:
             print("NE OTVECHAET :c")
             self.controller.analyse_command(scapy_packet, dst_ip)
 
-        print("from_ip:\t" + str(src_ip))
-        print("to_ip:\t\t" + str(dst_ip))
-        print("data:\t\t" + str(data))
-        print()
+        # print("from_ip:\t" + str(src_ip))
+        # print("to_ip:\t\t" + str(dst_ip))
+        # print("data:\t\t" + str(data))
+        # print()

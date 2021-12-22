@@ -34,5 +34,5 @@ class Server:
         while back_msg != 200:
             back_msg = self.socket.build_and_send_message(destination_ip, package)
         """
-        print("Send packet")
-        print()
+        # print("Send packet")
+        # print()
