@@ -1,6 +1,6 @@
 import configparser
 
-setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.0.106', 'face': 'Беспроводная сеть',
+setting_res = {'pkg_type': 'tcp', 'ip': 'localhost', 'port': '7777', 'host': '192.168.1.110', 'face': 'Беспроводная сеть',
                'server_ip': 'server_ip', 'gateway_ip': 'gateway_ip'}
 
 
