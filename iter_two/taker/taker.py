@@ -1,15 +1,9 @@
 import pickle
 import queue
-
 import numpy as np
 import numpy as numpy
 from scapy.all import *
-from scapy.layers.inet import ICMP, TCP
 from scapy.layers.ipsec import IP
-from scapy.layers.l2 import Ether
-
-import scapy.all as scapy
-from iter_two.printer import print_len
 from iter_two.core.cahce.cache import CacheManager
 
 
@@ -59,7 +53,7 @@ class Taker:
 
         byte_package = int_to_bytes(int_package)
         # print("byte_package\t" + str(byte_package))
-        scapy_package = scapy.IP(byte_package)
+        scapy_package = IP(byte_package)
         send(scapy_package)
 
     @staticmethod
