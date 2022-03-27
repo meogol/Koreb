@@ -1,6 +1,5 @@
-import socket
 import pickle
-import numpy
+from numba import njit
 
 from iter_two.core.server.mysocket import Socket
 from setting_reader import setting_res
@@ -17,6 +16,8 @@ class SocketClient(Socket):
         self.port = 7777
         super().__init__(self.host, self.port, "client")
 
+
+    @njit(fastmath=True, parallel=True)
     def build_and_send_message(self, destination_ip, package):
         """
         @param: destination_ip: ip получателя пакета

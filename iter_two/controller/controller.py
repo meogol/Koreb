@@ -1,13 +1,9 @@
-import pickle
-
 import math
-import numpy
+from numba import njit
 
 from iter_two.controller.aggregator import Aggregator
 from iter_two.core.cahce.cache import CacheManager
 from iter_two.core.server.server import Server
-from iter_two.printer import print_len
-from iter_two.taker.taker import Taker
 
 
 class Controller:
@@ -16,6 +12,8 @@ class Controller:
         self.cache_manager = CacheManager()
         self.aggregator = Aggregator(self.cache_manager)
 
+
+    @njit(fastmath=True, parallel=True)
     def analyse_command(self, package, destination_ip):
         """
 
@@ -43,14 +41,17 @@ class Controller:
         self.server.send_package(destination_ip, int_list)
 
 
+@njit(fastmath=True, parallel=True)
 def int_to_bytes(x: int) -> bytes:
     return x.to_bytes((x.bit_length() + 7) // 8, 'big')
 
 
+@njit(fastmath=True, parallel=True)
 def int_from_bytes(xbytes: bytes) -> int:
     return int.from_bytes(xbytes, 'big')
 
 
+@njit(fastmath=True, parallel=True)
 def int_to_list(int_pkg):
     result = []
     while int_pkg > 0:

@@ -1,9 +1,11 @@
 from iter_two.core.cahce.cache import CacheManager
 
+from numba import njit
 
 class AgrPatternSearch:
 
     @staticmethod
+    @njit(fastmath=True, parallel=True)
     def sub_finder(current_package, pattern):
         """
         Служебный метод для функции agr_cache_patterns()
@@ -14,6 +16,8 @@ class AgrPatternSearch:
                 matches.append(pattern)
         return matches
 
+
+    @njit(fastmath=True, parallel=True)
     def agr_cache_patterns(self, package, ip, cache_manager: CacheManager):
         """
         Метод ищет паттерны у текущего пакета и аггрегационного кеша пакетов, отправленных на тот же IP

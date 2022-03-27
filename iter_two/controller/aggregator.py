@@ -1,14 +1,13 @@
 import numpy
-import numpy as np
-
 from iter_two.core.cahce.cache import CacheManager
 from iter_two.taker.taker import Taker
-
+from numba import njit
 
 class Aggregator:
     def __init__(self, cache_manager):
         self.cache_manager = cache_manager
 
+    @njit(fastmath=True, parallel=True)
     def contrast_last_package(self, package, destination_ip):
         # print("Contrast")
         if self.cache_manager.get_last_pkg_cache(destination_ip) is not None:

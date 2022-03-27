@@ -1,8 +1,5 @@
-import threading
-
 from iter_two.core.server.serv_socket_client import SocketClient
 from iter_two.core.server.serv_socket_server import SocketServer
-from iter_two.core.server.mysocket import Socket
 from setting_reader import setting_res
 
 

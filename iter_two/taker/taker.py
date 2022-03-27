@@ -3,14 +3,13 @@ import queue
 
 import numpy as np
 import numpy as numpy
+from numba import njit
 from scapy.all import *
-from scapy.layers.inet import ICMP, TCP
-from scapy.layers.ipsec import IP
-from scapy.layers.l2 import Ether
 
 import scapy.all as scapy
-from iter_two.printer import print_len
 from iter_two.core.cahce.cache import CacheManager
+
+
 
 
 class Taker:
@@ -22,7 +21,6 @@ class Taker:
 
     def add_stack(self, package):
         int_list = pickle.loads(package)
-
         self.stack.put(int_list)
 
     def check_n_send_pkg_from_stack(self):
@@ -33,6 +31,8 @@ class Taker:
             pkg = self.stack.get()
             self.start(pkg)
 
+
+    @njit(fastmath=True, parallel=True)
     def start(self, int_list):
         """
         запускает анализ пакета в тейкере
@@ -63,6 +63,7 @@ class Taker:
         send(scapy_package)
 
     @staticmethod
+    @njit(fastmath=True, parallel=True)
     def recovery_pkg(package, last_pkg):
         """
         восстановление пакета
@@ -94,5 +95,7 @@ class Taker:
         return new_pkg
 
 
+
+@njit(fastmath=True, parallel=True)
 def int_to_bytes(x: int) -> bytes:
     return x.to_bytes((x.bit_length() + 7) // 8, 'big')
